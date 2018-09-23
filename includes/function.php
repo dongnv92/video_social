@@ -141,7 +141,7 @@ class myFunction
         foreach ($categories as $key => $item) {
             if ($item['category_parent'] == $parent_id){
                 if($display == 'table'){
-                    echo '<tr><td>'. $char . $item['category_name'] .'</td></tr>';
+                    echo '<tr id="category_'. $item['category_id'] .'"><td width="80%">'. $char . $item['category_name'] .'</td><td class="text-right"><a title="delete" class="btn btn-outline-danger round" id="'. $item['category_id'] .'" href="javascript:;">Xóa</a></td></tr>';
                 }else if($display == 'select'){
                     echo '<option value="'. $item['category_id'] .'">'. $char . $item['category_name'] .'</option>';
                 }

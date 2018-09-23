@@ -58,4 +58,14 @@ switch ($act){
         $array['urlSlug'] = $funcion->makeSlug($post_title);
         echo json_encode($array);
         break;
+    case 'category':
+        switch ($type){
+            case 'delete':
+                $array = array();
+                $cate = $db->select('category_id')->from(_TABLE_CATEGORY)->where(array('category_id' => $id))->fetch_first();
+                $array['hehe'] = $cate['category_id'];
+                echo json_encode($array);
+                break;
+        }
+        break;
 }

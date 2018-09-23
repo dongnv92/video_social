@@ -57,6 +57,14 @@ switch ($act){
                 }
             }
         }
+
+        $css_plus       = array(
+            'app-assets/vendors/css/extensions/sweetalert.css'
+        );
+        $js_plus        = array(
+            'app-assets/vendors/js/extensions/sweetalert.min.js',
+            'app-assets/js/scripts/extensions/sweet-alerts.min.js'
+        );
         $admin_title = 'Chuyên Mục';
         require_once 'header.php';
         ?>
@@ -107,8 +115,43 @@ switch ($act){
         </div>
         <script language="JavaScript">
             $(document).ready(function () {
-
-            })
+                $('a[title=delete]').click(function () {
+                    swal({
+                        title: "Bạn có chắc chắn muốn xóa?",
+                        text: "Sau khi xóa sẽ không khôi phục được!",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "Quay Lại",
+                                value: null,
+                                visible: true,
+                                className: "",
+                                closeModal: true,
+                            },
+                            confirm: {
+                                text: "Xóa Ngay",
+                                value: true,
+                                visible: true,
+                                className: "",
+                                closeModal: false
+                            }
+                        }
+                    })
+                    .then((isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url     : '',
+                                method  : 'POST',
+                                dataType: 'json',
+                                data    : {},
+                                success : function () {
+                                    swal("Deleted!", "Đã Xóa Chuyên Mục Thành Công.", "success");
+                                }
+                            });
+                        }
+                    });
+                })
+            });
         </script>
         <?php
         require_once 'footer.php';
