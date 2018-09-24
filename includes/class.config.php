@@ -9,6 +9,10 @@
 class config
 {
 
+    function store_suport(){
+        return array('1drv.ms');
+    }
+
     function getTimeNow(){
         return time();
     }

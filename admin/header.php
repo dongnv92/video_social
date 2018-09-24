@@ -101,7 +101,14 @@ $admin_title = isset($admin_title) && !empty($admin_title) ? $admin_title : 'VID
                 <span data-i18n="nav.category.layouts">Nội dung</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Layouts"></i>
             </li>
             <li class=" nav-item">
-                <a href="#"><i class="la la-pencil-square-o"></i><span class="menu-title" data-i18n="nav.page_layouts.main">Bài viết</span></a>
+                <a href="#"><i class="ft-folder"></i><span class="menu-title">Chuyên Mục</span></a>
+                <ul class="menu-content">
+                    <li <?php echo ($admin_module == 'category' && $act == 'list') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/category.php?act=list">Danh sách chuyên mục</a></li>
+                    <li <?php echo ($admin_module == 'category' && $type == 'video') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/category.php?type=video">Video</a></li>
+                </ul>
+            </li>
+            <li class=" nav-item">
+                <a href="#"><i class="ft-edit"></i><span class="menu-title" data-i18n="nav.page_layouts.main">Bài viết</span></a>
                 <ul class="menu-content">
                     <li <?php echo ($admin_module == 'post' && $act == 'add' && $type == 'video') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/post.php?act=add&type=video">Thêm Video</a></li>
                 </ul>

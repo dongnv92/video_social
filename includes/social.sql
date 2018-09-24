@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 22, 2018 lúc 06:56 AM
+-- Thời gian đã tạo: Th9 24, 2018 lúc 06:33 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -43,10 +43,24 @@ CREATE TABLE `social_category` (
 --
 
 INSERT INTO `social_category` (`category_id`, `category_name`, `category_url`, `category_type`, `category_parent`, `category_users`, `category_time`) VALUES
-(1, 'Giải Trí', 'giai-tri', 'video', 0, 1, 1537583461),
-(2, 'HOT GIRL', 'hot-girl', 'video', 0, 1, 1537583489),
-(3, 'xxxxxxxxxxxx', 'xxxx', 'video', 1, 1, 1537589470),
-(4, 'dshgdfh', 'fdhjfdgjfgj', 'video', 3, 1, 1537591703);
+(2, 'Hot Girl', 'hot-girl', 'video', 0, 1, 1537763133),
+(3, 'Troll', 'troll', 'video', 0, 1, 1537763141),
+(4, 'Giải Trí', 'giai-tri', 'video', 0, 1, 1537783421);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `social_group`
+--
+
+CREATE TABLE `social_group` (
+  `group_id` int(11) NOT NULL,
+  `group_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `group_index` int(11) NOT NULL,
+  `group_value` int(11) NOT NULL,
+  `group_users` int(11) NOT NULL,
+  `group_time` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -124,6 +138,12 @@ ALTER TABLE `social_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Chỉ mục cho bảng `social_group`
+--
+ALTER TABLE `social_group`
+  ADD PRIMARY KEY (`group_id`);
+
+--
 -- Chỉ mục cho bảng `social_media`
 --
 ALTER TABLE `social_media`
@@ -150,6 +170,12 @@ ALTER TABLE `social_users`
 --
 ALTER TABLE `social_category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `social_group`
+--
+ALTER TABLE `social_group`
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`

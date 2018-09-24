@@ -38,10 +38,22 @@ switch ($act){
                     if($post_store && !filter_var($post_source, FILTER_VALIDATE_URL)){
                         $error['post_store'] = 'Không đúng định dạng URL';
                     }
+                    if(!in_array($funcion->urlToDomain($post_store) , $config->store_suport())){
+                        $error['post_store'] = 'Trang lưu trữ không được hỗ trợ';
+                    }
+                    if(!$post_category){
+                        $error['post_category'] = 'Bạn chưa chọn chuyên mục';
+                    }
+                    if(!$post_images && !$funcion->checkUpload('post_images_upload')){
+                        $error['post_images'] = 'Bạn chưa chọn ảnh';
+                    }
+                    if($post_images && !filter_var($post_images, FILTER_VALIDATE_URL)){
+                        $error['post_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
+                    }
 
+                    if(!$error) {
 
-
-                    break;
+                    }
                 }
                 $admin_title    = 'Thêm Mới Video';
                 $css_plus       = array(
@@ -121,25 +133,38 @@ switch ($act){
                                 </div>
                             </div>
                             <div class="card">
+                                <div class="card-header"><h4 class="card-title">Chuyên Mục</h4> </div>
+                                <div class="card-body">
+                                    <fieldset class="form-group">
+                                        <label><strong class="text-danger">(*)</strong> Chuyên Mục</label><br />
+                                        <select name="post_category[]" id="category_select" class="select2 form-control border-grey-blue" multiple="multiple">
+                                            <?php $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type))->fetch(), 0, '','select'); ?>
+                                        </select>
+                                        <?php echo $error['post_category'] ? $config->getAlert('help_error', $error['post_category']) : '';?>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="card">
                                 <div class="card-header"><h4 class="card-title">Nguồn Video Và Lưu Trữ Gốc</h4></div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>URL Video Gốc</label>
-                                        <input type="text" required class="<?php echo $config->form_style('text_input');?>" placeholder="URL Video Nguồn" name="post_source" />
+                                        <input type="text" value="<?php echo $post_source;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Video Nguồn" name="post_source" />
                                         <?php echo $error['post_source'] ? $config->getAlert('help_error', $error['post_source']) : '';?>
                                     </div>
                                     <div class="form-group">
                                         <label class="label-control"><strong class="text-danger">(*)</strong> URL Lưu Trữ Gốc</label>
-                                        <input type="text" id="" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_store" />
+                                        <input type="text" value="<?php echo $post_store;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_store" />
                                         <?php echo $error['post_store'] ? $config->getAlert('help_error', $error['post_store']) : '';?>
                                     </div>
                                     <div class="form-group">
                                         <label><strong class="text-danger">(*)</strong> URL Ảnh Video</label>
-                                        <input type="text" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_images" />
+                                        <input type="text" value="<?php echo $post_images;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_images" />
+                                        <?php echo $error['post_images'] ? $config->getAlert('help_error', $error['post_images']) : '';?>
                                     </div>
                                     <fieldset class="form-group">
                                         <label><strong class="text-danger">(*)</strong> Hoặc Tải Ảnh Từ Máy Tính</label><br />
-                                        <input type="file" class="round" name="post_images_upload">
+                                        <input type="file" id="post_images_upload" class="round" name="post_images_upload">
                                     </fieldset>
                                     <div class="form-group text-center">
                                         <img id="images_preview" src="" height="200px" style="display: none;" />
@@ -149,12 +174,10 @@ switch ($act){
                             <div class="card">
                                 <div class="card-header"><h4 class="card-title">Tùy Chọn</h4></div>
                                 <div class="card-body">
-                                    <fieldset class="form-group">
-                                        <label><strong class="text-danger">(*)</strong> Chuyên Mục</label><br />
-                                        <select name="post_category[]" class="select2 form-control border-grey-blue" multiple="multiple">
-                                            <?php $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type))->fetch(), 0, '','select'); ?>
-                                        </select>
-                                    </fieldset>
+                                    <div class="form-group">
+                                        <label>Đường Dẫn Bài Viết</label>
+                                        <input type="text" value="<?php echo $post_url;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="Đường Dẫn Bài Viết" name="post_url" />
+                                    </div>
                                     <div class="form-group">
                                         <label>Thẻ Keyword</label>
                                         <input type="text" value="video hay, video giai tri, video giải trí, video gai xinh, hot girl" class="<?php echo $config->form_style('text_input');?>" placeholder="Thẻ Keyword" name="post_keyword" />
@@ -163,10 +186,6 @@ switch ($act){
                                         <p class="text-muted">Thẻ Description.</p>
                                         <textarea class="<?php echo $config->form_style('text_input');?>" id="" rows="3" placeholder="Thẻ Description" name="post_description">Tổng hợp các Video hay, hot nhất hiện nay</textarea>
                                     </fieldset>
-                                    <div class="form-group">
-                                        <label>Đường Dẫn Bài Viết</label>
-                                        <input type="text" class="<?php echo $config->form_style('text_input');?>" placeholder="Đường Dẫn Bài Viết" name="post_url" />
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -183,19 +202,43 @@ switch ($act){
                     }
 
                     $(document).ready(function(){
-
                         $('input[name=submit]').click(function () {
+                            var post_store          = $('input[name=post_store]').val();
+                            var post_images         = $('input[name=post_images]').val();
+                            var count_cate_selected = $("#category_select :selected").length;
 
-                        })
-
-                        $('#auto_fill').click(function () {
-                            var post_post_source = $('input[name=post_source]').val();
-                            if(post_post_source == ''){
-                                swal("warning!", "Bạn chưa nhập URL VIDEO");
+                            if(post_store == ''){
+                                swal("Warning!", "Bạn chưa nhập URL file lưu trữ", "warning");
                                 return false;
                             }
-                            if(ValidURL(post_post_source) == false){
-                                swal("warning!", "URL VIDEO không đúng định dạng");
+                            if(ValidURL(post_store) == false){
+                                swal("Warning!", "URL File lưu trữ không đúng định dạng","warning");
+                                return false;
+                            }
+                            if(count_cate_selected == 0){
+                                swal("Thông báo!", "Bạn chưa chọn chuyên mục", "warning");
+                                return false;
+                            }
+                            if( document.getElementById("post_images_upload").files.length == 0 && post_images == ''){
+                                swal("Thông báo!", "Bạn cận nhập URL ảnh hoặc tải ảnh lên", "warning");
+                                return false;
+                            }
+                            if(post_images != '' && ValidURL(post_images) == false){
+                                swal("Warning!", "URL File ảnh sai định dạng","warning");
+                                return false;
+                            }
+
+                        });
+
+                        $('#auto_fill').click(function () {
+                            var post_source = $('input[name=post_source]').val();
+
+                            if(post_source == ''){
+                                swal("Warning!", "Bạn chưa nhập URL VIDEO");
+                                return false;
+                            }
+                            if(ValidURL(post_source) == false){
+                                swal("Warning!", "URL VIDEO không đúng định dạng");
                                 return false;
                             }
 
@@ -203,7 +246,7 @@ switch ($act){
                                 url         : '<?php echo _URL_HOME;?>/includes/ajax.php',
                                 method      : 'POST',
                                 dataType    : 'json',
-                                data        : {'act' : 'get_auto_video', 'url' : post_post_source, 'post_title' : $('input[name=post_title]').val()},
+                                data        : {'act' : 'get_auto_video', 'url' : post_source, 'post_title' : $('input[name=post_title]').val()},
                                 beforeSend  : function () {
                                     $('#loading_wait').show();
                                 },
@@ -213,7 +256,8 @@ switch ($act){
                                     $('#images_preview').show();
                                     $('input[name=post_url]').val(data.urlSlug);
                                     $('#loading_wait').hide();
-                                }
+                                },
+                                timeout: 20000
                             })
                         })
                     });

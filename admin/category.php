@@ -12,6 +12,35 @@ if(!$user){ $funcion->redirectUrl(_URL_LOGIN);exit();}
 $admin_module   = 'category';
 
 switch ($act){
+    case 'list':
+        $admin_title = 'Danh sách chuyên mục';
+        require_once 'header.php';
+        ?>
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media align-items-stretch">
+                            <div class="p-2 text-center bg-info bg-darken-2 rounded-left">
+                                <a href="category.php?type=video"><i class="ft-play font-large-2 text-white"></i></a>
+                            </div>
+                            <div class="p-2 bg-info text-white media-body rounded-right">
+                                <a href="category.php?type=video"><h5 class="text-white">VIDEO</h5></a>
+                                <h5 class="text-white text-bold-400 mb-0">
+                                    <?php
+                                    $db->select('category_id')->from(_TABLE_CATEGORY)->where('category_type' , 'video')->execute();
+                                    echo $db->affected_rows;
+                                    ?>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        require_once 'footer.php';
+        break;
     default:
         if(!in_array($type, array('video'))){
             $admin_title = 'Chuyên Mục';

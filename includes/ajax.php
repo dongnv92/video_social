@@ -5,6 +5,7 @@
  * Date: 17/09/2018
  * Time: 09:33
  * http://v.douyin.com/dmhfjJ/
+ * https://1drv.ms/v/s!AvOWg2YnpZYMhaMX-IXoqZ3RPx8Gow
  */
 require_once 'core.php';
 require 'simple_html_dom.php';

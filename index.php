@@ -91,7 +91,7 @@
         <div class="grid" data-columns>
 
             <div class="card bg-instant text-white">
-                <img class="card-img" src="http://www.tuviti.com/instant-blog/uploads/1516634211.jpg">
+                <img class="card-img" src="https://p1.pstatp.com/large/bfb70002a6371246219c.jpg">
                 <div class="card-img-overlay bg-over">
                     <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/features-of-instant-blog-script"></a>
                     <div class="card-like">
