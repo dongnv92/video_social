@@ -141,12 +141,37 @@ class myFunction
         foreach ($categories as $key => $item) {
             if ($item['category_parent'] == $parent_id){
                 if($display == 'table'){
-                    echo '<tr id="category_'. $item['category_id'] .'"><td width="80%">'. $char . $item['category_name'] .'</td><td class="text-right"><a title="delete" class="btn btn-outline-danger round" id="'. $item['category_id'] .'" href="javascript:;">Xóa</a></td></tr>';
+                    echo '<tr id="tr_'. $item['category_id'] .'"><td width="80%">'. $char . $item['category_name'] .'</td><td class="text-right"><a title="delete" class="btn btn-outline-danger round btn-sm" id="'. $item['category_id'] .'" href="javascript:;">Xóa</a></td></tr>';
                 }else if($display == 'select'){
-                    echo '<option value="'. $item['category_id'] .'">'. $char . $item['category_name'] .'</option>';
+                    echo '<option value="'. $item['category_id'] .'" id="option_'. $item['category_id'] .'">'. $char . $item['category_name'] .'</option>';
                 }
                 unset($categories[$key]);
                 $this->showCategories($categories, $item['category_id'], $char.' |--- ',$display);
+            }
+        }
+    }
+
+    function deleteCategory($id){
+        global $db;
+        if(!$db->select('category_id')->from(_TABLE_CATEGORY)->where(array('category_id' => $id))->fetch_first()){
+            return 404;
+        }
+        $row_parent = $db->select('category_id')->from(_TABLE_CATEGORY)->where(array('category_parent' => $id))->fetch();
+        if($db->affected_rows == 0){
+            if($db->delete()->from(_TABLE_CATEGORY)->where('category_id', $id)->limit(1)->execute()){
+                return 200;
+            }else{
+                return 500;
+            }
+        }else{
+            foreach ($row_parent AS $cate_parent){
+                $this->deleteCategory($cate_parent['category_id']);
+                $db->delete()->from(_TABLE_CATEGORY)->where('category_id', $cate_parent['category_id'])->limit(1)->execute();
+            }
+            if($db->delete()->from(_TABLE_CATEGORY)->where('category_id', $id)->limit(1)->execute()){
+                return 200;
+            }else{
+                return 500;
             }
         }
     }

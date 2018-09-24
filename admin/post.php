@@ -16,7 +16,32 @@ switch ($act){
         switch ($type){
             case 'video':
                 if($submit){
+                    $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? $_POST['post_title']          : false;
+                    $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? $_POST['post_content']        : false;
+                    $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? $_POST['post_source']         : false;
+                    $post_store         = (isset($_POST['post_store'])          && !empty($_POST['post_store']))        ? $_POST['post_store']          : false;
+                    $post_images        = (isset($_POST['post_images'])         && !empty($_POST['post_images']))       ? $_POST['post_images']         : false;
+                    $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : false;
+                    $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? $_POST['post_keyword']        : false;
+                    $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : false;
+                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : false;
+                    $error              = array();
+                    if(!$post_title){
+                        $error['post_title'] = 'Bạn chưa nhập tiêu đề';
+                    }
+                    if($post_source && !filter_var($post_source, FILTER_VALIDATE_URL)){
+                        $error['post_source'] = 'Không đúng định dạng URL';
+                    }
+                    if(!$post_store){
+                        $error['post_store'] = 'Bạn chưa nhập nguồn lưu trữ Video gốc';
+                    }
+                    if($post_store && !filter_var($post_source, FILTER_VALIDATE_URL)){
+                        $error['post_store'] = 'Không đúng định dạng URL';
+                    }
 
+
+
+                    break;
                 }
                 $admin_title    = 'Thêm Mới Video';
                 $css_plus       = array(
@@ -51,10 +76,11 @@ switch ($act){
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <input type="text" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
+                                        <input required type="text" value="<?php echo $post_title;?>" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
+                                        <?php echo $error['post_title'] ? $config->getAlert('help_error', $error['post_title']) : '';?>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="tinymce round"></textarea>
+                                        <textarea class="tinymce round" name="post_content"><?php echo $post_content;?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -71,15 +97,15 @@ switch ($act){
                                                 <label class="card-title ml-1">Đánh Dấu Video HOT</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" id="switcheryColor" class="switchery" data-color="primary"/>
+                                                <input type="checkbox" name="post_popular" value="1" id="switcheryColor" class="switchery" data-color="primary"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col text-left">
-                                                <label class="card-title ml-1">Đăng Không Cần Duyệt</label>
+                                                <label class="card-title ml-1">Đăng Luôn</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" id="switcheryColor" class="switchery" data-color="primary" checked/>
+                                                <input type="checkbox" name="post_status" value="1" id="switcheryColor" class="switchery" data-color="primary" checked/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -99,18 +125,20 @@ switch ($act){
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>URL Video Gốc</label>
-                                        <input type="text" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Video Nguồn" name="post_source" />
+                                        <input type="text" required class="<?php echo $config->form_style('text_input');?>" placeholder="URL Video Nguồn" name="post_source" />
+                                        <?php echo $error['post_source'] ? $config->getAlert('help_error', $error['post_source']) : '';?>
                                     </div>
                                     <div class="form-group">
-                                        <label>URL Lưu Trữ Gốc</label>
+                                        <label class="label-control"><strong class="text-danger">(*)</strong> URL Lưu Trữ Gốc</label>
                                         <input type="text" id="" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_store" />
+                                        <?php echo $error['post_store'] ? $config->getAlert('help_error', $error['post_store']) : '';?>
                                     </div>
                                     <div class="form-group">
-                                        <label>URL Ảnh Video</label>
+                                        <label><strong class="text-danger">(*)</strong> URL Ảnh Video</label>
                                         <input type="text" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_images" />
                                     </div>
                                     <fieldset class="form-group">
-                                        <label>Hoặc Tải Ảnh Từ Máy Tính</label><br />
+                                        <label><strong class="text-danger">(*)</strong> Hoặc Tải Ảnh Từ Máy Tính</label><br />
                                         <input type="file" class="round" name="post_images_upload">
                                     </fieldset>
                                     <div class="form-group text-center">
@@ -122,12 +150,9 @@ switch ($act){
                                 <div class="card-header"><h4 class="card-title">Tùy Chọn</h4></div>
                                 <div class="card-body">
                                     <fieldset class="form-group">
-                                        <label>Chuyên Mục</label><br />
-                                        <select class="select2 form-control border-grey-blue" multiple="multiple">
-                                            <option value="1">Hài Hước</option>
-                                            <option value="2">Giải Trí</option>
-                                            <option value="3">TROLL</option>
-                                            <option value="4">Hot Girl</option>
+                                        <label><strong class="text-danger">(*)</strong> Chuyên Mục</label><br />
+                                        <select name="post_category[]" class="select2 form-control border-grey-blue" multiple="multiple">
+                                            <?php $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type))->fetch(), 0, '','select'); ?>
                                         </select>
                                     </fieldset>
                                     <div class="form-group">
@@ -136,7 +161,7 @@ switch ($act){
                                     </div>
                                     <fieldset class="form-group">
                                         <p class="text-muted">Thẻ Description.</p>
-                                        <textarea class="<?php echo $config->form_style('text_input');?>" id="" rows="3" placeholder="Thẻ Description" name="description">Tổng hợp các Video hay, hot nhất hiện nay</textarea>
+                                        <textarea class="<?php echo $config->form_style('text_input');?>" id="" rows="3" placeholder="Thẻ Description" name="post_description">Tổng hợp các Video hay, hot nhất hiện nay</textarea>
                                     </fieldset>
                                     <div class="form-group">
                                         <label>Đường Dẫn Bài Viết</label>
@@ -148,13 +173,32 @@ switch ($act){
                     </div>
                 </form>
                 <script language="JavaScript">
+                    function ValidURL(str) {
+                        var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+                        if(!regex .test(str)) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
                     $(document).ready(function(){
+
+                        $('input[name=submit]').click(function () {
+
+                        })
+
                         $('#auto_fill').click(function () {
                             var post_post_source = $('input[name=post_source]').val();
                             if(post_post_source == ''){
-                                swal("Cảnh Báo!", "Bạn chưa nhập URL VIDEO");
+                                swal("warning!", "Bạn chưa nhập URL VIDEO");
                                 return false;
                             }
+                            if(ValidURL(post_post_source) == false){
+                                swal("warning!", "URL VIDEO không đúng định dạng");
+                                return false;
+                            }
+
                             $.ajax({
                                 url         : '<?php echo _URL_HOME;?>/includes/ajax.php',
                                 method      : 'POST',
