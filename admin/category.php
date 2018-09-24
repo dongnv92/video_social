@@ -57,6 +57,14 @@ switch ($act){
                 }
             }
         }
+
+        $css_plus       = array(
+            'app-assets/vendors/css/extensions/sweetalert.css'
+        );
+        $js_plus        = array(
+            'app-assets/vendors/js/extensions/sweetalert.min.js',
+            'app-assets/js/scripts/extensions/sweet-alerts.min.js'
+        );
         $admin_title = 'Chuyên Mục';
         require_once 'header.php';
         ?>
@@ -95,7 +103,7 @@ switch ($act){
                     <div class="card-header"><h4 class="card-title">Danh Sách Chuyên Mục</h4></div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table mb-0">
+                            <table class="table mb-0" id="table_content">
                                 <tbody>
                                 <?php $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type))->fetch(), 0, '','table'); ?>
                                 </tbody>
@@ -107,8 +115,50 @@ switch ($act){
         </div>
         <script language="JavaScript">
             $(document).ready(function () {
-
-            })
+                $('a[title=delete]').click(function () {
+                    var ID = $(this).attr('id');
+                    swal({
+                        title: "Bạn có chắc chắn muốn xóa?",
+                        text: "Sau khi xóa sẽ không khôi phục được!",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "Quay Lại",
+                                value: null,
+                                visible: true,
+                                className: "",
+                                closeModal: true,
+                            },
+                            confirm: {
+                                text: "Xóa Ngay",
+                                value: true,
+                                visible: true,
+                                className: "",
+                                closeModal: false
+                            }
+                        }
+                    })
+                    .then((isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url     : '<?php echo _URL_HOME;?>/includes/ajax.php',
+                                method  : 'POST',
+                                dataType: 'json',
+                                data    : {'act' : 'category', 'type' : 'delete', 'id' : ID},
+                                success : function (data) {
+                                    if(data.resposive == 200){
+                                        $('#option_' + ID).remove();
+                                        $('#tr_' + ID).remove();
+                                        swal("Deleted!", "Đã Xóa Chuyên Mục Thành Công.", "success");
+                                    }else{
+                                        swal("Error!", "Có lỗi khi thực hiện xóa chuyên mục. Vui lòng thử lại!", "error");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                })
+            });
         </script>
         <?php
         require_once 'footer.php';

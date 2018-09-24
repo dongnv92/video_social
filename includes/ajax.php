@@ -58,4 +58,18 @@ switch ($act){
         $array['urlSlug'] = $funcion->makeSlug($post_title);
         echo json_encode($array);
         break;
+    case 'category':
+        switch ($type){
+            case 'delete':
+                $array = array();
+                $array['resposive'] = $funcion->deleteCategory($id);
+                echo json_encode($array);
+                break;
+            case 'load_list':
+                $type_cate      = $_REQUEST['type_cate'];
+                $type_display   = $_REQUEST['type_display'];
+                $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type_cate))->fetch(), 0, '',$type_display);
+                break;
+        }
+        break;
 }
