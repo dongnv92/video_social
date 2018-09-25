@@ -8,6 +8,27 @@
 
 class myFunction
 {
+    function getPlayerVideo($id){
+        return '<video style="max-height: 450px" poster="'. $this->getMediaPost($id, 'images') .'" id="player" playsinline controls><source src="'. $this->getMediaPost($id, 'video') .'" type="video/mp4"></video>';
+    }
+
+    function getMediaPost($id, $type = 'images'){
+        global $db;
+        $images = $db->select('media_source, media_store')->from(_TABLE_MEDIA)->where(array('media_type' => $type, 'media_parent' => $id))->fetch_first();
+        if(!$images){
+            return false;
+        }
+        if($images['media_store'] == 'local'){
+            return _URL_HOME.'/'.$images['media_source'];
+        }else{
+            return $images['media_source'];
+        }
+    }
+
+    function getCurrentDomain(){
+        return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    }
+
     function redirectUrl($url){
         header('location:'.$url);
     }

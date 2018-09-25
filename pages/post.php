@@ -6,6 +6,8 @@
  * Time: 11:25
  */
 require_once '../includes/core.php';
+$post       = $db->from(_TABLE_POST)->where('post_url' , $url)->fetch_first();
+$users_post = $db->from(_TABLE_USERS)->where('users_id' , $post['post_users'])->fetch_first();
 ?>
 
 <!DOCTYPE html>
@@ -13,27 +15,16 @@ require_once '../includes/core.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="This world-exclusive introduction to the show is narrated by series presenter Sir David Attenborough and set to an exclusive track developed by Hans Zimmer and Radiohead.">
-    <meta name="csrf-token" content="MLTebguX9zzU5wafIohkmTX783xC6xVaxmXxcp4V">
-    <link rel="icon" type="image/png" href="http://www.tuviti.com/instant-blog/favicon.png">
-    <link rel="amphtml" href="http://www.tuviti.com/instant-blog/posts/blue-planet/amp">
-    <title>Instant Blog - Blue Planet</title>
-    <!-- Facebook og-->
-    <meta property="fb:app_id" content="1970044353024876" />
-    <meta property="og:url" content="http://www.tuviti.com/instant-blog/posts/blue-planet" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Blue Planet" />
-    <meta property="og:description" content="This world-exclusive introduction to the show is narrated by series presenter Sir David Attenborough and set to an exclusive track developed by Hans Zimmer and Radiohead." />
-    <meta property="og:image" content="https://i.ytimg.com/vi/_38JDGnr0vA/hqdefault.jpg"/>
+    <meta name="description" content="">
+    <link rel="icon" type="image/x-icon" href="<?php echo _URL_HOME;?>/media/images/system/favicon.ico">
+    <title><?php echo $post['post_name'];?></title>
 
-    <!-- Twitter card-->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@" />
-    <meta name="twitter:creator" content="@">
-    <meta name="twitter:url" value="http://www.tuviti.com/instant-blog/posts/blue-planet" />
-    <meta name="twitter:title" content="Blue Planet" />
-    <meta name="twitter:description" content="This world-exclusive introduction to the show is narrated by series presenter Sir David Attenborough and set to an exclusive track developed by Hans Zimmer and Radiohead." />
-    <meta name="twitter:image" content="https://i.ytimg.com/vi/_38JDGnr0vA/hqdefault.jpg"/>
+    <!-- Facebook og-->
+    <meta property="og:url" content="<?php echo $funcion->getCurrentDomain();?>" />
+    <meta property="og:type" content="<?php echo $post['post_type'];?>" />
+    <meta property="og:title" content="<?php echo $post['post_name'];?>" />
+    <meta property="og:description" content="<?php echo $post['post_description'];?>" />
+    <meta property="og:image" content="<?php echo $funcion->getMediaPost($post['post_id'],'images');?>"/>
 
     <!-- Css styles-->
     <link href="<?php echo _URL_STYLE;?>/css/bootstrap.min.css" rel="stylesheet">
@@ -43,7 +34,7 @@ require_once '../includes/core.php';
 </head>
 <body class="bg-instant">
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-nav">
-    <a class="navbar-brand" href="http://www.tuviti.com/instant-blog">
+    <a class="navbar-brand" href="<?php echo _URL_HOME;?>">
         <img src="http://www.tuviti.com/instant-blog/images/logo.png" class="d-inline-block align-top" alt="">
     </a>
     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,42 +99,38 @@ require_once '../includes/core.php';
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                <div class="embed-responsive embed-responsive-16by9 mb-3 card-img-top">
-                    <video poster="../media/images/post/BER8wYaM6U3X.jpg" id="player" playsinline controls>
-                        <source src="https://onedrive.live.com/download?cid=0C96A527668396F3&resid=C96A527668396F3%2186423&authkey=AMipFtGPuZicYf8" type="video/mp4">
-                    </video>
-                </div>
+                <!-- Player -->
+                <?php echo $funcion->getPlayerVideo($post['post_id']);?>
+                <!-- Player -->
                 <div class="card-body">
                     <div class="list-item mb-3">
                         <div class="list-left">
-                            <a href="http://www.tuviti.com/instant-blog/profile/admin">
+                            <a href="javascript:;">
                                 <img class="avatar img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
                             </a>
                         </div>
                         <div class="list-body">
                             <div class="text-ellipsis">
-                                <a class="nocolor" href="http://www.tuviti.com/instant-blog/profile/admin">Admin</a>
-                                <small class="text-muted time">8 months ago</small>
+                                <a class="nocolor" href="javascript:;"><?php echo $users_post['users_name'];?></a>
+                                <small class="text-muted time"><?php echo $config->getTimeView($post['post_time']);?></small>
                             </div>
                             <div class="text-ellipsis">
                                 <small class="text-muted">admin</small>
-                                <small class="text-muted time"><a href="http://www.tuviti.com/instant-blog/category/lifestyle">
-                                        #lifestyle
-                                    </a></small>
+                                <small class="text-muted time">
+                                    <!-- category -->
+                                    <?php
+                                    foreach ($db->select('group_value')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_index' => $post['post_id']))->fetch() AS $post_cate){
+                                        $category = $db->select('category_name')->from(_TABLE_CATEGORY)->where('category_id', $post_cate['group_value'])->fetch_first();
+                                        echo '<a href="#">#'. $category['category_name'] .'</a> ';
+                                    }
+                                    ?>
+                                    <!-- category -->
+                                </small>
                             </div>
                         </div>
                     </div>
-                    <h1>Blue Planet</h1>
-                    <p>
-                        This world-exclusive introduction to the show is narrated by series presenter Sir David Attenborough and set to an exclusive track developed by Hans Zimmer and Radiohead.
-                    </p>
-                    <p>
-                        <img class="img-fluid" src="http://www.tuviti.com/instant-screen/adsinstant2.png">
-                    </p>
-
-                    <p>The prequel features an array of some of the most awe-inspiring shots and highlights from the new series, as well as several exclusive scenes that will not feature in any of the seven episodes which are set for UK broadcast on BBC One later this year.</p>
-                    <h4>About BBC Earth</h4>
-                    <p>The world is an amazing place full of stories, beauty and natural wonder. Jump in to BBC Earth&#039;s YouTube channel and meet your planet. You&#039;ll find 50 years worth of astounding, entertaining, thought-provoking and educational natural history content on here. Dramatic, rare, and exclusive, nature doesn&#039;t get more exciting than this. Subscribe to be the first to view new videos. And you can become part of the BBC community by checking out our BBC Earth Facebook page. Here you&#039;ll find the best natural history content from the web, exclusive videos and images and a thriving, vibrant community.</p>
+                    <h1><?php echo $post['post_name'];?></h1>
+                    <p><?php echo $post['post_content'];?></p>
                 </div>
                 <div class="card-body card-border">
                     <div class="row">
@@ -154,18 +141,10 @@ require_once '../includes/core.php';
                             <div class="likeCount" id="likeCount15">0</div>
                         </div>
                         <div class="col lesspadding">
-                            <a href="https://www.pinterest.com/pin/create/button/"
-                               data-pin-do="buttonBookmark"
-                               data-pin-tall="true"
-                               data-pin-custom="true">
-                                <button type="button" class="btn btn-sm btn-block btn-danger btnpoint"> <i class="icon-social-pinterest icons"></i> <span class="d-none d-md-inline-block">Save</span></button>
-                            </a>
+                            <a role="button" class="btn btn-face btn-sm share" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $funcion->getCurrentDomain();?>" target="_blank"><i class="icon-social-facebook icons"></i> <span class="d-none d-md-inline-block">Chia Sẻ</span></a>
                         </div>
                         <div class="col lesspadding">
-                            <a role="button" class="btn btn-face btn-sm share" href="https://www.facebook.com/sharer/sharer.php?u=http://www.tuviti.com/instant-blog/posts/blue-planet" target="_blank"><i class="icon-social-facebook icons"></i> <span class="d-none d-md-inline-block">Share</span></a>
-                        </div>
-                        <div class="col lesspadding">
-                            <a role="button" class="btn btn-twit btn-sm share" href="https://twitter.com/share?url=http://www.tuviti.com/instant-blog/posts/blue-planet&via=" target="_blank"><i class="icon-social-twitter icons"></i> <span class="d-none d-md-inline-block">Share</span></a>
+                            <a role="button" class="btn btn-twit btn-sm share" href="https://twitter.com/share?url=<?php echo $funcion->getCurrentDomain();?>&via=" target="_blank"><i class="icon-social-twitter icons"></i> <span class="d-none d-md-inline-block">Chia Sẻ</span></a>
                         </div>
                     </div>
                 </div>
@@ -325,7 +304,7 @@ require_once '../includes/core.php';
 <script src="<?php echo _URL_STYLE;?>/js/heart.js"></script>
 <script src="<?php echo _URL_STYLE;?>/summernote/summernote-bs4.js"></script>
 <script src="<?php echo _URL_STYLE;?>/js/plyr.js"></script>
-<!--<script>const player = new Plyr('#player');</script>-->
+<script>const player = new Plyr('#player');</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip({

@@ -13,6 +13,10 @@ class config
         return array('1drv.ms');
     }
 
+    function getTimeView($time){
+        return date('h:m:i d/m/Y');
+    }
+
     function getTimeNow(){
         return time();
     }
