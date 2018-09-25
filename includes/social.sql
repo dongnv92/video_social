@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 24, 2018 lúc 06:33 PM
+-- Thời gian đã tạo: Th9 25, 2018 lúc 12:28 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -62,6 +62,14 @@ CREATE TABLE `social_group` (
   `group_time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `social_group`
+--
+
+INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_value`, `group_users`, `group_time`) VALUES
+(1, 'post', 1, 2, 1, 1537849227),
+(2, 'post', 1, 4, 1, 1537849227);
+
 -- --------------------------------------------------------
 
 --
@@ -79,6 +87,14 @@ CREATE TABLE `social_media` (
   `media_time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `social_media`
+--
+
+INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_source`, `media_store`, `media_users`, `media_parent`, `media_time`) VALUES
+(1, 'images', 'BER8wYaM6U3X.jpg', 'media/images/post/BER8wYaM6U3X.jpg', 'local', 1, 1, 1537849227),
+(2, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'onedrive', 1, 1, 1537849227);
+
 -- --------------------------------------------------------
 
 --
@@ -90,7 +106,6 @@ CREATE TABLE `social_post` (
   `post_name` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `post_content` text COLLATE utf8_unicode_ci NOT NULL,
   `post_type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `post_category` int(11) NOT NULL,
   `post_users` int(11) NOT NULL,
   `post_keyword` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `post_description` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
@@ -102,6 +117,13 @@ CREATE TABLE `social_post` (
   `post_url` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `post_time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `social_post`
+--
+
+INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, `post_users`, `post_keyword`, `post_description`, `post_source`, `post_store`, `post_status`, `post_show`, `post_view`, `post_url`, `post_time`) VALUES
+(1, 'Đã Xinh Lại Múa Đẹp', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dmhfjJ/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaMXKsGTLyhES1nCiw', 1, 1, 0, 'da-xinh-lai-mua-dep', 1537849227);
 
 -- --------------------------------------------------------
 
@@ -175,19 +197,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
