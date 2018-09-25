@@ -8,8 +8,6 @@
  * https://1drv.ms/v/s!AvOWg2YnpZYMhaMX-IXoqZ3RPx8Gow
  */
 require_once 'core.php';
-require 'simple_html_dom.php';
-
 switch ($act){
     case 'get_auto_video':
         switch ($funcion->urlToDomain($url)){

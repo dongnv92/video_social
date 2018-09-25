@@ -23,7 +23,7 @@ class myFunction
         return $host;
     }
 
-    public function randomString($text, $length = 10){
+    public function randomString($length = 10){
         $random_string = substr(str_shuffle("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
         return $random_string;
     }
@@ -38,6 +38,10 @@ class myFunction
 
     public function getExtentionFile($name_input_file){
         return pathinfo($_FILES[$name_input_file]['name'], PATHINFO_EXTENSION);
+    }
+
+    public function getExtentionFileUrl($url){
+        return pathinfo($url, PATHINFO_EXTENSION);
     }
 
     public function makeSlug($text){
@@ -174,6 +178,18 @@ class myFunction
                 return 500;
             }
         }
+    }
+
+    function getDirectOndrive($url){
+        if($this->urlToDomain($url) != '1drv.ms'){
+            return false;
+        }
+        $html   = file_get_html($url);
+        $url    = $html->find('meta [http-equiv=refresh]', 0)->content;
+        $url    = str_replace(array('0;url=', '&#58;','&#63;','&#61;','&#33;','&#38;','&#37;'), array('', ':','?','=','!','&','%') , $url);
+        $url    = parse_url($url);
+        parse_str($url['query'], $query);
+        return 'https://onedrive.live.com/download?cid='. $query['cid'] .'&resid='. $query['id'] .'&authkey='.$query['authkey'];
     }
 }
 

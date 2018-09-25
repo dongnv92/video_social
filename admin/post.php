@@ -7,24 +7,29 @@
  */
 
 require_once '../includes/core.php';
+
 // Kiểm tra đã đăng nhập chưa
 if(!$user){ $funcion->redirectUrl(_URL_LOGIN);exit();}
 $admin_module   = 'post';
 
 switch ($act){
     case 'add':
+        require_once '../includes/class.uploader.php';
+        $uploader = new Uploader();
         switch ($type){
             case 'video':
                 if($submit){
-                    $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? $_POST['post_title']          : false;
-                    $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? $_POST['post_content']        : false;
-                    $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? $_POST['post_source']         : false;
-                    $post_store         = (isset($_POST['post_store'])          && !empty($_POST['post_store']))        ? $_POST['post_store']          : false;
-                    $post_images        = (isset($_POST['post_images'])         && !empty($_POST['post_images']))       ? $_POST['post_images']         : false;
-                    $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : false;
-                    $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? $_POST['post_keyword']        : false;
-                    $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : false;
-                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : false;
+                    $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? $_POST['post_title']          : '';
+                    $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? $_POST['post_content']        : '';
+                    $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? $_POST['post_source']         : '';
+                    $post_store         = (isset($_POST['post_store'])          && !empty($_POST['post_store']))        ? $_POST['post_store']          : '';
+                    $post_images        = (isset($_POST['post_images'])         && !empty($_POST['post_images']))       ? $_POST['post_images']         : '';
+                    $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : '';
+                    $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? $_POST['post_keyword']        : '';
+                    $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : '';
+                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : '';
+                    $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? $_POST['post_status']         : 0;
+                    $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? $_POST['post_show']           : 0;
                     $error              = array();
                     if(!$post_title){
                         $error['post_title'] = 'Bạn chưa nhập tiêu đề';
@@ -51,7 +56,116 @@ switch ($act){
                         $error['post_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
                     }
 
+                    if($post_images){
+                        $data = $uploader->upload($post_images, array(
+                            'uploadDir' => '../'._PATH_IMAGES_POST.'/',
+                            'title' => array('auto', 12),
+                        ));
+
+                        if($data['isComplete']){
+                            $media['media_name']    = $data['data']['metas'][0]['name'];
+                            $media['media_type']    = 'images';
+                            $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                            $media['media_store']   = 'local';
+                        }
+
+                        if($data['hasErrors']){
+                            $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                        }
+                    }
+
+                    if($funcion->checkUpload('post_images_upload')){
+                        $data = $uploader->upload($_FILES['post_images_upload'], array(
+                            'limit' => 1, //Maximum Limit of files. {null, Number}
+                            'maxSize' => 10, //Maximum Size of files {null, Number(in MB's)}
+                            'extensions' => array('jpg', 'png','gif', 'jpeg'), //Whitelist for file extension. {null, Array(ex: array('jpg', 'png'))}
+                            'required' => false, //Minimum one file is required for upload {Boolean}
+                            'uploadDir' => '../'._PATH_IMAGES_POST.'/', //Upload directory {String}
+                            'title' => array('auto', 12), //New file name {null, String, Array} *please read documentation in README.md
+                            'removeFiles' => true, //Enable file exclusion {Boolean(extra for jQuery.filer), String($_POST field name containing json data with file names)}
+                            'replace' => false, //Replace the file if it already exists {Boolean}
+                            'perms' => null, //Uploaded file permisions {null, Number}
+                            'onCheck' => null, //A callback function name to be called by checking a file for errors (must return an array) | ($file) | Callback
+                            'onError' => null, //A callback function name to be called if an error occured (must return an array) | ($errors, $file) | Callback
+                            'onSuccess' => null, //A callback function name to be called if all files were successfully uploaded | ($files, $metas) | Callback
+                            'onUpload' => null, //A callback function name to be called if all files were successfully uploaded (must return an array) | ($file) | Callback
+                            'onComplete' => null, //A callback function name to be called when upload is complete | ($file) | Callback
+                            'onRemove' => 'onFilesRemoveCallback' //A callback function name to be called by removing files (must return an array) | ($removed_files) | Callback
+                        ));
+
+                        if($data['isComplete']){
+                            $media['media_name']    = $data['data']['metas'][0]['name'];
+                            $media['media_type']    = 'images';
+                            $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                            $media['media_store']   = 'local';
+
+                        }
+
+                        if($data['hasErrors']){
+                            $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                        }
+                    }
+
+                    $media_video = $funcion->getDirectOndrive($post_store);
+                    if(!$media_video){
+                        $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
+                    }
+
                     if(!$error) {
+                        $data = array(
+                            'post_name'         => $post_title,
+                            'post_content'      => $post_content,
+                            'post_type'         => $type,
+                            'post_users'        => $user['users_id'],
+                            'post_keyword'      => $post_keyword,
+                            'post_description'  => $post_description,
+                            'post_source'       => $post_source,
+                            'post_store'        => $post_store,
+                            'post_status'       => $post_status,
+                            'post_show'         => $post_show,
+                            'post_view'         => 0,
+                            'post_url'          => $post_url,
+                            'post_time'         => $config->getTimeNow()
+                        );
+                        $id = $db->insert(_TABLE_POST, $data);
+                        if($id){
+                            // Add Category
+                            foreach ($post_category AS $category){
+                                $data = array(
+                                    'group_type'    =>  'post',
+                                    'group_index'   =>  $id,
+                                    'group_value'   =>  $category,
+                                    'group_users'   =>  $user['users_id'],
+                                    'group_time'    =>  $config->getTimeNow()
+                                );
+                                // Insert To Group
+                                $db->insert(_TABLE_GROUP, $data);
+                            }
+
+                            $data = array(
+                                'media_type'    =>  'images',
+                                'media_name'    =>  $media['media_name'],
+                                'media_source'  =>  $media['media_source'],
+                                'media_store'   =>  $media['media_store'],
+                                'media_users'   =>  $user['users_id'],
+                                'media_parent'  =>  $id,
+                                'media_time'    =>  $config->getTimeNow()
+                            );
+                            // Insert Images
+                            $db->insert(_TABLE_MEDIA, $data);
+                            $data = array(
+                                'media_type'    =>  'video',
+                                'media_name'    =>  $media_video,
+                                'media_source'  =>  $media_video,
+                                'media_store'   =>  'onedrive',
+                                'media_users'   =>  $user['users_id'],
+                                'media_parent'  =>  $id,
+                                'media_time'    =>  $config->getTimeNow()
+                            );
+                            // Insert Video URL
+                            $db->insert(_TABLE_MEDIA, $data);
+                            $funcion->redirectUrl(_URL_ADMIN);
+                        }
 
                     }
                 }
@@ -109,7 +223,7 @@ switch ($act){
                                                 <label class="card-title ml-1">Đánh Dấu Video HOT</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_popular" value="1" id="switcheryColor" class="switchery" data-color="primary"/>
+                                                <input type="checkbox" name="post_status" value="1" id="switcheryColor" class="switchery" data-color="primary"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -117,13 +231,13 @@ switch ($act){
                                                 <label class="card-title ml-1">Đăng Luôn</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_status" value="1" id="switcheryColor" class="switchery" data-color="primary" checked/>
+                                                <input type="checkbox" name="post_show" value="1" id="switcheryColor" class="switchery" data-color="primary" checked/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col text-left">
                                                 <button type="button" id="auto_fill" class="btn btn-round btn-github">Tự Động Điền</button>
-                                                <img height="50px" src="../style/layouts/imgs/<?php echo rand(1,17);?>.gif" style="display: none" id="loading_wait">
+                                                <img height="50px" src="../media/images/system/gif/<?php echo rand(1,17);?>.gif" style="display: none" id="loading_wait">
                                             </div>
                                             <div class="col text-right">
                                                 <input type="submit" id="submit" name="submit" class="btn btn-round btn-github" value="Đăng Video" />

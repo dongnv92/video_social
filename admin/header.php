@@ -16,8 +16,8 @@ $admin_title = isset($admin_title) && !empty($admin_title) ? $admin_title : 'VID
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="author" content="DONG NGUYN">
     <title><?php echo $admin_title;?></title>
-    <link rel="apple-touch-icon" href="../style/layouts/imgs/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="../style/layouts/imgs/favicon.ico">
+    <link rel="apple-touch-icon" href="../media/images/system/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../media/images/system/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700" rel="stylesheet">
     <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="app-assets/css/vendors.css">
@@ -39,7 +39,7 @@ $admin_title = isset($admin_title) && !empty($admin_title) ? $admin_title : 'VID
                 <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
                 <li class="nav-item">
                     <a class="navbar-brand" href="<?php echo _URL_ADMIN;?>">
-                        <img class="brand-logo" alt="modern admin logo" src="../style/layouts/imgs/logo.png">
+                        <img class="brand-logo" alt="modern admin logo" src="../media/images/system/logo.png">
                         <h3 class="brand-text">VIDEO SOCIAL</h3>
                     </a>
                 </li>

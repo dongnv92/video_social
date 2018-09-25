@@ -8,20 +8,27 @@
 session_start();
 error_reporting(0);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+require 'simple_html_dom.php';
 require_once 'class.mysqli.db.php';
 require_once 'class.config.php';
 require_once 'function.php';
-define('_URL_HOME','http://localhost/dong/video_social');
+define('_URL_HOME','http://192.168.100.10/dong/video_social');
 define('_URL_LOGIN',_URL_HOME.'/login.php');
 define('_URL_LOGOUT',_URL_HOME.'/logout.php');
 define('_URL_ADMIN',_URL_HOME.'/admin');
 define('_URL_BACK', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : _URL_ADMIN);
+define('_URL_STYLE', _URL_HOME.'/style');
 define('_DB_HOST','localhost');
 define('_DB_USERNAME','root');
 define('_DB_PASSWORD','');
 define('_DB_DATABASE','social');
 define('_TABLE_USERS','social_users');
 define('_TABLE_CATEGORY','social_category');
+define('_TABLE_POST','social_post');
+define('_TABLE_MEDIA','social_media');
+define('_TABLE_GROUP','social_group');
+define('_PATH_IMAGES_POST','media/images/post');
+
 $db     = new Database(_DB_HOST, _DB_USERNAME,_DB_PASSWORD,_DB_DATABASE);
 $config = new config();
 $funcion= new myFunction();
