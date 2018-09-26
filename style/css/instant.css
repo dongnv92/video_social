@@ -766,7 +766,7 @@ div.lesspadding {
 
 /*Salvattore grid css and Responsive*/
 .grid[data-columns]::before {
-  content: '3 .column.size-1of3';
+  content: '4 .column.size-1of4';
 }
 
 @media screen and (max-width: 544px){
@@ -788,7 +788,7 @@ div.lesspadding {
 }
 @media screen and (min-width: 992px) and (max-width: 1400px) {
   .grid[data-columns]::before {
-    content: '3 .column.size-1of3';
+    content: '4 .column.size-1of4';
   }
 }
 

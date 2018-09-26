@@ -246,11 +246,16 @@ class myFunction
                             <a href="<?php echo $this->getUrlPost($row['post_id']);?>" >
                                 <div class="heartguest"></div>
                             </a>
-                            <div class="card-count" id="likeCount16">0</div>
+                            <div class="card-count">0</div>
                         </div>
-                        <h4 class="bottom-txt">
+                        <a class="category-middle text-muted" href="http://www.tuviti.com/instant-blog/category/lifestyle"> # lifestyle</a>
+                        <a href="http://www.tuviti.com/instant-blog/posts/blue-planet" class="playericon nocolor" data-toggle="tooltip" data-placement="bottom" title="Video">
+                            <i class="icon-social-youtube icons text-muted"></i>
+                        </a>
+
+                        <h5 class="bottom-txt">
                             <?php echo $row['post_name'];?>
-                        </h4>
+                        </h5>
                         <a class="author" href="#">
                             <img class="avatar-sm img-fluid rounded-circle" src="<?php echo $this->getDetailUser($row['post_users'], 'users_avatar');?>">
                             <span class="align-middle"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></span>
