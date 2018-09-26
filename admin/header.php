@@ -110,6 +110,7 @@ $admin_title = isset($admin_title) && !empty($admin_title) ? $admin_title : 'VID
             <li class=" nav-item">
                 <a href="#"><i class="ft-edit"></i><span class="menu-title" data-i18n="nav.page_layouts.main">Bài viết</span></a>
                 <ul class="menu-content">
+                    <li <?php echo ($admin_module == 'post' && !$act && $type == 'video') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/post.php?type=video">Danh sách Video</a></li>
                     <li <?php echo ($admin_module == 'post' && $act == 'add' && $type == 'video') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/post.php?act=add&type=video">Thêm Video</a></li>
                 </ul>
             </li>

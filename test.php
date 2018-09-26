@@ -9,5 +9,5 @@
  */
 require_once 'includes/core.php';
 
-echo $funcion->getExtentionFileUrl('https://p1.pstatp.com/large/bfb70002a6371246219c.jpg');
+$funcion->getViewVideoGrid('video', array('limit' => 100, 'offset' => 0));
 

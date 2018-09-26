@@ -71,4 +71,41 @@ switch ($act){
                 break;
         }
         break;
+    case 'download':
+        $url = $_GET['url'];
+        header("Content-Type: application/octet-stream");
+        header("Content-Transfer-Encoding: Binary");
+        header('Content-disposition: attachment; filename="'. $funcion->randomString(12) .'.mp4"');
+        echo readfile($url);
+        break;
+    case 'video_grid':
+        $db->select()->from(_TABLE_POST);
+        $db->where(array('post_type' => 'video', 'post_show' => 1));
+        $db->limit($_GET['limit'], $_GET['offset']);
+        $db->order_by('post_id', 'DESC');
+        foreach ($db->fetch() AS $row){
+        ?>
+            <div class="card bg-instant text-white">
+                <img class="card-img" src="<?php echo $funcion->getMediaPost($row['post_id']);?>">
+                <div class="card-img-overlay bg-over">
+                    <a class="link-over" href="<?php echo $funcion->getUrlPost($row['post_id']);?>"></a>
+                    <div class="card-like">
+                        <a href="<?php echo $funcion->getUrlPost($row['post_id']);?>" >
+                            <div class="heartguest"></div>
+                        </a>
+                        <div class="card-count" id="likeCount16">0</div>
+                    </div>
+                    <h4 class="bottom-txt">
+                        <?php echo $row['post_name'];?>
+                    </h4>
+                    <a class="author" href="#">
+                        <img class="avatar-sm img-fluid rounded-circle" src="<?php echo $funcion->getDetailUser($row['post_users'], 'users_avatar');?>">
+                        <span class="align-middle"><?php echo $funcion->getDetailUser($row['post_users'], 'users_name');?></span>
+                    </a>
+                    <small class="text-muted card-date"><?php echo $config->getTimeView($row['post_time']);?></small>
+                </div>
+            </div>
+        <?php
+        }
+        break;
 }

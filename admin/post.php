@@ -27,7 +27,7 @@ switch ($act){
                     $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : '';
                     $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? $_POST['post_keyword']        : '';
                     $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : '';
-                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : '';
+                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : $funcion->makeSlug($post_title);
                     $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? $_POST['post_status']         : 0;
                     $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? $_POST['post_show']           : 0;
                     $error              = array();
@@ -223,7 +223,7 @@ switch ($act){
                                                 <label class="card-title ml-1">Đánh Dấu Video HOT</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_status" value="1" id="switcheryColor" class="switchery" data-color="primary"/>
+                                                <input type="checkbox" name="post_status" value="1" <?php echo $post_status ? 'checked' : '';?> class="switchery" data-color="primary"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -231,7 +231,7 @@ switch ($act){
                                                 <label class="card-title ml-1">Đăng Luôn</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_show" value="1" id="switcheryColor" class="switchery" data-color="primary" checked/>
+                                                <input type="checkbox" name="post_show" value="1" <?php echo $post_show ? 'checked' : '';?> class="switchery" data-color="primary" checked/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -262,7 +262,7 @@ switch ($act){
                                 <div class="card-header"><h4 class="card-title">Nguồn Video Và Lưu Trữ Gốc</h4></div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label>URL Video Gốc</label>
+                                        <label>URL Video Gốc <a id="text_download" style="display: none" href="" >| <i class="ft-download-cloud"></i> Tải Về</a></label>
                                         <input type="text" value="<?php echo $post_source;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Video Nguồn" name="post_source" />
                                         <?php echo $error['post_source'] ? $config->getAlert('help_error', $error['post_source']) : '';?>
                                     </div>
@@ -370,6 +370,8 @@ switch ($act){
                                     $('#images_preview').show();
                                     $('input[name=post_url]').val(data.urlSlug);
                                     $('#loading_wait').hide();
+                                    $('#text_download').attr('href', '<?php echo _URL_HOME;?>/includes/ajax.php?act=download&url=' + data.video)
+                                    $('#text_download').show();
                                 },
                                 timeout: 20000
                             })
@@ -378,9 +380,102 @@ switch ($act){
                 </script>
                 <?php
                 require_once 'footer.php';
-            break;
+            break; // Case Type Video
+            default:
+                $admin_title = 'Chuyên Mục';
+                require_once 'header.php';
+                echo $config->getPanelError(array('title' => 'Trang Không Tồn Tại', 'content' => 'Không đúng định dạng bài viết'));
+                require_once 'footer.php';
+                break;
+                break;
         }
-        ?>
-        <?php
-    break;
+    break; // Case Act Add
+    default:
+        switch ($type){
+            case 'video':
+                $admin_title = 'Danh sách Video';
+                $css_plus = array('app-assets/css/pages/users.min.css');
+                require_once 'header.php';
+                ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Search Bar -->
+                                <form action="" method="get">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="search-input open">
+                                                <input class="input form-control round" type="text" value="<?php echo $users_name ? $users_name : '';?>" name="users_name" placeholder="Tên Video">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                        </div>
+                                        <div class="col-md-3">
+
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            <input type="submit" class="btn btn-outline-blue round" value="Lọc dữ liệu">
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- Search Bar -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                $db->select()->from(_TABLE_POST);
+                $db->where('post_type', $type);
+                $db->order_by('post_id', 'DESC');
+                $data = $db->fetch();
+                echo '<div id="user-profile-cards-with-cover-image" class="row mt-2">';
+                foreach ($data AS $datas){
+                    ?>
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="card profile-card-with-cover">
+                            <div class="card-img-top img-fluid bg-cover height-200" style="background: url('<?php echo $funcion->getMediaPost($datas['post_id'], 'images')?>');"></div>
+                            <div class="card-profile-image">
+                                <img src="<?php echo $funcion->getDetailUser($datas['post_users'], 'users_avatar');?>" class="rounded-circle img-border box-shadow-1">
+                            </div>
+                            <div class="profile-card-with-cover-content text-center">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>"><?php echo $datas['post_name'];?></a></h4>
+                                    <ul class="list-inline list-inline-pipe">
+                                        <li><?php echo $funcion->getDetailUser($datas['post_users'], 'users_name');?></li>
+                                        <li><?php echo $config->getTimeView($datas['post_time']);?></li>
+                                    </ul>
+                                    <h6 class="card-subtitle text-muted">
+                                        <!-- category -->
+                                        <?php
+                                        foreach ($db->select('group_value')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_index' => $datas['post_id']))->fetch() AS $post_cate){
+                                            $category = $db->select('category_name')->from(_TABLE_CATEGORY)->where('category_id', $post_cate['group_value'])->fetch_first();
+                                            echo '<a href="#">#'. $category['category_name'] .'</a> ';
+                                        }
+                                        ?>
+                                        <!-- category -->
+                                    </h6>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-x"></i></button>
+                                    <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-edit"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+                echo '</div>';
+                require_once 'footer.php';
+                break;
+            default:
+                $admin_title = 'Chuyên Mục';
+                require_once 'header.php';
+                echo $config->getPanelError(array('title' => 'Trang Không Tồn Tại', 'content' => 'Không đúng định dạng bài viết'));
+                require_once 'footer.php';
+                break;
+                break;
+        }
+        break;
 }

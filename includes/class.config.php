@@ -14,7 +14,7 @@ class config
     }
 
     function getTimeView($time){
-        return date('h:m:i d/m/Y');
+        return date('h:m:i d/m/Y', $time);
     }
 
     function getTimeNow(){

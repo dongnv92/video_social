@@ -8,8 +8,24 @@
 
 class myFunction
 {
+
+    function getUrlPost($id){
+        global $db;
+        $post = $db->select('post_url')->from(_TABLE_POST)->where('post_id', $id)->fetch_first();
+        return _URL_HOME.'/'.$post['post_url'].'.html';
+    }
+
     function getPlayerVideo($id){
         return '<video style="max-height: 450px" poster="'. $this->getMediaPost($id, 'images') .'" id="player" playsinline controls><source src="'. $this->getMediaPost($id, 'video') .'" type="video/mp4"></video>';
+    }
+
+    function getDetailUser($id, $type){
+        global $db;
+        $users = $db->from(_TABLE_USERS)->where('users_id', $id)->fetch_first();
+        if($users['users_avatar'] == ''){
+            $users['users_avatar'] = _URL_HOME.'/media/images/system/avatar.png';
+        }
+        return $users[$type];
     }
 
     function getMediaPost($id, $type = 'images'){
@@ -211,6 +227,40 @@ class myFunction
         $url    = parse_url($url);
         parse_str($url['query'], $query);
         return 'https://onedrive.live.com/download?cid='. $query['cid'] .'&resid='. $query['id'] .'&authkey='.$query['authkey'];
+    }
+
+    function getViewVideoGrid($type, $option){
+        global $db, $config;
+        if($type == 'video'){
+            $db->select()->from(_TABLE_POST);
+            $db->where(array('post_type' => 'video', 'post_show' => 1));
+            $db->limit($option['limit'], $option['offset']);
+            $db->order_by('post_id', 'DESC');
+            foreach ($db->fetch() AS $row){
+                ?>
+                <div class="card bg-instant text-white">
+                    <img class="card-img" src="<?php echo $this->getMediaPost($row['post_id']);?>">
+                    <div class="card-img-overlay bg-over">
+                        <a class="link-over" href="<?php echo $this->getUrlPost($row['post_id']);?>"></a>
+                        <div class="card-like">
+                            <a href="<?php echo $this->getUrlPost($row['post_id']);?>" >
+                                <div class="heartguest"></div>
+                            </a>
+                            <div class="card-count" id="likeCount16">0</div>
+                        </div>
+                        <h4 class="bottom-txt">
+                            <?php echo $row['post_name'];?>
+                        </h4>
+                        <a class="author" href="#">
+                            <img class="avatar-sm img-fluid rounded-circle" src="<?php echo $this->getDetailUser($row['post_users'], 'users_avatar');?>">
+                            <span class="align-middle"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></span>
+                        </a>
+                        <small class="text-muted card-date"><?php echo $config->getTimeView($row['post_time']);?></small>
+                    </div>
+                </div>
+                <?php
+            }
+        }
     }
 }
 
