@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 25, 2018 lúc 12:28 PM
+-- Thời gian đã tạo: Th9 26, 2018 lúc 12:29 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -45,7 +45,8 @@ CREATE TABLE `social_category` (
 INSERT INTO `social_category` (`category_id`, `category_name`, `category_url`, `category_type`, `category_parent`, `category_users`, `category_time`) VALUES
 (2, 'Hot Girl', 'hot-girl', 'video', 0, 1, 1537763133),
 (3, 'Troll', 'troll', 'video', 0, 1, 1537763141),
-(4, 'Giải Trí', 'giai-tri', 'video', 0, 1, 1537783421);
+(4, 'Giải Trí', 'giai-tri', 'video', 0, 1, 1537783421),
+(5, 'Động Vật', 'dong-vat', 'video', 0, 1, 1537944949);
 
 -- --------------------------------------------------------
 
@@ -68,7 +69,14 @@ CREATE TABLE `social_group` (
 
 INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_value`, `group_users`, `group_time`) VALUES
 (1, 'post', 1, 2, 1, 1537849227),
-(2, 'post', 1, 4, 1, 1537849227);
+(2, 'post', 1, 4, 1, 1537849227),
+(3, 'post', 2, 2, 1, 1537931162),
+(4, 'post', 2, 4, 1, 1537931162),
+(5, 'post', 3, 4, 1, 1537932748),
+(6, 'post', 4, 2, 1, 1537936025),
+(7, 'post', 4, 4, 1, 1537936025),
+(8, 'post', 5, 2, 1, 1537947528),
+(9, 'post', 5, 4, 1, 1537947528);
 
 -- --------------------------------------------------------
 
@@ -93,7 +101,15 @@ CREATE TABLE `social_media` (
 
 INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_source`, `media_store`, `media_users`, `media_parent`, `media_time`) VALUES
 (1, 'images', 'BER8wYaM6U3X.jpg', 'media/images/post/BER8wYaM6U3X.jpg', 'local', 1, 1, 1537849227),
-(2, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'onedrive', 1, 1, 1537849227);
+(2, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86423&authkey=!ACrBky8oREtZwos', 'onedrive', 1, 1, 1537849227),
+(3, 'images', 'LxTKYFWgfkrd.jpg', 'media/images/post/LxTKYFWgfkrd.jpg', 'local', 1, 2, 1537931162),
+(4, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86473&authkey=!AJl0L_0NXcRTFjg', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86473&authkey=!AJl0L_0NXcRTFjg', 'onedrive', 1, 2, 1537931162),
+(5, 'images', 'BmSYkhHWCsbI.jpg', 'media/images/post/BmSYkhHWCsbI.jpg', 'local', 1, 3, 1537932748),
+(6, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86474&authkey=!AM5qTwb5xzNBFyY', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86474&authkey=!AM5qTwb5xzNBFyY', 'onedrive', 1, 3, 1537932748),
+(7, 'images', 'Tc2jhb8u5zng.jpg', 'media/images/post/Tc2jhb8u5zng.jpg', 'local', 1, 4, 1537936025),
+(8, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86475&authkey=!AKzPIrRuaSr6BEo', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86475&authkey=!AKzPIrRuaSr6BEo', 'onedrive', 1, 4, 1537936025),
+(9, 'images', 'mVgYq62JNOfy.jpg', 'media/images/post/mVgYq62JNOfy.jpg', 'local', 1, 5, 1537947528),
+(10, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'onedrive', 1, 5, 1537947528);
 
 -- --------------------------------------------------------
 
@@ -123,7 +139,11 @@ CREATE TABLE `social_post` (
 --
 
 INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, `post_users`, `post_keyword`, `post_description`, `post_source`, `post_store`, `post_status`, `post_show`, `post_view`, `post_url`, `post_time`) VALUES
-(1, 'Đã Xinh Lại Múa Đẹp', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dmhfjJ/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaMXKsGTLyhES1nCiw', 1, 1, 0, 'da-xinh-lai-mua-dep', 1537849227);
+(1, 'Đã Xinh Lại Múa Đẹp', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dmhfjJ/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaMXKsGTLyhES1nCiw', 1, 1, 0, 'da-xinh-lai-mua-dep', 1537849227),
+(2, 'Quẩy lên anh em êi ^^ ', '<p>Quẩy l&ecirc;n anh em &ecirc;i ^^&nbsp;</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/xNDU3/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNJmXQv_Q1dxFMWOA', 1, 1, 0, 'quay-len-anh-em-ei', 1537931162),
+(3, 'Chờ ai đó để yêu :)', '<p>Chờ ai đ&oacute; để y&ecirc;u :)</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dV2aBn/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNKzmpPBvnHM0EXJg', 1, 1, 0, 'cho-ai-do-de-yeu', 1537932748),
+(4, 'Ai xinh nhất?', '<p>Ai xinh nhất?</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d4vBD9/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNLrM8itG5pKvoESg', 1, 1, 0, 'ai-xinh-nhat', 1537936025),
+(5, 'Muốn bỏ làm để đi tập Gym :D', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dV1DVd/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNMEWQrRJRnnL_nlw', 1, 1, 0, 'muon-bo-lam-de-di-tap-gym-d', 1537947528);
 
 -- --------------------------------------------------------
 
@@ -136,6 +156,7 @@ CREATE TABLE `social_users` (
   `users_login` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `users_password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `users_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `users_avatar` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `users_role` int(2) NOT NULL DEFAULT '0',
   `users_email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `users_status` int(2) NOT NULL,
@@ -146,8 +167,8 @@ CREATE TABLE `social_users` (
 -- Đang đổ dữ liệu cho bảng `social_users`
 --
 
-INSERT INTO `social_users` (`users_id`, `users_login`, `users_password`, `users_name`, `users_role`, `users_email`, `users_status`, `users_time`) VALUES
-(1, 'dongnv', 'e10adc3949ba59abbe56e057f20f883e', 'Đông Nguyễn', 0, 'nguyenvandong242@gmail.com', 1, 1537365374);
+INSERT INTO `social_users` (`users_id`, `users_login`, `users_password`, `users_name`, `users_avatar`, `users_role`, `users_email`, `users_status`, `users_time`) VALUES
+(1, 'dongnv', 'e10adc3949ba59abbe56e057f20f883e', 'Đông Nguyễn', '', 0, 'nguyenvandong242@gmail.com', 1, 1537365374);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -191,25 +212,25 @@ ALTER TABLE `social_users`
 -- AUTO_INCREMENT cho bảng `social_category`
 --
 ALTER TABLE `social_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
