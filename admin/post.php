@@ -58,6 +58,12 @@ switch ($act){
                     if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
                         $error['post_url'] = 'URL đã tồn tại';
                     }
+                    if($db->select('post_source')->from(_TABLE_POST)->where('post_source' , $post_source)->fetch()){
+                        $error['post_source'] = 'Video Đã Tồn Tại';
+                    }
+                    if($db->select('post_store')->from(_TABLE_POST)->where('post_store' , $post_store)->fetch()){
+                        $error['post_store'] = 'URL lưu trữ đã tồn tại';
+                    }
 
                     if($post_images){
                         $data = $uploader->upload($post_images, array(
