@@ -178,6 +178,45 @@ class myFunction
         return $this->tiktok_get_redirect_final_target($v_url);
     }
 
+    public function tiktok_getUrlVideoVietNam($url){
+        $html = file_get_html($url);
+        $html = $html->find('script' , 7);
+        preg_match_all('/video_id=(.+?)line=0/' , $html , $math);
+        $html = str_replace('\u0026' , '' , $math[1][0]);
+        $html = 'https://api.tiktokv.com/aweme/v1/playwm/?video_id='. $html .'&line=0';
+        return $this->tiktok_get_redirect_final_target($html);
+    }
+
+    /*
+     * $config_pagenavi['page_row']    = int; Số bản ghi mỗi trang
+     *  $config_pagenavi['page_num']    = ceil(mysqli_num_rows(mysqli_query($db_connect, "SELECT `id` FROM `dong_post`"))/$config_pagenavi['page_row']);
+     *  $config_pagenavi['url']         = _URL_ADMIN.'/post.php?act=news';
+    */
+    function pagination($config){
+        $link = '';
+        global $page;
+        for($i=$page;$i<=($page+4) && $i<= $config['page_num'] ;$i++){
+            if($page==$i){$link= '<li class="page-item active"><a href="javascript:;" class="page-link">'.$i.'</a></li>';}
+            else{$link = $link.'<li class="page-item"><a href="'. $config['url'] .'page='.$i.'" class="page-link">'.$i.'</a></li>';}
+        }
+        if($page>4){$page4='<li class="page-item"><a href="'.$config['url'].'page='.($page-4).'" class="page-link">'.($page-4).'</a></li>';}
+        if($page>3){$page3='<li class="page-item"><a href="'.$config['url'].'page='.($page-3).'" class="page-link">'.($page-3).'</a></li>';}
+        if($page>2){$page2='<li class="page-item"><a href="'.$config['url'].'page='.($page-2).'" class="page-link">'.($page-2).'</a></li>';}
+        if($page>1){
+            $page1='<li class="page-item"><a href="'.$config['url'].'page='.($page-1).'" class="page-link">'.($page-1).'</a></li>';
+            $link1='<li class="page-item" class="page-link" aria-label="Previous"><a href="'.$config['url'].'page='.($page-1).'" class="page-link"><span aria-hidden="true">« Trang sau</span><span class="sr-only">Previous</span></a></li>';
+        }
+        if($page < $config['page_num']){$link2='<li class="page-item"><a href="'.$config['url'].'page='.($page+1).'" class="page-link" aria-label="Next"><span aria-hidden="true">Trang tiếp »</span><span class="sr-only">Next</span></a></li>';}
+        $linked=$page4.$page3.$page2.$page1;
+        if($page<$config['page_num']-4){$page_end_pt='<li class="page-item"><a href="'.$config['url'].'page='.$config['page_num'].'" class="page-link">'.$config['page_num'].'</a></li>';}
+        if($page>5){$page_start_pt=' <li class="page-item"><a href="'.$config['url'].'" class="page-link">1</a></li>';}
+        if($config['page_num']>1 && $page<=$config['page_num']){
+            return '<ul class="pagination justify-content-center pagination-separate">'.$link1.$page_start_pt.$linked.$link.$page_end_pt.$link2.'</ul>';
+        }else{
+            return '';
+        }
+    }
+
     function showCategories($categories, $parent_id = 0, $char = '', $display = 'table'){
         foreach ($categories as $key => $item) {
             if ($item['category_parent'] == $parent_id){
@@ -217,6 +256,16 @@ class myFunction
         }
     }
 
+    function deletePost($id){
+        global $db;
+        if(!$db->select('post_id')->from(_TABLE_POST)->where(array('post_id' => $id))->fetch_first()){
+            return 404;
+        }
+        $db->delete()->from(_TABLE_GROUP)->where('group_index', $id)->execute();
+        $db->delete()->from(_TABLE_MEDIA)->where('media_parent', $id)->execute();
+        $db->delete()->from(_TABLE_POST)->where('post_id', $id)->execute();
+    }
+
     function getDirectOndrive($url){
         if($this->urlToDomain($url) != '1drv.ms'){
             return false;
@@ -235,32 +284,25 @@ class myFunction
             $db->select()->from(_TABLE_POST);
             $db->where(array('post_type' => 'video', 'post_show' => 1));
             $db->limit($option['limit'], $option['offset']);
-            $db->order_by('post_id', 'DESC');
+            if($option['rand'] == true){
+                $db->order_by('rand()');
+            }else{
+                $db->order_by('post_id', 'DESC');
+            }
             foreach ($db->fetch() AS $row){
+                $url_post = $this->getUrlPost($row['post_id']);
                 ?>
                 <div class="card bg-instant text-white">
                     <img class="card-img" src="<?php echo $this->getMediaPost($row['post_id']);?>">
                     <div class="card-img-overlay bg-over">
-                        <a class="link-over" href="<?php echo $this->getUrlPost($row['post_id']);?>"></a>
+                        <a class="link-over" href="<?php echo $url_post;?>"></a>
                         <div class="card-like">
-                            <a href="<?php echo $this->getUrlPost($row['post_id']);?>" >
-                                <div class="heartguest"></div>
-                            </a>
-                            <div class="card-count">0</div>
+                            <div class="card-count"><i class="icon-eye icons text-muted"></i> 0</div>
                         </div>
-                        <a class="category-middle text-muted" href="http://www.tuviti.com/instant-blog/category/lifestyle"> # lifestyle</a>
-                        <a href="http://www.tuviti.com/instant-blog/posts/blue-planet" class="playericon nocolor" data-toggle="tooltip" data-placement="bottom" title="Video">
+                        <a href="<?php echo $url_post;?>" class="playericon nocolor" data-toggle="tooltip" data-placement="bottom" title="Video">
                             <i class="icon-social-youtube icons text-muted"></i>
                         </a>
-
-                        <h5 class="bottom-txt">
-                            <?php echo $row['post_name'];?>
-                        </h5>
-                        <a class="author" href="#">
-                            <img class="avatar-sm img-fluid rounded-circle" src="<?php echo $this->getDetailUser($row['post_users'], 'users_avatar');?>">
-                            <span class="align-middle"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></span>
-                        </a>
-                        <small class="text-muted card-date"><?php echo $config->getTimeView($row['post_time']);?></small>
+                        <a class="author" href="<?php echo $url_post;?>"><span class="align-middle"><?php echo $row['post_name'];?></span></a>
                     </div>
                 </div>
                 <?php

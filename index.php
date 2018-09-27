@@ -13,7 +13,7 @@ require_once 'includes/core.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/png" href="http://www.tuviti.com/instant-blog/favicon.png">
+    <link rel="icon" type="image/x-icon" href="<?php echo _URL_HOME;?>/media/images/system/favicon.ico">
     <title>Video Social</title>
     <link href="style/css/bootstrap.min.css" rel="stylesheet">
     <link href="style/summernote/summernote-bs4.css" rel="stylesheet">
@@ -21,9 +21,8 @@ require_once 'includes/core.php';
     <link href="style/css/simple-line-icons.css" rel="stylesheet">
 </head>
 <body class="bg-instant">
-
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-nav">
-    <a class="navbar-brand" href="http://www.tuviti.com/instant-blog">
+    <a class="navbar-brand" href="<?php echo _URL_HOME;?>">
         <img src="http://www.tuviti.com/instant-blog/images/logo.png" class="d-inline-block align-top" alt="">
     </a>
     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,9 +100,7 @@ require_once 'includes/core.php';
 
 <footer class="blog-footer">
     <ul class="list-inline">
-
         <li class="list-inline-item"><a class="text-light" href="http://www.tuviti.com/instant-blog/page/sample-page">Sample Page</a></li>
-
         <li class="list-inline-item"><a class="text-light" href="http://www.tuviti.com/instant-blog/page/sample-page-2">Sample Page 2</a></li>
     </ul>
     <div class="text-muted"><p>© 2018 ANC Media. This is footer. Go to <a href="https://codecanyon.net/item/instant-blog-facebook-instant-articles-google-amp-supported-php-script/21312459?ref=anc-media">CodeCanyon</a> .</p></div>

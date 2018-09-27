@@ -35,7 +35,7 @@ switch ($act){
             case 'vt.tiktok.com':
                 $html   = file_get_html($url);
                 $images = $html->find("meta[property=og:image]", 0)->content;
-                $video  = $html->find("meta[property=og:video:url]", 0)->content;
+                $video  = $funcion->tiktok_getUrlVideoVietNam($url);
                 $author = $html->find("title", 0)->plaintext;
                 $author = str_replace(' on Tik Tok: TikTok', '', $author);
                 $array  = array('images' => $images, 'video' => $video, 'author' => $author);
@@ -68,6 +68,15 @@ switch ($act){
                 $type_cate      = $_REQUEST['type_cate'];
                 $type_display   = $_REQUEST['type_display'];
                 $funcion->showCategories($db->select('category_id, category_name, category_parent')->from(_TABLE_CATEGORY)->where(array('category_type' => $type_cate))->fetch(), 0, '',$type_display);
+                break;
+        }
+        break;
+    case 'post':
+        switch ($type){
+            case 'delete':
+                $array = array();
+                $array['resposive'] = $funcion->deletePost($id);
+                echo json_encode($array);
                 break;
         }
         break;

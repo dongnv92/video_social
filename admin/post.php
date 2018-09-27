@@ -55,6 +55,9 @@ switch ($act){
                     if($post_images && !filter_var($post_images, FILTER_VALIDATE_URL)){
                         $error['post_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
                     }
+                    if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
+                        $error['post_url'] = 'URL đã tồn tại';
+                    }
 
                     if($post_images){
                         $data = $uploader->upload($post_images, array(
@@ -164,7 +167,7 @@ switch ($act){
                             );
                             // Insert Video URL
                             $db->insert(_TABLE_MEDIA, $data);
-                            $funcion->redirectUrl(_URL_ADMIN);
+                            $funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
                         }
 
                     }
@@ -291,6 +294,7 @@ switch ($act){
                                     <div class="form-group">
                                         <label>Đường Dẫn Bài Viết</label>
                                         <input type="text" value="<?php echo $post_url;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="Đường Dẫn Bài Viết" name="post_url" />
+                                        <?php echo $error['post_url'] ? $config->getAlert('help_error', $error['post_url']) : '';?>
                                     </div>
                                     <div class="form-group">
                                         <label>Thẻ Keyword</label>
@@ -394,7 +398,14 @@ switch ($act){
         switch ($type){
             case 'video':
                 $admin_title = 'Danh sách Video';
-                $css_plus = array('app-assets/css/pages/users.min.css');
+                $css_plus       = array(
+                    'app-assets/vendors/css/extensions/sweetalert.css',
+                    'app-assets/css/pages/users.min.css'
+                );
+                $js_plus        = array(
+                    'app-assets/vendors/js/extensions/sweetalert.min.js',
+                    'app-assets/js/scripts/extensions/sweet-alerts.min.js'
+                );
                 require_once 'header.php';
                 ?>
                 <div class="row">
@@ -433,7 +444,7 @@ switch ($act){
                 echo '<div id="user-profile-cards-with-cover-image" class="row mt-2">';
                 foreach ($data AS $datas){
                     ?>
-                    <div class="col-xl-3 col-md-6 col-12">
+                    <div class="col-xl-3 col-md-6 col-12" data-for="<?php echo $datas['post_id'];?>">
                         <div class="card profile-card-with-cover">
                             <div class="card-img-top img-fluid bg-cover height-200" style="background: url('<?php echo $funcion->getMediaPost($datas['post_id'], 'images')?>');"></div>
                             <div class="card-profile-image">
@@ -458,7 +469,7 @@ switch ($act){
                                     </h6>
                                 </div>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-x"></i></button>
+                                    <button type="button" title="delete" data-num="<?php echo $datas['post_id'];?>" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-x"></i></button>
                                     <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-edit"></i></button>
                                 </div>
                             </div>
@@ -467,6 +478,54 @@ switch ($act){
                     <?php
                 }
                 echo '</div>';
+                ?>
+                <script language="JavaScript">
+                    $(document).ready(function () {
+                        $('button[title=delete]').click(function () {
+                            var id = $(this).attr('data-num');
+                            swal({
+                                title: "Bạn có chắc chắn muốn xóa bài viết này?",
+                                text: "Sau khi xóa sẽ không khôi phục được!",
+                                icon: "warning",
+                                buttons: {
+                                    cancel: {
+                                        text: "Quay Lại",
+                                        value: null,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirm: {
+                                        text: "Xóa Ngay",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: false
+                                    }
+                                }
+                            })
+                            .then((isConfirm) => {
+                                if (isConfirm) {
+                                    $.ajax({
+                                        url     : '<?php echo _URL_HOME;?>/includes/ajax.php',
+                                        method  : 'POST',
+                                        dataType: 'json',
+                                        data    : {'act' : 'post', 'type' : 'delete', 'id' : id},
+                                        success : function (data) {
+                                            if(data.resposive == 200){
+                                                $('div[data-for='+ id +']').remove();
+                                                swal("Deleted!", "Đã Xóa Bài Viết Thành Công.", "success");
+                                            }else{
+                                                swal("Error!", "Có lỗi khi thực hiện xóa bài viết. Vui lòng thử lại!", "error");
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    })
+                </script>
+                <?php
                 require_once 'footer.php';
                 break;
             default:

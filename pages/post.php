@@ -33,6 +33,13 @@ $users_post = $db->from(_TABLE_USERS)->where('users_id' , $post['post_users'])->
     <link href="<?php echo _URL_STYLE;?>/css/plyr.css" rel="stylesheet">
 </head>
 <body class="bg-instant">
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1&appId=727590360722146&autoLogAppEvents=1';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-nav">
     <a class="navbar-brand" href="<?php echo _URL_HOME;?>">
         <img src="http://www.tuviti.com/instant-blog/images/logo.png" class="d-inline-block align-top" alt="">
@@ -106,7 +113,7 @@ $users_post = $db->from(_TABLE_USERS)->where('users_id' , $post['post_users'])->
                     <div class="list-item mb-3">
                         <div class="list-left">
                             <a href="javascript:;">
-                                <img class="avatar img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
+                                <img class="avatar img-fluid rounded-circle" src="<?php echo $funcion->getDetailUser($post['post_id'],'users_avatar');?>">
                             </a>
                         </div>
                         <div class="list-body">
@@ -115,7 +122,7 @@ $users_post = $db->from(_TABLE_USERS)->where('users_id' , $post['post_users'])->
                                 <small class="text-muted time"><?php echo $config->getTimeView($post['post_time']);?></small>
                             </div>
                             <div class="text-ellipsis">
-                                <small class="text-muted">admin</small>
+                                <small class="text-muted"><?php echo $funcion->getDetailUser($post['post_id'], 'users_name');?></small>
                                 <small class="text-muted time">
                                     <!-- category -->
                                     <?php
@@ -171,121 +178,12 @@ $users_post = $db->from(_TABLE_USERS)->where('users_id' , $post['post_users'])->
                     </a>
                 </div>
             </div>
-            <div class="card pagesideads embed-responsive mb-3">
-                <img class="card-img" src="http://www.tuviti.com/instant-screen/adsinstant1.png">
-            </div>
-            <div class="card bg-instant text-white">
-                <img class="card-img" src="http://www.tuviti.com/instant-blog/uploads/1515933619.jpg">
-                <div class="card-img-overlay bg-over">
-                    <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/best-drone-photos"></a>
-                    <div class="card-like">
-                        <a href="http://www.tuviti.com/instant-blog/login" >
-                            <div class="heartguest"></div>
-                        </a>
-                        <div class="card-count" id="likeCount7">0</div>
-                    </div>
-                    <a class="category text-muted" href="http://www.tuviti.com/instant-blog/category/lifestyle"> # lifestyle</a>
-                    <h4 class="bottom-txt">
-                        Best Drone Photos
-                    </h4>
-                    <a class="author" href="http://www.tuviti.com/instant-blog/profile/admin">
-                        <img class="avatar-sm img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
-                        <span class="align-middle">Admin</span>
-                    </a>
-                    <small class="text-muted card-date">8 months ago</small>
-                </div>
-            </div>
-            <div class="card bg-instant text-white">
-                <div class="youtube">
-                    <img class="card-img change-ratio" src="https://i.ytimg.com/vi/wH_6aqTuGFo/hqdefault.jpg">
-                </div>
-                <div class="card-img-overlay bg-over">
-                    <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/trollhunters"></a>
-                    <div class="card-like">
-                        <a href="http://www.tuviti.com/instant-blog/login" >
-                            <div class="heartguest"></div>
-                        </a>
-                        <div class="card-count" id="likeCount6">0</div>
-                    </div>
-                    <a href="http://www.tuviti.com/instant-blog/posts/trollhunters" class="playericon nocolor" data-toggle="tooltip" data-placement="bottom" title="Video">
-                        <i class="icon-social-youtube icons text-muted"></i>
-                    </a>
-                    <h4 class="bottom-txt">
-                        Trollhunters
-                    </h4>
-                    <a class="author" href="http://www.tuviti.com/instant-blog/profile/admin">
-                        <img class="avatar-sm img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
-                        <span class="align-middle">Admin</span>
-                    </a>
-                    <small class="text-muted card-date">8 months ago</small>
-                </div>
-            </div>
-            <div class="card bg-instant text-white">
-                <img class="card-img" src="http://www.tuviti.com/instant-blog/uploads/1515934131.gif">
-                <div class="card-img-overlay bg-over">
-                    <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/how-to-tell-a-story"></a>
-                    <div class="card-like">
-                        <a href="http://www.tuviti.com/instant-blog/login" >
-                            <div class="heartguest"></div>
-                        </a>
-                        <div class="card-count" id="likeCount8">0</div>
-                    </div>
-                    <h4 class="bottom-txt">
-                        How to Tell a Story
-                    </h4>
-                    <a class="author" href="http://www.tuviti.com/instant-blog/profile/admin">
-                        <img class="avatar-sm img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
-                        <span class="align-middle">Admin</span>
-                    </a>
-                    <small class="text-muted card-date">8 months ago</small>
-                </div>
-            </div>
-            <div class="card bg-instant text-white">
-                <img class="card-img" src="http://www.tuviti.com/instant-blog/uploads/1515934330.jpg">
-                <div class="card-img-overlay bg-over">
-                    <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/life-on-mars"></a>
-                    <div class="card-like">
-                        <a href="http://www.tuviti.com/instant-blog/login" >
-                            <div class="heartguest"></div>
-                        </a>
-                        <div class="card-count" id="likeCount10">0</div>
-                    </div>
-                    <h4 class="bottom-txt">
-                        Life On Mars
-                    </h4>
-                    <a class="author" href="http://www.tuviti.com/instant-blog/profile/admin">
-                        <img class="avatar-sm img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
-                        <span class="align-middle">Admin</span>
-                    </a>
-                    <small class="text-muted card-date">8 months ago</small>
-                </div>
-            </div>
-            <div class="card bg-instant text-white">
-                <img class="card-img" src="http://www.tuviti.com/instant-blog/uploads/1515932775.jpg">
-                <div class="card-img-overlay bg-over">
-                    <a class="link-over" href="http://www.tuviti.com/instant-blog/posts/follow-your-dreams"></a>
-                    <div class="card-like">
-                        <a href="http://www.tuviti.com/instant-blog/login" >
-                            <div class="heartguest"></div>
-                        </a>
-                        <div class="card-count" id="likeCount4">0</div>
-                    </div>
-                    <a class="category text-muted" href="http://www.tuviti.com/instant-blog/category/lifestyle"> # lifestyle</a>
-                    <h4 class="bottom-txt">
-                        Follow Your Dreams
-                    </h4>
-                    <a class="author" href="http://www.tuviti.com/instant-blog/profile/admin">
-                        <img class="avatar-sm img-fluid rounded-circle" src="http://www.tuviti.com/instant-blog/images/defaultuser.png">
-                        <span class="align-middle">Admin</span>
-                    </a>
-                    <small class="text-muted card-date">8 months ago</small>
-                </div>
-            </div>
+            <?php $funcion->getViewVideoGrid('video', array('limit' => 5, 'offset' => 0, 'rand' => true)); ?>
         </div>
     </div>
 </div>
 
-<div id="fbcomment" data-user-id="1970044353024876"></div>
+<div id="fbcomment" data-user-id="100006754150548"></div>
 
 <footer class="blog-footer">
     <ul class="list-inline">
