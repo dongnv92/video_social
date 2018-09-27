@@ -12,7 +12,7 @@ require 'simple_html_dom.php';
 require_once 'class.mysqli.db.php';
 require_once 'class.config.php';
 require_once 'function.php';
-define('_URL_HOME','http://192.168.100.10/dong/video_social');
+define('_URL_HOME','http://192.168.1.13/dong/video_social');
 define('_URL_LOGIN',_URL_HOME.'/login');
 define('_URL_LOGOUT',_URL_HOME.'/logout');
 define('_URL_ADMIN',_URL_HOME.'/admin');
@@ -50,5 +50,5 @@ $submit = (isset($_POST['submit'])  && !empty($_POST['submit']))    ? trim($_POS
 $id     = (isset($_REQUEST['id'])   && !empty($_REQUEST['id']))     ? (int) $_REQUEST['id'] : false;
 $act    = (isset($_REQUEST['act'])  && !empty($_REQUEST['act']))    ? $_REQUEST['act']      : false;
 $type   = (isset($_REQUEST['type']) && !empty($_REQUEST['type']))   ? $_REQUEST['type']     : false;
-$url    = (isset($_REQUEST['url'])  && !empty($_REQUEST['url']))    ? $_REQUEST['url']      : false;
+$url    = (isset($_REQUEST['url'])  && !empty($_REQUEST['url']))    ? trim($_REQUEST['url']): false;
 

@@ -93,7 +93,7 @@ body {
 /*Card styles*/
 
 .card {
-  margin-bottom: 10px !important;
+  margin-bottom: 0px !important;
   border: 0px;
 }
 
@@ -683,13 +683,17 @@ body {
 
 .bg-over{
   background: rgba(0,0,0,.3);
+  /*
   border-radius: .25rem;
+  */
   width: 100%;
 }
 
 .bg-over:hover {
   background: rgba(0,0,0,.1);
+  /*
   border-radius: .25rem;
+  */
   width: 100%;
 }
 
@@ -766,7 +770,7 @@ div.lesspadding {
 
 /*Salvattore grid css and Responsive*/
 .grid[data-columns]::before {
-  content: '5 .column.size-1of5';
+  content: '6 .column.size-1of6';
 }
 
 @media screen and (max-width: 544px){
@@ -788,7 +792,7 @@ div.lesspadding {
 }
 @media screen and (min-width: 992px) and (max-width: 1400px) {
   .grid[data-columns]::before {
-    content: '4 .column.size-1of4';
+    content: '6 .column.size-1of6';
   }
 }
 
@@ -809,38 +813,38 @@ div.lesspadding {
 
 .size-1of1 { 
   width: 100%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .size-1of2 { 
   width: 50%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .size-1of3 { 
   width: 33.333%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .size-1of4 { 
   width: 25%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .size-1of5 {
   width: 20%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .size-1of6 {
   width: 16.66%;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 /*Internet explorer fix*/

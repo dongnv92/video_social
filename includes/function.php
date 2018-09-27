@@ -16,7 +16,7 @@ class myFunction
     }
 
     function getPlayerVideo($id){
-        return '<video style="max-height: 450px" poster="'. $this->getMediaPost($id, 'images') .'" id="player" playsinline controls><source src="'. $this->getMediaPost($id, 'video') .'" type="video/mp4"></video>';
+        return '<video autoplay style="max-height: 450px" poster="'. $this->getMediaPost($id, 'images') .'" id="player" playsinline controls><source src="'. $this->getMediaPost($id, 'video') .'" type="video/mp4"></video>';
     }
 
     function getDetailUser($id, $type){

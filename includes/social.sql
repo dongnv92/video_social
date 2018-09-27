@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 27, 2018 lúc 05:34 PM
+-- Thời gian đã tạo: Th9 27, 2018 lúc 07:15 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -90,7 +90,10 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (22, 'post', 14, 5, 1, 1538041853),
 (23, 'post', 15, 4, 1, 1538042098),
 (24, 'post', 15, 5, 1, 1538042098),
-(25, 'post', 16, 2, 1, 1538042989);
+(25, 'post', 16, 2, 1, 1538042989),
+(26, 'post', 17, 4, 1, 1538063887),
+(27, 'post', 18, 4, 1, 1538064453),
+(28, 'post', 19, 4, 1, 1538065249);
 
 -- --------------------------------------------------------
 
@@ -143,7 +146,13 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (29, 'images', 'sMFK3mGA6d12.jpg', 'media/images/post/sMFK3mGA6d12.jpg', 'local', 1, 15, 1538042098),
 (30, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86487&authkey=!ABcmKtXd22QNszk', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86487&authkey=!ABcmKtXd22QNszk', 'onedrive', 1, 15, 1538042098),
 (31, 'images', 'fomUVl_0gtd3.jpg', 'media/images/post/fomUVl_0gtd3.jpg', 'local', 1, 16, 1538042989),
-(32, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'onedrive', 1, 16, 1538042989);
+(32, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'onedrive', 1, 16, 1538042989),
+(33, 'images', 'PEKr5HUG06So.jpg', 'media/images/post/PEKr5HUG06So.jpg', 'local', 1, 17, 1538063887),
+(34, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86489&authkey=!ABviymECF2f08bA', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86489&authkey=!ABviymECF2f08bA', 'onedrive', 1, 17, 1538063888),
+(35, 'images', 'zDgLok2mXb1B.jpg', 'media/images/post/zDgLok2mXb1B.jpg', 'local', 1, 18, 1538064453),
+(36, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86490&authkey=!AGJdWP3HgLVMb4M', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86490&authkey=!AGJdWP3HgLVMb4M', 'onedrive', 1, 18, 1538064453),
+(37, 'images', 'bJ8MZ0nFazXI.jpg', 'media/images/post/bJ8MZ0nFazXI.jpg', 'local', 1, 19, 1538065249),
+(38, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'onedrive', 1, 19, 1538065249);
 
 -- --------------------------------------------------------
 
@@ -187,7 +196,10 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (13, 'Đằng Cấp hiphop', '<p>Đằng Cấp hiphop</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVgbbN/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNVU41PodGMkvbbAg', 1, 1, 0, 'dang-cap-hiphop', 1538041494),
 (14, 'Ai cho hôm mà hôn', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVT2ME/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNWHUrvt5Z4OmeTVA', 1, 1, 0, 'ai-cho-hom-ma-hon', 1538041853),
 (15, 'Lần đầu chó được đi dép cao gót', '<p>Lần đầu ch&oacute; được đi d&eacute;p cao g&oacute;t</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVcDSL/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNXFyYq1d3bZA2zOQ', 1, 1, 0, 'lan-dau-cho-duoc-di-dep-cao-got', 1538042098),
-(16, 'Chọn chị hay chọn em đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dq1tAh/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNYvREHc9zaHAcubw', 1, 1, 0, 'chon-chi-hay-chon-em-day', 1538042989);
+(16, 'Chọn chị hay chọn em đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dq1tAh/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNYvREHc9zaHAcubw', 1, 1, 0, 'chon-chi-hay-chon-em-day', 1538042989),
+(17, 'Đẳng cấp phi máy bay', '<p>Đẳng cấp phi m&aacute;y bay</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqDSLD/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNZG-LKYQIXZ_TxsA', 1, 1, 0, 'dang-cap-phi-may-bay', 1538063887),
+(18, 'Đẳng cấp luộc trứng', '<p>Đẳng cấp luộc trứng</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqhVRA/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNaYl1Y_ceAtUxvgw', 1, 1, 0, 'dang-cap-luoc-trung', 1538064453),
+(19, 'Thánh lắc mông', '<p>Th&aacute;nh lắc m&ocirc;ng</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqjq6y/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNbeQAcD7K9HpNJuA', 1, 1, 0, 'thanh-lac-mong', 1538065248);
 
 -- --------------------------------------------------------
 
@@ -262,19 +274,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
