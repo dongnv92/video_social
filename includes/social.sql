@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 26, 2018 lúc 12:29 PM
+-- Thời gian đã tạo: Th9 27, 2018 lúc 05:34 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -73,10 +73,24 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (3, 'post', 2, 2, 1, 1537931162),
 (4, 'post', 2, 4, 1, 1537931162),
 (5, 'post', 3, 4, 1, 1537932748),
-(6, 'post', 4, 2, 1, 1537936025),
-(7, 'post', 4, 4, 1, 1537936025),
 (8, 'post', 5, 2, 1, 1537947528),
-(9, 'post', 5, 4, 1, 1537947528);
+(9, 'post', 5, 4, 1, 1537947528),
+(10, 'post', 6, 2, 1, 1538015877),
+(11, 'post', 6, 4, 1, 1538015877),
+(12, 'post', 7, 4, 1, 1538018415),
+(13, 'post', 8, 2, 1, 1538032195),
+(14, 'post', 9, 2, 1, 1538032452),
+(15, 'post', 10, 2, 1, 1538032723),
+(16, 'post', 11, 2, 1, 1538040554),
+(17, 'post', 11, 3, 1, 1538040554),
+(18, 'post', 11, 4, 1, 1538040554),
+(19, 'post', 12, 5, 1, 1538041283),
+(20, 'post', 13, 4, 1, 1538041494),
+(21, 'post', 14, 4, 1, 1538041853),
+(22, 'post', 14, 5, 1, 1538041853),
+(23, 'post', 15, 4, 1, 1538042098),
+(24, 'post', 15, 5, 1, 1538042098),
+(25, 'post', 16, 2, 1, 1538042989);
 
 -- --------------------------------------------------------
 
@@ -106,10 +120,30 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (4, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86473&authkey=!AJl0L_0NXcRTFjg', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86473&authkey=!AJl0L_0NXcRTFjg', 'onedrive', 1, 2, 1537931162),
 (5, 'images', 'BmSYkhHWCsbI.jpg', 'media/images/post/BmSYkhHWCsbI.jpg', 'local', 1, 3, 1537932748),
 (6, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86474&authkey=!AM5qTwb5xzNBFyY', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86474&authkey=!AM5qTwb5xzNBFyY', 'onedrive', 1, 3, 1537932748),
-(7, 'images', 'Tc2jhb8u5zng.jpg', 'media/images/post/Tc2jhb8u5zng.jpg', 'local', 1, 4, 1537936025),
-(8, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86475&authkey=!AKzPIrRuaSr6BEo', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86475&authkey=!AKzPIrRuaSr6BEo', 'onedrive', 1, 4, 1537936025),
 (9, 'images', 'mVgYq62JNOfy.jpg', 'media/images/post/mVgYq62JNOfy.jpg', 'local', 1, 5, 1537947528),
-(10, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'onedrive', 1, 5, 1537947528);
+(10, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86476&authkey=!ABFkK0SUZ5y_55c', 'onedrive', 1, 5, 1537947528),
+(11, 'images', 'HfTJCVWUpB59.jpg', 'media/images/post/HfTJCVWUpB59.jpg', 'local', 1, 6, 1538015877),
+(12, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86477&authkey=!AJl16b2Sy6l2wKc', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86478&authkey=!ALa5J4al1x3clQs', 'onedrive', 1, 6, 1538015877),
+(13, 'images', 'IMelkEZsqxPw.jpg', 'media/images/post/IMelkEZsqxPw.jpg', 'local', 1, 7, 1538018415),
+(14, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86479&authkey=!AMvQ8pRVCDhFz1I', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86479&authkey=!AMvQ8pRVCDhFz1I', 'onedrive', 1, 7, 1538018415),
+(15, 'images', 'fQ9I0nt5rC_a.jpg', 'media/images/post/fQ9I0nt5rC_a.jpg', 'local', 1, 8, 1538032195),
+(16, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86480&authkey=!AOlWtI0kgaIE7_4', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86480&authkey=!AOlWtI0kgaIE7_4', 'onedrive', 1, 8, 1538032195),
+(17, 'images', 'a_VP5fs9rui2.jpg', 'media/images/post/a_VP5fs9rui2.jpg', 'local', 1, 9, 1538032452),
+(18, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86481&authkey=!AGL9gALAVKATXFM', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86481&authkey=!AGL9gALAVKATXFM', 'onedrive', 1, 9, 1538032452),
+(19, 'images', '0xv49MJhDziP.jpg', 'media/images/post/0xv49MJhDziP.jpg', 'local', 1, 10, 1538032723),
+(20, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86482&authkey=!AJPiZOUrIs0jxwY', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86482&authkey=!AJPiZOUrIs0jxwY', 'onedrive', 1, 10, 1538032723),
+(21, 'images', '1IzamiUg3owr.jpg', 'media/images/post/1IzamiUg3owr.jpg', 'local', 1, 11, 1538040554),
+(22, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86483&authkey=!AG929YxfmVtrpbo', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86483&authkey=!AG929YxfmVtrpbo', 'onedrive', 1, 11, 1538040554),
+(23, 'images', 'dyi6vqw0_oFs.jpg', 'media/images/post/dyi6vqw0_oFs.jpg', 'local', 1, 12, 1538041283),
+(24, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86484&authkey=!AIJSiGqYwXK3RDs', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86484&authkey=!AIJSiGqYwXK3RDs', 'onedrive', 1, 12, 1538041283),
+(25, 'images', 'CE5wI98LrVXf.jpg', 'media/images/post/CE5wI98LrVXf.jpg', 'local', 1, 13, 1538041494),
+(26, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86485&authkey=!AFONT6HRjJL22wI', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86485&authkey=!AFONT6HRjJL22wI', 'onedrive', 1, 13, 1538041494),
+(27, 'images', 'iUQCl1hfStj8.jpg', 'media/images/post/iUQCl1hfStj8.jpg', 'local', 1, 14, 1538041853),
+(28, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86486&authkey=!AB1K77eWeDpnk1Q', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86486&authkey=!AB1K77eWeDpnk1Q', 'onedrive', 1, 14, 1538041853),
+(29, 'images', 'sMFK3mGA6d12.jpg', 'media/images/post/sMFK3mGA6d12.jpg', 'local', 1, 15, 1538042098),
+(30, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86487&authkey=!ABcmKtXd22QNszk', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86487&authkey=!ABcmKtXd22QNszk', 'onedrive', 1, 15, 1538042098),
+(31, 'images', 'fomUVl_0gtd3.jpg', 'media/images/post/fomUVl_0gtd3.jpg', 'local', 1, 16, 1538042989),
+(32, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86488&authkey=!AL0RB3Pc2hwHLm8', 'onedrive', 1, 16, 1538042989);
 
 -- --------------------------------------------------------
 
@@ -142,8 +176,18 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (1, 'Đã Xinh Lại Múa Đẹp', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dmhfjJ/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaMXKsGTLyhES1nCiw', 1, 1, 0, 'da-xinh-lai-mua-dep', 1537849227),
 (2, 'Quẩy lên anh em êi ^^ ', '<p>Quẩy l&ecirc;n anh em &ecirc;i ^^&nbsp;</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/xNDU3/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNJmXQv_Q1dxFMWOA', 1, 1, 0, 'quay-len-anh-em-ei', 1537931162),
 (3, 'Chờ ai đó để yêu :)', '<p>Chờ ai đ&oacute; để y&ecirc;u :)</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dV2aBn/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNKzmpPBvnHM0EXJg', 1, 1, 0, 'cho-ai-do-de-yeu', 1537932748),
-(4, 'Ai xinh nhất?', '<p>Ai xinh nhất?</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d4vBD9/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNLrM8itG5pKvoESg', 1, 1, 0, 'ai-xinh-nhat', 1537936025),
-(5, 'Muốn bỏ làm để đi tập Gym :D', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dV1DVd/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNMEWQrRJRnnL_nlw', 1, 1, 0, 'muon-bo-lam-de-di-tap-gym-d', 1537947528);
+(5, 'Muốn bỏ làm để đi tập Gym :D', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dV1DVd/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNMEWQrRJRnnL_nlw', 1, 1, 0, 'muon-bo-lam-de-di-tap-gym-d', 1537947528),
+(6, 'Pùm Pùm Pùm ...', '<p>P&ugrave;m P&ugrave;m P&ugrave;m ...</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/9vxUc/', 'https://1drv.ms/u/s!AvOWg2YnpZYMhaNNmXXpvZLLqXbApw', 1, 1, 0, 'pum-pum-pum', 1538015877),
+(7, 'Sự thật không phải như vậy ', '<p>Sự thật kh&ocirc;ng phải như vậy&nbsp;</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d4oxxe/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNPy9DylFUIOEXPUg', 1, 1, 0, 'su-that-khong-phai-nhu-vay-', 1538018415),
+(8, 'Chào Buổi Sáng ...', '<p>Ch&agrave;o Buổi S&aacute;ng ...</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/9KNbP/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNQ6Va0jSSBogTv_g', 1, 1, 0, 'chao-buoi-sang', 1538032195),
+(9, 'Đi Bơi Nào Anh Em', '<p>Đi Bơi N&agrave;o Anh Em</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/9og5W/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNRYv2AAsBUoBNcUw', 1, 1, 0, 'di-boi-nao-anh-em', 1538032452),
+(10, 'Tĩnh Tâm ....', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVeY72/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNSk-Jk5SsizSPHBg', 1, 1, 0, 'tinh-tam-yoga', 1538032723),
+(11, 'Hị Hị Hị', '<p>Hị Hị Hị</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/9wmMy/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNTb3b1jF-ZW2ulug', 1, 1, 0, 'hi-hi-hi', 1538040554),
+(12, 'Ai muốn được như này không :D', '<p>Ai muốn được như n&agrave;y kh&ocirc;ng :D</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqJdKJ/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNUglKIapjBcrdEOw', 1, 1, 0, 'ai-muon-duoc-nhu-nay-khong-d', 1538041283),
+(13, 'Đằng Cấp hiphop', '<p>Đằng Cấp hiphop</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVgbbN/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNVU41PodGMkvbbAg', 1, 1, 0, 'dang-cap-hiphop', 1538041494),
+(14, 'Ai cho hôm mà hôn', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVT2ME/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNWHUrvt5Z4OmeTVA', 1, 1, 0, 'ai-cho-hom-ma-hon', 1538041853),
+(15, 'Lần đầu chó được đi dép cao gót', '<p>Lần đầu ch&oacute; được đi d&eacute;p cao g&oacute;t</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dVcDSL/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNXFyYq1d3bZA2zOQ', 1, 1, 0, 'lan-dau-cho-duoc-di-dep-cao-got', 1538042098),
+(16, 'Chọn chị hay chọn em đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dq1tAh/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNYvREHc9zaHAcubw', 1, 1, 0, 'chon-chi-hay-chon-em-day', 1538042989);
 
 -- --------------------------------------------------------
 
@@ -218,19 +262,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
