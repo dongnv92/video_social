@@ -12,7 +12,7 @@ require 'simple_html_dom.php';
 require_once 'class.mysqli.db.php';
 require_once 'class.config.php';
 require_once 'function.php';
-define('_URL_HOME','http://192.168.1.13/dong/video_social');
+define('_URL_HOME','http://localhost/dong/video_social');
 define('_URL_LOGIN',_URL_HOME.'/login');
 define('_URL_LOGOUT',_URL_HOME.'/logout');
 define('_URL_ADMIN',_URL_HOME.'/admin');
