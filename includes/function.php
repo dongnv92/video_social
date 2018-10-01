@@ -345,5 +345,76 @@ class myFunction
             }
         }
     }
+
+    function getBlockSideBarVideo($option = ''){
+        global $db, $config;
+        $text = '';
+        $db->select('post_id, post_name, post_time')->from(_TABLE_POST);
+        $db->where(array('post_type' => 'video', 'post_show' => 1));
+        if($option['limit'] && !$option['offset']){
+            $db->limit($option['limit']);
+        }else if($option['limit'] && $option['offset']){
+            $db->limit($option['limit'], $option['offset']);
+        }
+        if($option['rand'] == true){
+            $db->order_by('rand()');
+        }else{
+            $db->order_by('post_id', 'DESC');
+        }
+        $text .= '<div class="ui-block"><div class="ui-block-title"><h6 class="title">Video Ngẫu Nhiên</h6></div><div class="ui-block-content"><ul class="widget w-last-video">';
+        foreach ($db->fetch() AS $row){
+            $text .= '<li>';
+                $text .= '<a href="'. $this->getUrlPost($row['post_id']) .'" class="play-video play-video--small">';
+                    $text .= '<svg class="olymp-play-icon">';
+                        $text .= '<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-play-icon"></use>';
+                    $text .= '</svg>';
+                $text .= '</a>';
+                $text .= '<img src="'. $this->getMediaPost($row['post_id'], 'images') .'" alt="'. $row['post_name'] .'">';
+                $text .= '<div class="video-content">';
+                    $text .= '<div class="title">'. $row['post_name'] .'</div>';
+                    $text .= '<time class="published">'. $config->getTimeView($row['post_time']) .'</time>';
+                $text .= '</div>';
+                $text .= '<div class="overlay"></div>';
+            $text .= '</li>';
+        }
+        $text .= '</ul></div></div>';
+        return $text;
+    }
+
+    function getBlockSideBarIndex($option = ''){
+        $text = '<div class="ui-block">
+				<div class="ui-block-title">
+					<h6 class="title">Bản Tin</h6>
+					<a href="#" class="more">
+					    <svg class="olymp-three-dots-icon">
+					        <use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+					    </svg>
+					</a>
+				</div>
+				<ul class="widget w-friend-pages-added notification-list friend-requests">
+					<li class="inline-items">
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">Tin Hot</a>
+						</div>
+						<span class="notification-icon" data-toggle="tooltip" data-placement="top" data-original-title="ADD TO YOUR FAVS">
+							<a href="#">
+								<svg class="olymp-trophy-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-trophy-icon"></use></svg>
+							</a>
+						</span>
+					</li>
+					<li class="inline-items">
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">Tin Mới</a>
+						</div>
+						<span class="notification-icon" data-toggle="tooltip" data-placement="top" data-original-title="ADD TO YOUR FAVS">
+							<a href="#">
+								<svg class="olymp-star-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
+							</a>
+						</span>
+					</li>
+				</ul>
+			</div>';
+        return $text;
+    }
 }
 
