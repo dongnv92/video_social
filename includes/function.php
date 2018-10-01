@@ -8,7 +8,6 @@
 
 class myFunction
 {
-
     function getUrlPost($id){
         global $db;
         $post = $db->select('post_url')->from(_TABLE_POST)->where('post_id', $id)->fetch_first();
@@ -278,8 +277,8 @@ class myFunction
         return 'https://onedrive.live.com/download?cid='. $query['cid'] .'&resid='. $query['id'] .'&authkey='.$query['authkey'];
     }
 
-    function getViewVideoGrid($type, $option){
-        global $db, $config;
+    function getViewVideoList($type, $option){
+        global $db, $config, $user;
         if($type == 'video'){
             $db->select()->from(_TABLE_POST);
             $db->where(array('post_type' => 'video', 'post_show' => 1));
@@ -290,20 +289,57 @@ class myFunction
                 $db->order_by('post_id', 'DESC');
             }
             foreach ($db->fetch() AS $row){
-                $url_post = $this->getUrlPost($row['post_id']);
+                $url_post   = $this->getUrlPost($row['post_id']);
                 ?>
-                <div class="card bg-instant text-white">
-                    <img class="card-img" src="<?php echo $this->getMediaPost($row['post_id']);?>">
-                    <div class="card-img-overlay bg-over">
-                        <a class="link-over" href="<?php echo $url_post;?>"></a>
-                        <div class="card-like">
-                            <div class="card-count"><i class="icon-eye icons text-muted"></i> 0</div>
+                <div class="ui-block">
+                    <article class="hentry post has-post-thumbnail thumb-full-width">
+                        <div class="post__author author vcard inline-items">
+                            <img src="<?php echo $this->getDetailUser($row['post_users'], 'users_avatar');?>" alt="author">
+                            <div class="author-date">
+                                <a class="h6 post__author-name fn" href="javascript;:"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></a>
+                                <div class="post__date">
+                                    <time class="published"><?php echo $config->getTimeView($row['post_time']);?></time>
+                                </div>
+                            </div>
+                            <?php if($user){?>
+                            <div class="more">
+                                <svg class="olymp-three-dots-icon">
+                                    <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                                </svg>
+                                <ul class="more-dropdown">
+                                    <li><a href="<?php echo _URL_ADMIN.'/post.php?act=update&type=video&id='.$row['post_id']?>">Sửa bài viết</a></li>
+                                    <li><a href="#">Xóa bài viết</a></li>
+                                </ul>
+                            </div>
+                            <?php }?>
                         </div>
-                        <a href="<?php echo $url_post;?>" class="playericon nocolor" data-toggle="tooltip" data-placement="bottom" title="Video">
-                            <i class="icon-social-youtube icons text-muted"></i>
-                        </a>
-                        <a class="author" href="<?php echo $url_post;?>"><span class="align-middle"><?php echo $row['post_name'];?></span></a>
-                    </div>
+                        <div class="post-thumb">
+                            <video width="100%" height="371px" poster="<?php echo $this->getMediaPost($row['post_id'], 'images');?>" class="player" playsinline controls>
+                                <source src="<?php echo $this->getMediaPost($row['post_id'], 'video');?>" type="video/mp4">
+                            </video>
+                        </div>
+                        <h4 class="post-title"><?php echo $row['post_name'];?></h4>
+                        <p><?php echo $row['post_content'];?></p>
+                        <div class="post-additional-info inline-items">
+                            <a href="#" class="post-add-icon inline-items">
+                                <svg class="olymp-heart-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg>
+                                <span>8</span>
+                            </a>
+                            <div class="comments-shared">
+                                <a href="#" class="post-add-icon inline-items">
+                                    <svg class="olymp-speech-balloon-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"></use></svg>
+                                    <span>16</span>
+                                </a>
+                                <a href="#" class="post-add-icon inline-items">
+                                    <svg class="olymp-share-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-share-icon"></use></svg>
+                                    <span>8</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="control-block-button post-control-button">
+                            <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
+                        </div>
+                    </article>
                 </div>
                 <?php
             }
