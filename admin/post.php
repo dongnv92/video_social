@@ -24,7 +24,10 @@ switch ($act){
                     require_once 'footer.php';
                     break;
                 }
-
+                require_once '../includes/class.uploader.php';
+                $uploader           = new Uploader();
+                $post_images        = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'images', 'media_parent' => $id))->fetch_first();
+                $post_video         = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'video', 'media_parent' => $id))->fetch_first();
                 $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? $_POST['post_title']          : $post['post_name'];
                 $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? $_POST['post_content']        : $post['post_content'];
                 $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? $_POST['post_source']         : $post['post_source'];
@@ -68,9 +71,7 @@ switch ($act){
                     if(!$media_images && !$funcion->checkUpload('media_images_upload')){
                         $error['media_images'] = 'Bạn chưa chọn ảnh';
                     }
-                    if($media_images && !filter_var($media_images, FILTER_VALIDATE_URL)){
-                        $error['media_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
-                    }
+
                     if(($post['post_url'] != $post_url) && $db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
                         $error['post_url'] = 'URL đã tồn tại';
                     }
@@ -80,27 +81,40 @@ switch ($act){
                     if($media_video && !filter_var($media_video, FILTER_VALIDATE_URL)){
                         $error['media_video'] = 'URL Video Không Đúng Định Dạng';
                     }
-
-
                     $media_video = $funcion->getDirectOndrive($post_store);
                     if(!$media_video){
                         $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
                     }
 
-                    if(!$error) {
-                        if($media_images != $funcion->getMediaPost($id, 'images')){
+                    if(!$error && $media_images && ($media_images != $post_images['media_source'])) {
                             $data = $uploader->upload($media_images, array(
                                 'uploadDir' => '../'._PATH_IMAGES_POST.'/',
                                 'title' => array('auto', 12),
                             ));
 
                             if($data['isComplete']){
-                                $images = $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'images', 'media_parent' => $id))->fetch_first();
-                                $media['media_name']    = $data['data']['metas'][0]['name'];
-                                $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
-                                $data_img = array('media_source' => $media['media_source']);
-                                if(!$db->where(array('media_id' => $images['media_id']))->update(_TABLE_MEDIA , $data_img)->execute()){
-                                    $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                if($post_images) {
+                                    $media['media_name'] = $data['data']['metas'][0]['name'];
+                                    $media['media_source'] = _PATH_IMAGES_POST . '/' . $media['media_name'];
+                                    $data_img = array('media_source' => $media['media_source']);
+                                    if (!$db->where(array('media_id' => $post_images['media_id']))->update(_TABLE_MEDIA, $data_img)->execute()) {
+                                        $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                    }
+                                }else{
+                                    $media['media_name']    = $data['data']['metas'][0]['name'];
+                                    $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                                    $data_img = array(
+                                        'media_type'    =>  'images',
+                                        'media_name'    =>  $media['media_name'],
+                                        'media_source'  =>  $media['media_source'],
+                                        'media_store'   =>  'local',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    if(!$db->insert(_TABLE_MEDIA, $data_img)){
+                                        $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                    }
                                 }
                             }
 
@@ -109,8 +123,7 @@ switch ($act){
                             }
                         }
 
-                        if(!$error){
-                            if($funcion->checkUpload('media_images_upload')){
+                        if(!$error && $funcion->checkUpload('media_images_upload')){
                                 $data = $uploader->upload($_FILES['media_images_upload'], array(
                                     'limit'         => 1, //Maximum Limit of files. {null, Number}
                                     'maxSize'       => 10, //Maximum Size of files {null, Number(in MB's)}
@@ -130,17 +143,55 @@ switch ($act){
                                 ));
 
                                 if($data['isComplete']){
-                                    $images = $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'video', 'media_parent' => $id))->fetch_first();
-                                    $media['media_name']    = $data['data']['metas'][0]['name'];
-                                    $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
-                                    $data_img = array('media_source' => $media['media_source']);
-                                    if(!$db->where(array('media_id' => $images['media_id']))->update(_TABLE_MEDIA , $data_img)->execute()){
-                                        $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                    if($post_images){
+                                        $media['media_name']    = $data['data']['metas'][0]['name'];
+                                        $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                                        $data_img = array('media_source' => $media['media_source']);
+                                        if(!$db->where(array('media_id' => $post_images['media_id']))->update(_TABLE_MEDIA , $data_img)->execute()){
+                                            $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                        }
+                                    }else{
+                                        $media['media_name']    = $data['data']['metas'][0]['name'];
+                                        $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                                        $data_img = array(
+                                            'media_type'    =>  'images',
+                                            'media_name'    =>  $media['media_name'],
+                                            'media_source'  =>  $media['media_source'],
+                                            'media_store'   =>  'local',
+                                            'media_users'   =>  $user['users_id'],
+                                            'media_parent'  =>  $id,
+                                            'media_time'    =>  $config->getTimeNow()
+                                        );
+                                        if(!$db->insert(_TABLE_MEDIA, $data_img)){
+                                            $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                        }
                                     }
                                 }
-
                                 if($data['hasErrors']){
                                     $error['media_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                                }
+                            }
+
+                        if($media_video && !$error && ($media_video != $post_video['media_source'])){
+                            if($post_video){
+                                $data_video = array('media_source' => $media_video);
+                                if(!$db->where(array('media_id' => $post_video['media_id']))->update(_TABLE_MEDIA , $data_video)->execute()){
+                                    $error['media_images'] = 'Có lỗi trong quá trình update ảnh';
+                                }
+                            }else{
+                                $media['media_name']    = $data['data']['metas'][0]['name'];
+                                $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                                $data_video = array(
+                                    'media_type'    =>  'video',
+                                    'media_name'    =>  $media_video,
+                                    'media_source'  =>  $media_video,
+                                    'media_store'   =>  'onedrive',
+                                    'media_users'   =>  $user['users_id'],
+                                    'media_parent'  =>  $id,
+                                    'media_time'    =>  $config->getTimeNow()
+                                );
+                                if(!$db->insert(_TABLE_MEDIA, $data_video)){
+                                    $error['media_video'] = 'Có lỗi trong quá trình update ảnh';
                                 }
                             }
                         }
@@ -172,11 +223,13 @@ switch ($act){
                                     }
                                 }
                                 //$funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
-                                $post = $db->from(_TABLE_POST)->where('post_id' , $id)->fetch_first();
+                                $post               = $db->from(_TABLE_POST)->where('post_id' , $id)->fetch_first();
+                                $post_images        = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'images', 'media_parent' => $id))->fetch_first();
+                                $post_video         = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'video', 'media_parent' => $id))->fetch_first();
+
                             }
                         }
                     }
-                }
                 $admin_title    = 'Chỉnh sửa bài viết '.$post['post_name'];
                 $css_plus       = array(
                     'app-assets/vendors/css/editors/tinymce/tinymce.min.css',
@@ -224,7 +277,7 @@ switch ($act){
                                     <div class="form-group row">
                                         <div class="col-md-1 text-right">Ảnh</div>
                                         <div class="col-md-7">
-                                            <input type="text" value="<?php echo $funcion->getMediaPost($id, 'images')?>" class="<?php echo $config->form_style('text_input');?>" name="media_images">
+                                            <input type="text" class="<?php echo $config->form_style('text_input');?>" value="<?php echo $post_images['media_source'];?>" name="media_images">
                                             <?php echo $error['media_images'] ? $config->getAlert('help_error', $error['media_images']) : '';?>
                                         </div>
                                         <div class="col-md-4">
@@ -234,7 +287,7 @@ switch ($act){
                                     <div class="form-group row">
                                         <div class="col-md-1 text-right">Video</div>
                                         <div class="col-md-11">
-                                            <input type="text" value="<?php echo $funcion->getMediaPost($id, 'video')?>" class="<?php echo $config->form_style('text_input');?>" name="media_video">
+                                            <input type="text" class="<?php echo $config->form_style('text_input');?>" value="<?php echo $post_video['media_source'];?>" name="media_video">
                                             <?php echo $error['media_video'] ? $config->getAlert('help_error', $error['media_video']) : '';?>
                                         </div>
                                     </div>
@@ -368,8 +421,8 @@ switch ($act){
                                 swal("Thông báo!", "Bạn cận nhập URL ảnh hoặc tải ảnh lên", "warning");
                                 return false;
                             }
-
                         });
+                        <?php if($submit && !$error){echo 'swal("Đã Update Bài Viết!", "Update Bài Viết Thành Công", "success");';}?>
                     });
                 </script>
                 <?php
@@ -521,6 +574,7 @@ switch ($act){
                                 $db->insert(_TABLE_GROUP, $data);
                             }
 
+                            // Insert Images
                             $data = array(
                                 'media_type'    =>  'images',
                                 'media_name'    =>  $media['media_name'],
@@ -530,8 +584,9 @@ switch ($act){
                                 'media_parent'  =>  $id,
                                 'media_time'    =>  $config->getTimeNow()
                             );
-                            // Insert Images
                             $db->insert(_TABLE_MEDIA, $data);
+
+                            // Insert Video URL
                             $data = array(
                                 'media_type'    =>  'video',
                                 'media_name'    =>  $media_video,
@@ -541,8 +596,64 @@ switch ($act){
                                 'media_parent'  =>  $id,
                                 'media_time'    =>  $config->getTimeNow()
                             );
-                            // Insert Video URL
                             $db->insert(_TABLE_MEDIA, $data);
+
+                            // Insert Store
+                            switch ($funcion->urlToDomain($post_source)){
+                                case 'v.douyin.com':
+                                    // Insert Video
+                                    $link = $funcion->tiktok_getUrlVideoChina_v2($post_source);
+                                    $data = array(
+                                        'media_type'    =>  'video',
+                                        'media_name'    =>  $link['video'],
+                                        'media_source'  =>  $link['video'],
+                                        'media_store'   =>  'tiktok_china',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    $db->insert(_TABLE_MEDIA, $data);
+
+                                    // Insert Images
+                                    $data = array(
+                                        'media_type'    =>  'images',
+                                        'media_name'    =>  $link['images'],
+                                        'media_source'  =>  $link['images'],
+                                        'media_store'   =>  'remote',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    $db->insert(_TABLE_MEDIA, $data);
+                                    break;
+                                case 'vt.tiktok.com':
+                                    $link = $funcion->tiktok_getUrlVideoVietNam_v2($post_source);
+                                    // insert Video
+                                    $data = array(
+                                        'media_type'    =>  'video',
+                                        'media_name'    =>  $link['video'],
+                                        'media_source'  =>  $link['video'],
+                                        'media_store'   =>  'tiktok_vietnam',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    $db->insert(_TABLE_MEDIA, $data);
+
+                                    // Insert Images
+                                    $data = array(
+                                        'media_type'    =>  'images',
+                                        'media_name'    =>  $link['images'],
+                                        'media_source'  =>  $link['images'],
+                                        'media_store'   =>  'remote',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    $db->insert(_TABLE_MEDIA, $data);
+                                    break;
+                            }
+
                             $funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
                         }
 

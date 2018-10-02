@@ -12,33 +12,12 @@ switch ($act){
     case 'get_auto_video':
         switch ($funcion->urlToDomain($url)){
             case 'v.douyin.com':
-                $ch = curl_init($url);
-                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $result = curl_exec($ch);
-                curl_close($ch);
-                $html = str_get_html($result);
-                $url = $html->find('a', 0)->href;
-                $ch = curl_init($url);
-                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.15');
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $result = curl_exec($ch);
-                curl_close($ch);
-                $html   = str_get_html($result);
-                $script = $html->find('script',7);
-                $script = explode('"', $script);
-                $video  = $script[1];
-                $images = $script[3];
-                $author = $html->find("title", 0)->plaintext;
-                $array  = array('images' => $images, 'video' => $funcion->tiktok_getUrlVideoChina($url), 'author' => $author);
+                $data   = $funcion->tiktok_getUrlVideoChina_v2($url);
+                $array  = array('images' => $data['images'], 'video' => $data['video']);
                 break;
             case 'vt.tiktok.com':
-                $html   = file_get_html($url);
-                $images = $html->find("meta[property=og:image]", 0)->content;
-                $video  = $funcion->tiktok_getUrlVideoVietNam($url);
-                $author = $html->find("title", 0)->plaintext;
-                $author = str_replace(' on Tik Tok: TikTok', '', $author);
-                $array  = array('images' => $images, 'video' => $video, 'author' => $author);
+                $data   = $funcion->tiktok_getUrlVideoVietNam_v2($url);
+                $array  = array('images' => $data['images'], 'video' => $data['video']);
                 break;
             case '1drv.ms':
                 $html   = file_get_html($url);
@@ -93,7 +72,7 @@ switch ($act){
         $db->limit($_GET['limit'], $_GET['offset']);
         $db->order_by('post_id', 'DESC');
         foreach ($db->fetch() AS $row){
-        ?>
+            ?>
             <div class="card bg-instant text-white">
                 <img class="card-img" src="<?php echo $funcion->getMediaPost($row['post_id']);?>">
                 <div class="card-img-overlay bg-over">
@@ -114,7 +93,7 @@ switch ($act){
                     <small class="text-muted card-date"><?php echo $config->getTimeView($row['post_time']);?></small>
                 </div>
             </div>
-        <?php
+            <?php
         }
         break;
 }

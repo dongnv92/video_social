@@ -112,7 +112,7 @@ class myFunction
         return $string;
     }
 
-    private function tiktok_get_redirect_final_target($url){
+    function tiktok_get_redirect_final_target($url){
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_NOBODY, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -162,7 +162,7 @@ class myFunction
     }
 
     public function tiktok_getUrlVideoChina($url){
-        $data = $this->tiktok_getContent($url);
+        $data = $this->tiktok_getContent($this->tiktok_get_redirect_final_target($url));
         if(!$data) {
             echo "Không lấy được data";
             return false;
@@ -177,6 +177,13 @@ class myFunction
         return $this->tiktok_get_redirect_final_target($v_url);
     }
 
+    function tiktok_getUrlVideoChina_v2($url){
+        $html   = file_get_html($this->tiktok_get_redirect_final_target($url));
+        $images = $html->find('meta[property=og:image]', 0)->content;
+        preg_match('/https:\/\/aweme.snssdk.com\/aweme\/v1\/playwm(.*)line=0/m', $html, $match);
+        return array('images' => $images, 'video' => $match[0]);
+    }
+
     public function tiktok_getUrlVideoVietNam($url){
         $html = file_get_html($url);
         $html = $html->find('script' , 7);
@@ -184,6 +191,17 @@ class myFunction
         $html = str_replace('\u0026' , '' , $math[1][0]);
         $html = 'https://api.tiktokv.com/aweme/v1/playwm/?video_id='. $html .'&line=0';
         return $this->tiktok_get_redirect_final_target($html);
+    }
+
+    public function tiktok_getUrlVideoVietNam_v2($url){
+        $url    = $this->tiktok_get_redirect_final_target($url);
+        $html   = file_get_html($url);
+        $images = $html->find('meta[property=og:image]', 0)->content;
+        $html   = $html->find('script' , 7);
+        preg_match_all('/video_id=(.+?)line=0/' , $html , $math);
+        $html   = str_replace('\u0026' , '' , $math[1][0]);
+        $video  = 'https://api.tiktokv.com/aweme/v1/playwm/?video_id='. $html .'&line=0';
+        return array('images' => $images, 'video' => $video);
     }
 
     /*
@@ -315,7 +333,7 @@ class myFunction
                         </div>
                         <div class="post-thumb">
                             <video width="100%" height="371px" poster="<?php echo $this->getMediaPost($row['post_id'], 'images');?>" class="player" playsinline controls>
-                                <source src="<?php echo $this->getMediaPost($row['post_id'], 'video');?>" type="video/mp4">
+                                <source src="<?php echo $this->getMediaPost($row['post_id'], 'video');?>">
                             </video>
                         </div>
                         <h4 class="post-title"><?php echo $row['post_name'];?></h4>
