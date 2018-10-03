@@ -6,11 +6,12 @@
  * Time: 11:40
  */
 //require_once '../includes/core.php';
+$header['title'] = $header['title'] ? $header['title'] : 'Trang Chủ';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Trang Chủ</title>
+    <title><?php echo $header['title'];?></title>
     <!-- Required meta tags always come first -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,6 +33,17 @@
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/css/main.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/css/fonts.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/player/build/mediaelementplayer.min.css">
+    <style>
+        .mejs__overlay-button {
+            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
+        }
+        .mejs__overlay-loading-bg-img {
+            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
+        }
+        .mejs__button > button {
+            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
+        }
+    </style>
 </head>
 <body>
 

@@ -8,9 +8,22 @@
 
 class config
 {
+    function softStore($type = 'video'){
+        if($type == 'video'){
+            $array = array();
+            $array[] = 'onedrive';
+            $array[] = 'tiktok_china';
+            $array[] = 'tiktok_vietnam';
+            $array[] = 'youtube';
+            $array[] = 'local';
+            return $array;
+        }else{
+            return array('remote', 'local');
+        }
+    }
 
     function store_suport(){
-        return array('1drv.ms');
+        return array('1drv.ms', 'youtube.com');
     }
 
     function getTimeView($time){

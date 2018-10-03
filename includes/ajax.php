@@ -13,11 +13,11 @@ switch ($act){
         switch ($funcion->urlToDomain($url)){
             case 'v.douyin.com':
                 $data   = $funcion->tiktok_getUrlVideoChina_v2($url);
-                $array  = array('images' => $data['images'], 'video' => $data['video']);
+                $array  = array('images' => $data['images'], 'video' => $data['video'], 'download' => $data['download']);
                 break;
             case 'vt.tiktok.com':
                 $data   = $funcion->tiktok_getUrlVideoVietNam_v2($url);
-                $array  = array('images' => $data['images'], 'video' => $data['video']);
+                $array  = array('images' => $data['images'], 'video' => $data['video'], 'download' => $data['download']);
                 break;
             case '1drv.ms':
                 $html   = file_get_html($url);
@@ -27,6 +27,11 @@ switch ($act){
                 parse_str($url['query'], $query);
                 $down   = 'https://onedrive.live.com/download?cid='. $query['cid'] .'&resid='. $query['id'] .'&authkey='.$query['authkey'];
                 $array  = array('url_direct' => $down);
+                break;
+            case 'youtube.com':
+                $url    = parse_url($url);
+                parse_str($url['query'], $query);
+                $array['images'] = 'https://img.youtube.com/vi/'. $query['v'] .'/0.jpg';
                 break;
             default:
                 echo json_encode(array('error' => 'Empty URL'));
@@ -95,5 +100,11 @@ switch ($act){
             </div>
             <?php
         }
+        break;
+    case 'downloadmp4':
+        header("Content-Type: application/octet-stream");
+        header("Content-Transfer-Encoding: Binary");
+        header('Content-disposition: attachment; filename="'. time() .'.MP4"');
+        readfile($url);
         break;
 }

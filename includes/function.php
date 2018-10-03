@@ -15,7 +15,10 @@ class myFunction
     }
 
     function getPlayerVideo($id){
-        return '<video autoplay style="max-height: 450px" poster="'. $this->getMediaPost($id, 'images') .'" id="player" playsinline controls><source src="'. $this->getMediaPost($id, 'video') .'" type="video/mp4"></video>';
+        $text   = '<video width="668px" height="371px" style="width: 100%;" poster="'. $this->getMediaPost($id, 'images') .'" preload="none" controls playsinline webkit-playsinline>';
+        $text  .= '<source src="'. $this->getMediaPost($id, 'video') .'" '. $this->getMediaPostVideoType($id) .'>';
+        $text  .= '</video>';
+        return $text;
     }
 
     function getDetailUser($id, $type){
@@ -27,16 +30,91 @@ class myFunction
         return $users[$type];
     }
 
-    function getMediaPost($id, $type = 'images'){
-        global $db;
-        $images = $db->select('media_source, media_store')->from(_TABLE_MEDIA)->where(array('media_type' => $type, 'media_parent' => $id))->fetch_first();
-        if(!$images){
-            return false;
+    function getMediaPostVideoType($idpost){
+        global $db, $config;
+        $db->select('media_source, media_store')->from(_TABLE_MEDIA);
+        $db->where('media_type', 'video');
+        $db->where('media_parent', $idpost);
+        $data = $db->fetch();
+        $soft = $config->softStore('video');
+        foreach ($soft AS $item_soft){
+            foreach ($data AS $item_data){
+                if($item_data['media_store'] == $item_soft){
+                    if($item_data['media_store'] == 'youtube'){
+                        $return = 'type="video/youtube"';
+                    }else{
+                        $return = '';
+                    }
+                }
+            }
+            if($return){
+                break;
+            }
         }
-        if($images['media_store'] == 'local'){
-            return _URL_HOME.'/'.$images['media_source'];
+        return $return;
+    }
+
+    function getMediaPost($id, $type = 'images', $store = ''){
+        global $db, $config;
+        $db->select('media_source, media_store')->from(_TABLE_MEDIA);
+        $db->where('media_type', $type);
+        $db->where('media_parent', $id);
+        if($store){
+            $db->where('media_store', $store);
+            $db->order_by('media_id', 'desc');
+            $data = $db->fetch_first();
+            if(!$data){
+                return false;
+            }
+            if($type == 'images'){
+                if($data['media_store'] == 'local'){
+                    return _URL_HOME.'/'.$data['media_source'];
+                }else{
+                    return $data['media_source'];
+                }
+            }else if($type == 'video'){
+                return $data['media_source'];
+            }
+        }
+        if($type == 'images'){
+            $db->order_by('media_id', 'desc');
+            $data = $db->fetch();
+            $soft = $config->softStore('images');
+            foreach ($soft AS $item_soft){
+                foreach ($data AS $item_data){
+                    if($item_data['media_store'] == $item_soft){
+                        if($item_data['media_store'] == 'local'){
+                            $return = _URL_HOME.'/'.$item_data['media_source'];
+                        }else{
+                            $return = $item_data['media_source'];
+                        }
+                    }
+                }
+                if($return){
+                    break;
+                }
+            }
+            return $return;
         }else{
-            return $images['media_source'];
+            $db->order_by('media_id', 'desc');
+            $data = $db->fetch();
+            $soft = $config->softStore('video');
+            foreach ($soft AS $item_soft){
+                foreach ($data AS $item_data){
+                    if($item_data['media_store'] == $item_soft){
+                        if($item_data['media_store'] == 'tiktok_china'){
+                            $url    = $this->tiktok_get_redirect_final_target('https://api.amemv.com/aweme/v1/play/?video_id='. $item_data['media_source'] .'&line=1&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0');
+                            $return = _URL_HOME.'/includes/ajax.php?act=downloadmp4&url='.$url;
+                        }else{
+                            $return = $item_data['media_source'];
+                        }
+                    }
+                }
+                if($return){
+                    break;
+                }
+            }
+            return $return;
         }
     }
 
@@ -178,14 +256,15 @@ class myFunction
     }
 
     function tiktok_getUrlVideoChina_v2($url){
-        $html   = file_get_html($this->tiktok_get_redirect_final_target($url));
+        $html   = file_get_html_curl($this->tiktok_get_redirect_final_target($url));
         $images = $html->find('meta[property=og:image]', 0)->content;
-        preg_match('/https:\/\/aweme.snssdk.com\/aweme\/v1\/playwm(.*)line=0/m', $html, $match);
-        return array('images' => $images, 'video' => $match[0]);
+        preg_match('/https:\/\/aweme.snssdk.com\/aweme\/v1\/playwm\/\?video_id=(.*)&line=0/m', $html, $match);
+        $v_url = "https://api.amemv.com/aweme/v1/play/?video_id=" . $match[1] . "&line=1&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0";
+        return array('images' => $images, 'video' => $match[1], 'download' => $this->tiktok_get_redirect_final_target($v_url));
     }
 
     public function tiktok_getUrlVideoVietNam($url){
-        $html = file_get_html($url);
+        $html = file_get_html_curl($url);
         $html = $html->find('script' , 7);
         preg_match_all('/video_id=(.+?)line=0/' , $html , $math);
         $html = str_replace('\u0026' , '' , $math[1][0]);
@@ -195,13 +274,13 @@ class myFunction
 
     public function tiktok_getUrlVideoVietNam_v2($url){
         $url    = $this->tiktok_get_redirect_final_target($url);
-        $html   = file_get_html($url);
+        $html   = file_get_html_curl($url);
         $images = $html->find('meta[property=og:image]', 0)->content;
         $html   = $html->find('script' , 7);
         preg_match_all('/video_id=(.+?)line=0/' , $html , $math);
         $html   = str_replace('\u0026' , '' , $math[1][0]);
         $video  = 'https://api.tiktokv.com/aweme/v1/playwm/?video_id='. $html .'&line=0';
-        return array('images' => $images, 'video' => $video);
+        return array('images' => $images, 'video' => $video, 'download' => $this->tiktok_get_redirect_final_target($video));
     }
 
     /*
@@ -316,7 +395,7 @@ class myFunction
                             <div class="author-date">
                                 <a class="h6 post__author-name fn" href="javascript;:"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></a>
                                 <div class="post__date">
-                                    <time class="published"><?php echo $config->getTimeView($row['post_time']);?></time>
+                                    <time class="published"><a href="<?php echo $this->getUrlPost($row['post_id']);?>"><?php echo $config->getTimeView($row['post_time']);?></a></time>
                                 </div>
                             </div>
                             <?php if($user){?>
@@ -331,11 +410,7 @@ class myFunction
                             </div>
                             <?php }?>
                         </div>
-                        <div class="post-thumb">
-                            <video width="100%" height="371px" poster="<?php echo $this->getMediaPost($row['post_id'], 'images');?>" class="player" playsinline controls>
-                                <source src="<?php echo $this->getMediaPost($row['post_id'], 'video');?>">
-                            </video>
-                        </div>
+                        <div class="post-thumb"><?php echo $this->getPlayerVideo($row['post_id']);?></div>
                         <h4 class="post-title"><?php echo $row['post_name'];?></h4>
                         <p><?php echo $row['post_content'];?></p>
                         <div class="post-additional-info inline-items">
@@ -381,19 +456,19 @@ class myFunction
         }
         $text .= '<div class="ui-block"><div class="ui-block-title"><h6 class="title">Video Ngẫu Nhiên</h6></div><div class="ui-block-content"><ul class="widget w-last-video">';
         foreach ($db->fetch() AS $row){
-            $text .= '<li>';
-                $text .= '<a href="'. $this->getUrlPost($row['post_id']) .'" class="play-video play-video--small">';
+            $text .= '<li><a href="'. $this->getUrlPost($row['post_id']) .'">';
+                $text .= '<div class="play-video play-video--small">';
                     $text .= '<svg class="olymp-play-icon">';
                         $text .= '<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-play-icon"></use>';
                     $text .= '</svg>';
-                $text .= '</a>';
+                $text .= '</div>';
                 $text .= '<img src="'. $this->getMediaPost($row['post_id'], 'images') .'" alt="'. $row['post_name'] .'">';
                 $text .= '<div class="video-content">';
                     $text .= '<div class="title">'. $row['post_name'] .'</div>';
                     $text .= '<time class="published">'. $config->getTimeView($row['post_time']) .'</time>';
                 $text .= '</div>';
                 $text .= '<div class="overlay"></div>';
-            $text .= '</li>';
+            $text .= '</a></li>';
         }
         $text .= '</ul></div></div>';
         return $text;
@@ -432,6 +507,197 @@ class myFunction
 					</li>
 				</ul>
 			</div>';
+        return $text;
+    }
+
+    function getBlockSideBarCategory(){
+        $text = '<div class="ui-block">
+				<div class="ui-block-title">
+					<h6 class="title">Green Goo’s Playlist</h6>
+					<a href="#" class="more">
+						<span class="c-green">
+							<svg class="olymp-remove-playlist-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-remove-playlist-icon"></use></svg>
+						</span>
+					</a>
+				</div>
+
+				<!-- W-Playlist -->
+				
+				<ol class="widget w-playlist">
+					<li class="js-open-popup" data-popup-target=".playlist-popup">
+						<div class="playlist-thumb">
+							<img src="img/playlist6.jpg" alt="thumb-composition">
+							<div class="overlay"></div>
+							<a href="#" class="play-icon">
+								<svg class="olymp-music-play-icon-big">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
+								</svg>
+							</a>
+						</div>
+				
+						<div class="composition">
+							<a href="#" class="composition-name">The Past Starts Slow...</a>
+							<a href="#" class="composition-author">System of a Revenge</a>
+						</div>
+				
+						<div class="composition-time">
+							<time class="published" datetime="2017-03-24T18:18">3:22</time>
+							<div class="more">
+								<svg class="olymp-three-dots-icon">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+								</svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Add Song to Player</a>
+									</li>
+									<li>
+										<a href="#">Add Playlist to Player</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+				
+					</li>
+				
+					<li class="js-open-popup" data-popup-target=".playlist-popup">
+						<div class="playlist-thumb">
+							<img src="img/playlist7.jpg" alt="thumb-composition">
+							<div class="overlay"></div>
+							<a href="#" class="play-icon">
+								<svg class="olymp-music-play-icon-big">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
+								</svg>
+							</a>
+						</div>
+				
+						<div class="composition">
+							<a href="#" class="composition-name">The Pretender</a>
+							<a href="#" class="composition-author">Kung Fighters</a>
+						</div>
+				
+						<div class="composition-time">
+							<time class="published" datetime="2017-03-24T18:18">5:48</time>
+							<div class="more">
+								<svg class="olymp-three-dots-icon">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+								</svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Add Song to Player</a>
+									</li>
+									<li>
+										<a href="#">Add Playlist to Player</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+				
+					</li>
+					<li class="js-open-popup" data-popup-target=".playlist-popup">
+						<div class="playlist-thumb">
+							<img src="img/playlist8.jpg" alt="thumb-composition">
+							<div class="overlay"></div>
+							<a href="#" class="play-icon">
+								<svg class="olymp-music-play-icon-big">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
+								</svg>
+							</a>
+						</div>
+				
+						<div class="composition">
+							<a href="#" class="composition-name">Blood Brothers</a>
+							<a href="#" class="composition-author">Iron Maid</a>
+						</div>
+				
+						<div class="composition-time">
+							<time class="published" datetime="2017-03-24T18:18">3:06</time>
+							<div class="more">
+								<svg class="olymp-three-dots-icon">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+								</svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Add Song to Player</a>
+									</li>
+									<li>
+										<a href="#">Add Playlist to Player</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+				
+					</li>
+					<li class="js-open-popup" data-popup-target=".playlist-popup">
+						<div class="playlist-thumb">
+							<img src="img/playlist9.jpg" alt="thumb-composition">
+							<div class="overlay"></div>
+							<a href="#" class="play-icon">
+								<svg class="olymp-music-play-icon-big">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
+								</svg>
+							</a>
+						</div>
+				
+						<div class="composition">
+							<a href="#" class="composition-name">Seven Nation Army</a>
+							<a href="#" class="composition-author">The Black Stripes</a>
+						</div>
+				
+						<div class="composition-time">
+							<time class="published" datetime="2017-03-24T18:18">6:17</time>
+							<div class="more">
+								<svg class="olymp-three-dots-icon">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+								</svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Add Song to Player</a>
+									</li>
+									<li>
+										<a href="#">Add Playlist to Player</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+				
+					</li>
+					<li class="js-open-popup" data-popup-target=".playlist-popup">
+						<div class="playlist-thumb">
+							<img src="img/playlist10.jpg" alt="thumb-composition">
+							<div class="overlay"></div>
+							<a href="#" class="play-icon">
+								<svg class="olymp-music-play-icon-big">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
+								</svg>
+							</a>
+						</div>
+				
+						<div class="composition">
+							<a href="#" class="composition-name">Killer Queen</a>
+							<a href="#" class="composition-author">Archiduke</a>
+						</div>
+				
+						<div class="composition-time">
+							<time class="published" datetime="2017-03-24T18:18">5:40</time>
+							<div class="more">
+								<svg class="olymp-three-dots-icon">
+									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+								</svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Add Song to Player</a>
+									</li>
+									<li>
+										<a href="#">Add Playlist to Player</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ol>
+				<!-- .. end W-Playlist -->
+			</div>';
+
         return $text;
     }
 }

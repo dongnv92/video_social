@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 27, 2018 lúc 07:15 PM
+-- Thời gian đã tạo: Th10 03, 2018 lúc 11:52 AM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -93,7 +93,20 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (25, 'post', 16, 2, 1, 1538042989),
 (26, 'post', 17, 4, 1, 1538063887),
 (27, 'post', 18, 4, 1, 1538064453),
-(28, 'post', 19, 4, 1, 1538065249);
+(28, 'post', 19, 4, 1, 1538065249),
+(29, 'post', 19, 2, 1, 1538130421),
+(30, 'post', 20, 2, 1, 1538448230),
+(31, 'post', 21, 4, 1, 1538467287),
+(32, 'post', 22, 4, 1, 1538499651),
+(33, 'post', 23, 2, 1, 1538499929),
+(34, 'post', 23, 4, 1, 1538499929),
+(35, 'post', 24, 4, 1, 1538533074),
+(36, 'post', 25, 2, 1, 1538535048),
+(37, 'post', 25, 4, 1, 1538535048),
+(38, 'post', 26, 2, 1, 1538535991),
+(39, 'post', 26, 4, 1, 1538535991),
+(43, 'post', 29, 2, 1, 1538541565),
+(44, 'post', 29, 4, 1, 1538541565);
 
 -- --------------------------------------------------------
 
@@ -151,8 +164,36 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (34, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86489&authkey=!ABviymECF2f08bA', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86489&authkey=!ABviymECF2f08bA', 'onedrive', 1, 17, 1538063888),
 (35, 'images', 'zDgLok2mXb1B.jpg', 'media/images/post/zDgLok2mXb1B.jpg', 'local', 1, 18, 1538064453),
 (36, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86490&authkey=!AGJdWP3HgLVMb4M', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86490&authkey=!AGJdWP3HgLVMb4M', 'onedrive', 1, 18, 1538064453),
-(37, 'images', 'bJ8MZ0nFazXI.jpg', 'media/images/post/bJ8MZ0nFazXI.jpg', 'local', 1, 19, 1538065249),
-(38, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'onedrive', 1, 19, 1538065249);
+(37, 'images', 'bJ8MZ0nFazXI.jpg', 'media/images/post/a6my3ozOL7VE.jpg', 'local', 1, 19, 1538065249),
+(38, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86491&authkey=!AHkAHA-yvR6TSbg', 'onedrive', 1, 19, 1538065249),
+(39, 'images', 'NZXEbtp3FAni.jpg', 'media/images/post/NZXEbtp3FAni.jpg', 'local', 1, 20, 1538448230),
+(40, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86706&authkey=!AHa_eSYIqdwoIeM', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86706&authkey=!AHa_eSYIqdwoIeM', 'onedrive', 1, 20, 1538448230),
+(41, 'images', 'hcETf7Q_LGHj.jpg', 'media/images/post/hcETf7Q_LGHj.jpg', 'local', 1, 21, 1538467287),
+(42, 'video', 'https://onedrive.live.com/download?cid=&resid=&authkey=', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86722&authkey=!AISit9FwdKk1IYg', 'onedrive', 1, 21, 1538467287),
+(43, 'video', 'https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200f9a0000ben0gubc86dsktk11it0&line=0', 'v0200f9a0000ben0gubc86dsktk11it0', 'tiktok_china', 1, 21, 1538467289),
+(44, 'images', 'https://p98.pstatp.com/large/ca6300015da8823241d9.jpg', 'https://p98.pstatp.com/large/ca6300015da8823241d9.jpg', 'remote', 1, 21, 1538467289),
+(45, 'images', '78_2pJIn4ZdO.jpg', 'media/images/post/78_2pJIn4ZdO.jpg', 'local', 1, 22, 1538499651),
+(46, 'video', 'https://onedrive.live.com/download?cid=&resid=&authkey=', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVD8-V6VnwPpOpHRA', 'onedrive', 1, 22, 1538499651),
+(47, 'video', 'v0200fc80000beaus136j2ql62g6mu00', 'v0200fc80000beaus136j2ql62g6mu00', 'tiktok_china', 1, 22, 1538499654),
+(48, 'images', 'https://p3.pstatp.com/large/badf0000103723486997.jpg', 'https://p3.pstatp.com/large/badf0000103723486997.jpg', 'remote', 1, 22, 1538499654),
+(49, 'images', 'VOYA8LW5aeF1.jpg', 'media/images/post/VOYA8LW5aeF1.jpg', 'local', 1, 23, 1538499929),
+(50, 'video', 'https://onedrive.live.com/download?cid=&resid=&authkey=', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86724&authkey=!ABRIwf8p-Rj3WPs', 'onedrive', 1, 23, 1538499929),
+(51, 'video', 'v0300f9a0000belpi84hpahona87lrv0', 'v0300f9a0000belpi84hpahona87lrv0', 'tiktok_china', 1, 23, 1538499931),
+(52, 'images', 'https://p98.pstatp.com/large/c8e80006ef2e34a0f265.jpg', 'https://p98.pstatp.com/large/c8e80006ef2e34a0f265.jpg', 'remote', 1, 23, 1538499931),
+(53, 'images', 'ehA7GkaXwmQK.jpg', 'media/images/post/ehA7GkaXwmQK.jpg', 'local', 1, 24, 1538533074),
+(54, 'video', 'https://onedrive.live.com/download?cid=&resid=&authkey=', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86726&authkey=!ALfpBhbL3AA4MQA', 'onedrive', 1, 24, 1538533074),
+(55, 'video', 'v0200f1b0000be5rr84pg62bra9vhimg', 'v0200f1b0000be5rr84pg62bra9vhimg', 'tiktok_china', 1, 24, 1538533080),
+(56, 'images', 'https://p3.pstatp.com/large/b4040000f2dc16c81b80.jpg', 'https://p3.pstatp.com/large/b4040000f2dc16c81b80.jpg', 'remote', 1, 24, 1538533080),
+(57, 'images', 'MHYzu2bjXvWV.jpg', 'media/images/post/MHYzu2bjXvWV.jpg', 'local', 1, 25, 1538535048),
+(58, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86727&authkey=!ANtVcC_B3hcnSa0', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86727&authkey=!ANtVcC_B3hcnSa0', 'onedrive', 1, 25, 1538535048),
+(59, 'video', 'v0200f500000befkbguue3mtq0vtioug', 'v0200f500000befkbguue3mtq0vtioug', 'tiktok_china', 1, 25, 1538535050),
+(60, 'images', 'https://p1.pstatp.com/large/c0ab00036c025e459946.jpg', 'https://p1.pstatp.com/large/c0ab00036c025e459946.jpg', 'remote', 1, 25, 1538535050),
+(61, 'images', '7H1KIaFWetqU.jpg', 'media/images/post/7H1KIaFWetqU.jpg', 'local', 1, 26, 1538535991),
+(62, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86728&authkey=!AM99c53YsSZpf2I', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86728&authkey=!AM99c53YsSZpf2I', 'onedrive', 1, 26, 1538535991),
+(63, 'video', 'https://api.tiktokv.com/aweme/v1/playwm/?video_id=v07025590000beolmsjsqmkasla2gd60&line=0', 'https://api.tiktokv.com/aweme/v1/playwm/?video_id=v07025590000beolmsjsqmkasla2gd60&line=0', 'tiktok_vietnam', 1, 26, 1538535992),
+(64, 'images', 'http://p16.tiktokcdn.com/large/v0201/babfc3f53f51498891f83c77e1bea6ac.jpg', 'http://p16.tiktokcdn.com/large/v0201/babfc3f53f51498891f83c77e1bea6ac.jpg', 'remote', 1, 26, 1538535992),
+(71, 'images', 'https://img.youtube.com/vi/0hN5wEpkhhk/0.jpg', 'https://img.youtube.com/vi/0hN5wEpkhhk/0.jpg', 'remote', 1, 29, 1538541565),
+(72, 'video', 'https://www.youtube.com/watch?v=0hN5wEpkhhk', 'https://www.youtube.com/watch?v=0hN5wEpkhhk', 'youtube', 1, 29, 1538541565);
 
 -- --------------------------------------------------------
 
@@ -199,7 +240,15 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (16, 'Chọn chị hay chọn em đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dq1tAh/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNYvREHc9zaHAcubw', 1, 1, 0, 'chon-chi-hay-chon-em-day', 1538042989),
 (17, 'Đẳng cấp phi máy bay', '<p>Đẳng cấp phi m&aacute;y bay</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqDSLD/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNZG-LKYQIXZ_TxsA', 1, 1, 0, 'dang-cap-phi-may-bay', 1538063887),
 (18, 'Đẳng cấp luộc trứng', '<p>Đẳng cấp luộc trứng</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqhVRA/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNaYl1Y_ceAtUxvgw', 1, 1, 0, 'dang-cap-luoc-trung', 1538064453),
-(19, 'Thánh lắc mông', '<p>Th&aacute;nh lắc m&ocirc;ng</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqjq6y/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNbeQAcD7K9HpNJuA', 1, 1, 0, 'thanh-lac-mong', 1538065248);
+(19, 'Thánh lắc mông', '<p>Th&aacute;nh lắc m&ocirc;ng</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dqjq6y/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaNbeQAcD7K9HpNJuA', 1, 1, 0, 'thanh-lac-mong', 1538065248),
+(20, 'Quả mông phúc hậu :D', '<p>Quả m&ocirc;ng ph&uacute;c hậu :D</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dq9UcH/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaUydr95Jgip3Cgh4w', 1, 1, 0, 'qua-mong-phuc-hau-d', 1538448230),
+(21, 'Cách tự trang trí phòng đẳng cấp', '<p>C&aacute;ch tự trang tr&iacute; ph&ograve;ng đẳng cấp</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dbNhwT/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVChKK30XB0qTUhiA', 1, 1, 0, 'cach-tu-trang-tri-phong-dang-cap', 1538467287),
+(22, 'Cách buộc giày đơn giản mà đẹp', '<p>C&aacute;ch buộc gi&agrave;y đơn giản m&agrave; đẹp</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGY4xw/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVD8-V6VnwPpOpHRA', 1, 1, 0, 'cach-buoc-giay-don-gian-ma-dep', 1538499651),
+(23, 'Dấu hiệu của FA lâu năm', '<p>Dấu hiệu của FA l&acirc;u năm</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dsoNMw/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVEFEjB_yn5GPdY-w', 1, 1, 0, 'dau-hieu-cua-fa-lau-nam', 1538499929),
+(24, 'Tiên Cảnh Là Có Thật', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGkoNX/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVGt-kGFsvcADgxAA', 1, 1, 0, 'tien-canh-la-co-that', 1538533074),
+(25, 'Nắng Nhẹ', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGyGLN/', 'https://1drv.ms/u/s!AvOWg2YnpZYMhaVH21VwL8HeFydJrQ', 1, 1, 0, 'nang-nhe', 1538535048),
+(26, 'Như Tắc Kè Hoa', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://vt.tiktok.com/Q7KvF/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVIz31zndixJml_Yg', 1, 1, 0, 'nhu-tac-ke-hoa', 1538535991),
+(29, 'Cách chống đẩy đúng cách', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'https://www.youtube.com/watch?v=0hN5wEpkhhk', 'https://www.youtube.com/watch?v=0hN5wEpkhhk', 1, 1, 0, 'cach-chong-day-dung-cach', 1538541565);
 
 -- --------------------------------------------------------
 
@@ -274,19 +323,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`

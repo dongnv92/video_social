@@ -442,17 +442,17 @@ switch ($act){
         switch ($type){
             case 'video':
                 if($submit){
-                    $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? $_POST['post_title']          : '';
-                    $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? $_POST['post_content']        : '';
-                    $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? $_POST['post_source']         : '';
-                    $post_store         = (isset($_POST['post_store'])          && !empty($_POST['post_store']))        ? $_POST['post_store']          : '';
-                    $post_images        = (isset($_POST['post_images'])         && !empty($_POST['post_images']))       ? $_POST['post_images']         : '';
-                    $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : '';
-                    $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? $_POST['post_keyword']        : '';
-                    $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : '';
-                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : $funcion->makeSlug($post_title);
-                    $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? $_POST['post_status']         : 0;
-                    $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? $_POST['post_show']           : 0;
+                    $post_title         = (isset($_POST['post_title'])          && !empty($_POST['post_title']))        ? trim($_POST['post_title'])        : '';
+                    $post_content       = (isset($_POST['post_content'])        && !empty($_POST['post_content']))      ? trim($_POST['post_content'])      : '';
+                    $post_source        = (isset($_POST['post_source'])         && !empty($_POST['post_source']))       ? trim($_POST['post_source'])       : '';
+                    $post_store         = (isset($_POST['post_store'])          && !empty($_POST['post_store']))        ? trim($_POST['post_store'])        : '';
+                    $post_images        = (isset($_POST['post_images'])         && !empty($_POST['post_images']))       ? trim($_POST['post_images'])       : '';
+                    $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']           : '';
+                    $post_keyword       = (isset($_POST['post_keyword'])        && !empty($_POST['post_keyword']))      ? trim($_POST['post_keyword'])      : '';
+                    $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? trim($_POST['post_description'])  : '';
+                    $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? trim($_POST['post_url'])          : $funcion->makeSlug($post_title);
+                    $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? trim($_POST['post_status'])       : 0;
+                    $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? trim($_POST['post_show'])         : 0;
                     $error              = array();
                     if(!$post_title){
                         $error['post_title'] = 'Bạn chưa nhập tiêu đề';
@@ -463,7 +463,7 @@ switch ($act){
                     if(!$post_store){
                         $error['post_store'] = 'Bạn chưa nhập nguồn lưu trữ Video gốc';
                     }
-                    if($post_store && !filter_var($post_source, FILTER_VALIDATE_URL)){
+                    if($post_store && !filter_var($post_store, FILTER_VALIDATE_URL)){
                         $error['post_store'] = 'Không đúng định dạng URL';
                     }
                     if(!in_array($funcion->urlToDomain($post_store) , $config->store_suport())){
@@ -479,7 +479,10 @@ switch ($act){
                         $error['post_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
                     }
                     if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
-                        $error['post_url'] = 'URL đã tồn tại';
+                        $post_url = $funcion->randomString(15);
+                        if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
+                            $error['post_url'] = 'URL bài viết đã tồn tại';
+                        }
                     }
                     if($db->select('post_source')->from(_TABLE_POST)->where('post_source' , $post_source)->fetch()){
                         $error['post_source'] = 'Video Đã Tồn Tại';
@@ -489,20 +492,27 @@ switch ($act){
                     }
 
                     if($post_images){
-                        $data = $uploader->upload($post_images, array(
-                            'uploadDir' => '../'._PATH_IMAGES_POST.'/',
-                            'title' => array('auto', 12),
-                        ));
-
-                        if($data['isComplete']){
-                            $media['media_name']    = $data['data']['metas'][0]['name'];
+                        if($funcion->urlToDomain($post_store) == 'youtube.com'){
+                            $media['media_name']    = $post_images;
+                            $media['media_source']  = $post_images;
                             $media['media_type']    = 'images';
-                            $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
-                            $media['media_store']   = 'local';
-                        }
+                            $media['media_store']   = 'remote';
+                        }else{
+                            $data = $uploader->upload($post_images, array(
+                                'uploadDir' => '../'._PATH_IMAGES_POST.'/',
+                                'title' => array('auto', 12),
+                            ));
 
-                        if($data['hasErrors']){
-                            $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                            if($data['isComplete']){
+                                $media['media_name']    = $data['data']['metas'][0]['name'];
+                                $media['media_type']    = 'images';
+                                $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                                $media['media_store']   = 'local';
+                            }
+
+                            if($data['hasErrors']){
+                                $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                            }
                         }
                     }
 
@@ -538,9 +548,18 @@ switch ($act){
                         }
                     }
 
-                    $media_video = $funcion->getDirectOndrive($post_store);
-                    if(!$media_video){
-                        $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
+                    switch ($funcion->urlToDomain($post_store)){
+                        case '1drv.ms':
+                            $media_video        = $funcion->getDirectOndrive($post_store);
+                            $media_video_type   = 'onedrive';
+                            if(!$media_video){
+                                $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
+                            }
+                            break;
+                        case 'youtube.com':
+                            $media_video        = $post_store;
+                            $media_video_type   = 'youtube';
+                            break;
                     }
 
                     if(!$error) {
@@ -591,7 +610,7 @@ switch ($act){
                                 'media_type'    =>  'video',
                                 'media_name'    =>  $media_video,
                                 'media_source'  =>  $media_video,
-                                'media_store'   =>  'onedrive',
+                                'media_store'   =>  $media_video_type,
                                 'media_users'   =>  $user['users_id'],
                                 'media_parent'  =>  $id,
                                 'media_time'    =>  $config->getTimeNow()
@@ -653,10 +672,8 @@ switch ($act){
                                     $db->insert(_TABLE_MEDIA, $data);
                                     break;
                             }
-
                             $funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
                         }
-
                     }
                 }
                 $admin_title    = 'Thêm Mới Video';
@@ -861,7 +878,7 @@ switch ($act){
                                     $('#images_preview').show();
                                     $('input[name=post_url]').val(data.urlSlug);
                                     $('#loading_wait').hide();
-                                    $('#text_download').attr('href', '<?php echo _URL_HOME;?>/includes/ajax.php?act=download&url=' + data.video)
+                                    $('#text_download').attr('href', '<?php echo _URL_HOME;?>/includes/ajax.php?act=download&url=' + data.download)
                                     $('#text_download').show();
                                 },
                                 timeout: 20000

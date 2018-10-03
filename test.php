@@ -8,4 +8,5 @@
 
  */
 require_once 'includes/core.php';
-print_r($funcion->tiktok_getUrlVideoVietNam_v2('http://vt.tiktok.com/9vxUc/'));
+
+echo $funcion->getMediaPostVideoType(25);

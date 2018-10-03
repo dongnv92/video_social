@@ -34,7 +34,7 @@
 <script src="<?php echo _URL_STYLE;?>/Bootstrap/dist/js/bootstrap.bundle.js"></script>
 <script src="<?php echo _URL_STYLE;?>/player/build/mediaelement-and-player.min.js"></script>
 <script>
-    $('.player').mediaelementplayer();
+    $('video').mediaelementplayer();
 </script>
 
 </body>
