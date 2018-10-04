@@ -454,9 +454,7 @@ switch ($act){
                     $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? trim($_POST['post_status'])       : 0;
                     $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? trim($_POST['post_show'])         : 0;
                     $error              = array();
-                    if(!$post_title){
-                        $error['post_title'] = 'Bạn chưa nhập tiêu đề';
-                    }
+
                     if($post_source && !filter_var($post_source, FILTER_VALIDATE_URL)){
                         $error['post_source'] = 'Không đúng định dạng URL';
                     }
@@ -478,10 +476,10 @@ switch ($act){
                     if($post_images && !filter_var($post_images, FILTER_VALIDATE_URL)){
                         $error['post_images'] = 'Đường dẫn File ảnh chưa đúng định dạng';
                     }
-                    if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
+                    if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch() || !$post_url){
                         $post_url = $funcion->randomString(15);
                         if($db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
-                            $error['post_url'] = 'URL bài viết đã tồn tại';
+                            $post_url = $funcion->randomString(16);
                         }
                     }
                     if($db->select('post_source')->from(_TABLE_POST)->where('post_source' , $post_source)->fetch()){
@@ -709,7 +707,7 @@ switch ($act){
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <input required type="text" value="<?php echo $post_title;?>" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
+                                        <input type="text" value="<?php echo $post_title;?>" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
                                         <?php echo $error['post_title'] ? $config->getAlert('help_error', $error['post_title']) : '';?>
                                     </div>
                                     <div class="form-group">
@@ -956,7 +954,7 @@ switch ($act){
                             </div>
                             <div class="profile-card-with-cover-content text-center">
                                 <div class="card-body">
-                                    <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>"><?php echo $datas['post_name'];?></a></h4>
+                                    <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>"><?php echo $datas['post_name'] ? $datas['post_name'] : 'Không Có Tiêu Đề';?></a></h4>
                                     <ul class="list-inline list-inline-pipe">
                                         <li><?php echo $funcion->getDetailUser($datas['post_users'], 'users_name');?></li>
                                         <li><?php echo $config->getTimeView($datas['post_time']);?></li>

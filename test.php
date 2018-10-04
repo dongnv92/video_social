@@ -9,4 +9,4 @@
  */
 require_once 'includes/core.php';
 
-echo $funcion->getMediaPostVideoType(25);
+echo $funcion->getPostDetailList(23);

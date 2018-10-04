@@ -7,19 +7,24 @@
  */
 require_once 'includes/core.php';
 require_once 'pages/header.php';
+$db->select('post_id')->from(_TABLE_POST);
+$db->where(array('post_type' => 'video', 'post_show' => 1, 'post_status' => 1));
+$db->execute();
+$total_count = $db->affected_rows;
 ?>
 <div class="container">
     <div class="row">
         <!-- Main Content -->
         <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
             <div id="newsfeed-items-grid">
-                <?php $funcion->getViewVideoList('video', array('limit' => 20, 'offset' => 0));?>
+                <input type="hidden" name="total_count" id="total_count" value="<?php echo $total_count; ?>" />
+                <?php echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));?>
             </div>
-            <a id="load-more-button" href="#" class="btn btn-control btn-more" data-load-link="items-to-load.html" data-container="newsfeed-items-grid">
+            <div id="load-more-button" class="btn btn-control btn-more" data-container="newsfeed-items-grid" style="display: none">
                 <svg class="olymp-three-dots-icon">
                     <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
                 </svg>
-            </a>
+            </div>
         </main>
         <!-- ... end Main Content -->
         <!-- Left Sidebar -->
@@ -27,6 +32,7 @@ require_once 'pages/header.php';
         <?php
             echo $funcion->getBlockSideBarIndex();
             echo $funcion->getBlockSideBarCategory();
+            echo $funcion->getBlockAbout();
         ?>
         </aside>
         <!-- ... end Left Sidebar -->
@@ -37,5 +43,39 @@ require_once 'pages/header.php';
         <!-- ... end Right Sidebar -->
     </div>
 </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            windowOnScroll();
+        });
+        function windowOnScroll() {
+            $(window).on("scroll", function(e){
+                if ($(window).scrollTop() == $(document).height() - $(window).height()){
+                    if($(".ui-block").length < $("#total_count").val()) {
+                        var lastId = $("div[name=ui-block]:last").attr("id");
+                        getMoreData(lastId);
+                    }
+                }
+            });
+        }
+
+        function getMoreData(lastId) {
+            $(window).off("scroll");
+            $.ajax({
+                url: '<?php echo _URL_HOME;?>/includes/ajax.php?act=video_load&limit=4&last_id=' + lastId,
+                type: "get",
+                beforeSend: function ()
+                {
+                    $('#load-more-button').show();
+                },
+                success: function (data) {
+                    setTimeout(function() {
+                        $('#load-more-button').hide();
+                        $("#newsfeed-items-grid").append(data);
+                        windowOnScroll();
+                    }, 1000);
+                }
+            });
+        }
+    </script>
 <?php
 require_once 'pages/footer.php';

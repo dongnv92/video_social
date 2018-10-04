@@ -7,7 +7,6 @@
  */
 ?>
 <!-- JS Scripts -->
-<script src="<?php echo _URL_STYLE;?>/js/jquery-3.2.1.js"></script>
 <script src="<?php echo _URL_STYLE;?>/js/jquery.appear.js"></script>
 <script src="<?php echo _URL_STYLE;?>/js/jquery.mousewheel.js"></script>
 <script src="<?php echo _URL_STYLE;?>/js/perfect-scrollbar.js"></script>
@@ -33,6 +32,7 @@
 <script defer src="<?php echo _URL_STYLE;?>/fonts/fontawesome-all.js"></script>
 <script src="<?php echo _URL_STYLE;?>/Bootstrap/dist/js/bootstrap.bundle.js"></script>
 <script src="<?php echo _URL_STYLE;?>/player/build/mediaelement-and-player.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/renderers/facebook.min.js"></script>
 <script>
     $('video').mediaelementplayer();
 </script>

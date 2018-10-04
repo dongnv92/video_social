@@ -23,7 +23,7 @@ class config
     }
 
     function store_suport(){
-        return array('1drv.ms', 'youtube.com');
+        return array('1drv.ms', 'youtube.com', 'facebook.com');
     }
 
     function getTimeView($time){

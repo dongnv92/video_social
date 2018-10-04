@@ -16,6 +16,8 @@ $header['title'] = $header['title'] ? $header['title'] : 'Trang Chủ';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="apple-touch-icon" href="<?php echo _URL_HOME;?>/media/images/system/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo _URL_HOME;?>/media/images/system/favicon.ico">
     <!-- Main Font -->
     <script src="<?php echo _URL_STYLE;?>/js/webfontloader.min.js"></script>
     <script>
@@ -33,6 +35,7 @@ $header['title'] = $header['title'] ? $header['title'] : 'Trang Chủ';
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/css/main.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/css/fonts.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/player/build/mediaelementplayer.min.css">
+    <script src="<?php echo _URL_STYLE;?>/js/jquery-3.2.1.js"></script>
     <style>
         .mejs__overlay-button {
             background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");

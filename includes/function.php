@@ -14,9 +14,10 @@ class myFunction
         return _URL_HOME.'/'.$post['post_url'].'.html';
     }
 
-    function getPlayerVideo($id){
-        $text   = '<video width="668px" height="371px" style="width: 100%;" poster="'. $this->getMediaPost($id, 'images') .'" preload="none" controls playsinline webkit-playsinline>';
-        $text  .= '<source src="'. $this->getMediaPost($id, 'video') .'" '. $this->getMediaPostVideoType($id) .'>';
+    function getPlayerVideo($id, $option = ''){
+        $type   = $this->getMediaPostVideoType($id);
+        $text   = '<video '. ($type == 'type="video/youtube"' ? 'width="680px"' : 'width="'. ($option['width'] ? $option['width'] : '100%') .'"') .' height="'. ($option['height'] ? $option['height'] : '360px') .'" poster="'. $this->getMediaPost($id, 'images') .'" preload="none" loop controls playsinline>';
+        $text  .= '<source src="'. $this->getMediaPost($id, 'video') .'" '. $type .'>';
         $text  .= '</video>';
         return $text;
     }
@@ -375,9 +376,10 @@ class myFunction
     }
 
     function getViewVideoList($type, $option){
-        global $db, $config, $user;
+        global $db;
+        $result = '';
         if($type == 'video'){
-            $db->select()->from(_TABLE_POST);
+            $db->select('post_id')->from(_TABLE_POST);
             $db->where(array('post_type' => 'video', 'post_show' => 1));
             $db->limit($option['limit'], $option['offset']);
             if($option['rand'] == true){
@@ -386,57 +388,47 @@ class myFunction
                 $db->order_by('post_id', 'DESC');
             }
             foreach ($db->fetch() AS $row){
-                $url_post   = $this->getUrlPost($row['post_id']);
-                ?>
-                <div class="ui-block">
-                    <article class="hentry post has-post-thumbnail thumb-full-width">
-                        <div class="post__author author vcard inline-items">
-                            <img src="<?php echo $this->getDetailUser($row['post_users'], 'users_avatar');?>" alt="author">
-                            <div class="author-date">
-                                <a class="h6 post__author-name fn" href="javascript;:"><?php echo $this->getDetailUser($row['post_users'], 'users_name');?></a>
-                                <div class="post__date">
-                                    <time class="published"><a href="<?php echo $this->getUrlPost($row['post_id']);?>"><?php echo $config->getTimeView($row['post_time']);?></a></time>
-                                </div>
-                            </div>
-                            <?php if($user){?>
-                            <div class="more">
-                                <svg class="olymp-three-dots-icon">
-                                    <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-                                </svg>
-                                <ul class="more-dropdown">
-                                    <li><a href="<?php echo _URL_ADMIN.'/post.php?act=update&type=video&id='.$row['post_id']?>">Sửa bài viết</a></li>
-                                    <li><a href="#">Xóa bài viết</a></li>
-                                </ul>
-                            </div>
-                            <?php }?>
-                        </div>
-                        <div class="post-thumb"><?php echo $this->getPlayerVideo($row['post_id']);?></div>
-                        <h4 class="post-title"><?php echo $row['post_name'];?></h4>
-                        <p><?php echo $row['post_content'];?></p>
-                        <div class="post-additional-info inline-items">
-                            <a href="#" class="post-add-icon inline-items">
-                                <svg class="olymp-heart-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg>
-                                <span>8</span>
-                            </a>
-                            <div class="comments-shared">
-                                <a href="#" class="post-add-icon inline-items">
-                                    <svg class="olymp-speech-balloon-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"></use></svg>
-                                    <span>16</span>
-                                </a>
-                                <a href="#" class="post-add-icon inline-items">
-                                    <svg class="olymp-share-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-share-icon"></use></svg>
-                                    <span>8</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="control-block-button post-control-button">
-                            <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
-                        </div>
-                    </article>
-                </div>
-                <?php
+                $result .= $this->getPostDetailList($row['post_id']);
             }
         }
+        return $result;
+    }
+
+    function getPostDetailList($id){
+        global $db, $user, $config;
+        $row = $db->from(_TABLE_POST)->where('post_id', $id)->fetch_first();
+        if(!$row){
+            return false;
+        }
+        $text = '
+        <div name="ui-block" class="ui-block" id="'. $row['post_id'] .'">
+            <article class="hentry post has-post-thumbnail thumb-full-width">
+                <div class="post__author author vcard inline-items">
+                    <img src="'. $this->getDetailUser($row['post_users'], 'users_avatar') .'" alt="author" />
+                    <div class="author-date">
+                        <a class="h6 post__author-name fn" href="javascript;:">'. $this->getDetailUser($row['post_users'], 'users_name') .'</a>
+                        <div class="post__date"><time class="published"><a href="'. $this->getUrlPost($row['post_id']) .'">'. $config->getTimeView($row['post_time']) .'</a></time></div>
+                    </div>
+                    '. ($user ? '<div class="more"><svg class="olymp-three-dots-icon">
+                    <use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+                    <ul class="more-dropdown">
+                        <li><a href="'. _URL_ADMIN .'/post.php?act=update&type=video&id='.$row['post_id'] .'">Sửa bài viết</a></li>
+                        <li><a href="#">Xóa bài viết</a></li>
+                    </ul>
+                    </div>' : '')  .'
+                </div>
+                '. ($row['post_name'] ? '<h5 class="post-title">'.$row['post_name'].'</h5>' : '') .'
+                <p>'. $row['post_content'] .'</p>
+                <div class="post-thumb">'. $this->getPlayerVideo($row['post_id']) .'</div>
+                <div class="post-additional-info inline-items">
+                    <a href="#" class="post-add-icon inline-items"><svg class="olymp-heart-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg><span>8</span></a>
+                </div>
+                <div class="control-block-button post-control-button">
+                    <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
+                </div>
+            </article>
+        </div>';
+        return $text;
     }
 
     function getBlockSideBarVideo($option = ''){
@@ -475,230 +467,75 @@ class myFunction
     }
 
     function getBlockSideBarIndex($option = ''){
-        $text = '<div class="ui-block">
+        $text = '
+        <div class="ui-block">
 				<div class="ui-block-title">
 					<h6 class="title">Bản Tin</h6>
-					<a href="#" class="more">
-					    <svg class="olymp-three-dots-icon">
-					        <use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-					    </svg>
-					</a>
 				</div>
-				<ul class="widget w-friend-pages-added notification-list friend-requests">
-					<li class="inline-items">
-						<div class="notification-event">
-							<a href="#" class="h6 notification-friend">Tin Hot</a>
-						</div>
-						<span class="notification-icon" data-toggle="tooltip" data-placement="top" data-original-title="ADD TO YOUR FAVS">
-							<a href="#">
-								<svg class="olymp-trophy-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-trophy-icon"></use></svg>
-							</a>
-						</span>
-					</li>
-					<li class="inline-items">
-						<div class="notification-event">
-							<a href="#" class="h6 notification-friend">Tin Mới</a>
-						</div>
-						<span class="notification-icon" data-toggle="tooltip" data-placement="top" data-original-title="ADD TO YOUR FAVS">
-							<a href="#">
-								<svg class="olymp-star-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
-							</a>
-						</span>
-					</li>
-				</ul>
+				<div class="ui-block-content">
+					<!-- Widget Featured Topics -->
+					<ul class="widget w-featured-topics">
+						<li>
+							<i class="icon fa fa-star" aria-hidden="true"></i>
+							<div class="content"><a href="#" class="h6 title">Tin Mới Nhất</a></div>
+						</li>
+						<li>
+							<i class="icon fa fa-star" aria-hidden="true"></i>
+							<div class="content"><a href="#" class="h6 title">Tin Hot</a></div>
+						</li>
+					</ul>
+					<!-- ... end Widget Featured Topics -->
+				</div>
 			</div>';
         return $text;
     }
 
     function getBlockSideBarCategory(){
-        $text = '<div class="ui-block">
-				<div class="ui-block-title">
-					<h6 class="title">Green Goo’s Playlist</h6>
-					<a href="#" class="more">
-						<span class="c-green">
-							<svg class="olymp-remove-playlist-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-remove-playlist-icon"></use></svg>
-						</span>
-					</a>
+        global $db;
+        $cate_text = '';
+        $cates = $db->select('category_id, category_name')->from(_TABLE_CATEGORY)->where('category_type', 'video')->fetch();
+        foreach ($cates AS $cate){
+            $db->select('group_id')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_value' => $cate['category_id']))->execute();
+            $num_post = $db->affected_rows;
+            $cate_text .= '
+            <li data-popup-target=".playlist-popup">
+			    <div class="playlist-thumb">
+				    <img src="'. _URL_HOME .'/media/images/system/video.png" alt="thumb-composition">
+					<a href="#"><svg class="olymp-music-play-icon-big"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use></svg></a>
 				</div>
+				<div class="composition"><a href="#" class="composition-name">'. $cate['category_name'] .'</a></div>
+				<div class="composition-time"><time class="published">'. $num_post .'</time></div>
+			</li>';
+        }
+        $text = '
+        <div class="ui-block">
+		    <div class="ui-block-title"><h6 class="title">Xu Hướng Video</h6></div>
+			<!-- W-Playlist -->
+			<ol class="widget w-playlist">'. $cate_text .'</ol>
+			<!-- .. end W-Playlist -->
+		</div>';
+        return $text;
+    }
 
-				<!-- W-Playlist -->
-				
-				<ol class="widget w-playlist">
-					<li class="js-open-popup" data-popup-target=".playlist-popup">
-						<div class="playlist-thumb">
-							<img src="img/playlist6.jpg" alt="thumb-composition">
-							<div class="overlay"></div>
-							<a href="#" class="play-icon">
-								<svg class="olymp-music-play-icon-big">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
-								</svg>
-							</a>
-						</div>
-				
-						<div class="composition">
-							<a href="#" class="composition-name">The Past Starts Slow...</a>
-							<a href="#" class="composition-author">System of a Revenge</a>
-						</div>
-				
-						<div class="composition-time">
-							<time class="published" datetime="2017-03-24T18:18">3:22</time>
-							<div class="more">
-								<svg class="olymp-three-dots-icon">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-								</svg>
-								<ul class="more-dropdown">
-									<li>
-										<a href="#">Add Song to Player</a>
-									</li>
-									<li>
-										<a href="#">Add Playlist to Player</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-				
-					</li>
-				
-					<li class="js-open-popup" data-popup-target=".playlist-popup">
-						<div class="playlist-thumb">
-							<img src="img/playlist7.jpg" alt="thumb-composition">
-							<div class="overlay"></div>
-							<a href="#" class="play-icon">
-								<svg class="olymp-music-play-icon-big">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
-								</svg>
-							</a>
-						</div>
-				
-						<div class="composition">
-							<a href="#" class="composition-name">The Pretender</a>
-							<a href="#" class="composition-author">Kung Fighters</a>
-						</div>
-				
-						<div class="composition-time">
-							<time class="published" datetime="2017-03-24T18:18">5:48</time>
-							<div class="more">
-								<svg class="olymp-three-dots-icon">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-								</svg>
-								<ul class="more-dropdown">
-									<li>
-										<a href="#">Add Song to Player</a>
-									</li>
-									<li>
-										<a href="#">Add Playlist to Player</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-				
-					</li>
-					<li class="js-open-popup" data-popup-target=".playlist-popup">
-						<div class="playlist-thumb">
-							<img src="img/playlist8.jpg" alt="thumb-composition">
-							<div class="overlay"></div>
-							<a href="#" class="play-icon">
-								<svg class="olymp-music-play-icon-big">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
-								</svg>
-							</a>
-						</div>
-				
-						<div class="composition">
-							<a href="#" class="composition-name">Blood Brothers</a>
-							<a href="#" class="composition-author">Iron Maid</a>
-						</div>
-				
-						<div class="composition-time">
-							<time class="published" datetime="2017-03-24T18:18">3:06</time>
-							<div class="more">
-								<svg class="olymp-three-dots-icon">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-								</svg>
-								<ul class="more-dropdown">
-									<li>
-										<a href="#">Add Song to Player</a>
-									</li>
-									<li>
-										<a href="#">Add Playlist to Player</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-				
-					</li>
-					<li class="js-open-popup" data-popup-target=".playlist-popup">
-						<div class="playlist-thumb">
-							<img src="img/playlist9.jpg" alt="thumb-composition">
-							<div class="overlay"></div>
-							<a href="#" class="play-icon">
-								<svg class="olymp-music-play-icon-big">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
-								</svg>
-							</a>
-						</div>
-				
-						<div class="composition">
-							<a href="#" class="composition-name">Seven Nation Army</a>
-							<a href="#" class="composition-author">The Black Stripes</a>
-						</div>
-				
-						<div class="composition-time">
-							<time class="published" datetime="2017-03-24T18:18">6:17</time>
-							<div class="more">
-								<svg class="olymp-three-dots-icon">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-								</svg>
-								<ul class="more-dropdown">
-									<li>
-										<a href="#">Add Song to Player</a>
-									</li>
-									<li>
-										<a href="#">Add Playlist to Player</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-				
-					</li>
-					<li class="js-open-popup" data-popup-target=".playlist-popup">
-						<div class="playlist-thumb">
-							<img src="img/playlist10.jpg" alt="thumb-composition">
-							<div class="overlay"></div>
-							<a href="#" class="play-icon">
-								<svg class="olymp-music-play-icon-big">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use>
-								</svg>
-							</a>
-						</div>
-				
-						<div class="composition">
-							<a href="#" class="composition-name">Killer Queen</a>
-							<a href="#" class="composition-author">Archiduke</a>
-						</div>
-				
-						<div class="composition-time">
-							<time class="published" datetime="2017-03-24T18:18">5:40</time>
-							<div class="more">
-								<svg class="olymp-three-dots-icon">
-									<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-								</svg>
-								<ul class="more-dropdown">
-									<li>
-										<a href="#">Add Song to Player</a>
-									</li>
-									<li>
-										<a href="#">Add Playlist to Player</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</li>
-				</ol>
-				<!-- .. end W-Playlist -->
-			</div>';
-
+    function getBlockAbout(){
+        $text = '
+        <!-- Widget About -->
+		<div class="ui-block">		
+            <div class="ui-block-title"><h6 class="title">Giới Thiệu</h6></div>
+			<div class="ui-block-content">
+                <div class="widget w-about">
+                    <p>Tổng hợp các Video mới, và hay nhất cho giới trẻ</p>
+                    <ul class="socials">
+                        <li><a href="#"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fab fa-youtube" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fab fa-google-plus-g" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!-- ... end Widget About -->';
         return $text;
     }
 }
-

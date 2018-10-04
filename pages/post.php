@@ -49,37 +49,15 @@ switch ($post['post_type']){
                                         </div>
                                     <?php }?>
                                 </div>
-                                <div class="post-thumb"><?php echo $funcion->getPlayerVideo($post['post_id']);?></div>
-                                <h4 class="post-title"><?php echo $post['post_name'];?></h4>
+                                <h5 class="post-title"><?php echo $post['post_name'];?></h5>
                                 <p><?php echo $post['post_content'];?></p>
-                                <div class="post-additional-info inline-items">
-                                    <a href="#" class="post-add-icon inline-items">
-                                        <svg class="olymp-heart-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg>
-                                        <span>8</span>
-                                    </a>
-                                    <div class="comments-shared">
-                                        <a href="#" class="post-add-icon inline-items">
-                                            <svg class="olymp-speech-balloon-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"></use></svg>
-                                            <span>16</span>
-                                        </a>
-                                        <a href="#" class="post-add-icon inline-items">
-                                            <svg class="olymp-share-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-share-icon"></use></svg>
-                                            <span>8</span>
-                                        </a>
-                                    </div>
-                                </div>
+                                <div class="post-thumb"><?php echo $funcion->getPlayerVideo($post['post_id']);?></div>
                                 <div class="control-block-button post-control-button">
                                     <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
                                 </div>
                             </article>
                             <!-- Comment Form  -->
-                            <form class="comment-form inline-items">
-                                <div class="post__author author vcard inline-items">
-                                    <div class="form-group with-icon-right ">
-                                        <div class="fb-comments" style="width: 100%;" data-href="<?php echo $funcion->getCurrentDomain();?>" data-numposts="15"></div>
-                                    </div>
-                                </div>
-                            </form>
+                            <div class="fb-comments" width="100%" data-href="<?php echo $funcion->getCurrentDomain();?>" data-numposts="15"></div>
                             <!-- ... end Comment Form  -->
                         </div>
                     </div>
@@ -87,7 +65,11 @@ switch ($post['post_type']){
                 <!-- ... end Main Content -->
                 <!-- Left Sidebar -->
                 <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-12 col-12">
-                    <?php echo $funcion->getBlockSideBarIndex();?>
+                <?php
+                    echo $funcion->getBlockSideBarIndex();
+                    echo $funcion->getBlockSideBarCategory();
+                    echo $funcion->getBlockAbout();
+                ?>
                 </aside>
                 <!-- ... end Left Sidebar -->
                 <!-- Right Sidebar -->
