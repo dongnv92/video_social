@@ -37,14 +37,19 @@ $header['title'] = $header['title'] ? $header['title'] : 'Trang Chủ';
     <link rel="stylesheet" type="text/css" href="<?php echo _URL_STYLE;?>/player/build/mediaelementplayer.min.css">
     <script src="<?php echo _URL_STYLE;?>/js/jquery-3.2.1.js"></script>
     <style>
-        .mejs__overlay-button {
-            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
+        .facebook-responsive {
+            overflow:hidden;
+            padding-bottom:56.25%;
+            position:relative;
+            height:0;
         }
-        .mejs__overlay-loading-bg-img {
-            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
-        }
-        .mejs__button > button {
-            background-image: url("<?php echo  _URL_HOME;?>/style/social/player/build/mejs-controls.svg");
+
+        .facebook-responsive iframe {
+            left:0;
+            top:0;
+            height:100%;
+            width:100%;
+            position:absolute;
         }
     </style>
 </head>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 04, 2018 lúc 12:16 PM
+-- Thời gian đã tạo: Th10 05, 2018 lúc 12:29 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -118,7 +118,9 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (52, 'post', 33, 4, 1, 1538647729),
 (53, 'post', 33, 5, 1, 1538647729),
 (54, 'post', 34, 2, 1, 1538647851),
-(55, 'post', 34, 4, 1, 1538647851);
+(55, 'post', 34, 4, 1, 1538647851),
+(56, 'post', 35, 3, 1, 1538721268),
+(57, 'post', 35, 4, 1, 1538721268);
 
 -- --------------------------------------------------------
 
@@ -225,7 +227,11 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (89, 'images', 'cej2oYKs3Aum.jpg', 'media/images/post/cej2oYKs3Aum.jpg', 'local', 1, 34, 1538647851),
 (90, 'video', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86773&authkey=!AAm4eMuGYjdwqOA', 'https://onedrive.live.com/download?cid=0c96a527668396f3&resid=C96A527668396F3!86773&authkey=!AAm4eMuGYjdwqOA', 'onedrive', 1, 34, 1538647851),
 (91, 'video', 'v0200f560000begc8fuj5ugg8c501qb0', 'v0200f560000begc8fuj5ugg8c501qb0', 'tiktok_china', 1, 34, 1538647857),
-(92, 'images', 'https://p98.pstatp.com/large/c15200069470d86ea462.jpg', 'https://p98.pstatp.com/large/c15200069470d86ea462.jpg', 'remote', 1, 34, 1538647857);
+(92, 'images', 'https://p98.pstatp.com/large/c15200069470d86ea462.jpg', 'https://p98.pstatp.com/large/c15200069470d86ea462.jpg', 'remote', 1, 34, 1538647857),
+(93, 'images', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'remote', 1, 35, 1538721268),
+(94, 'video', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 'youtube', 1, 35, 1538721268),
+(95, 'video', 'v0200fc50000bedno4sqs4sseaaslu2g', 'v0200fc50000bedno4sqs4sseaaslu2g', 'tiktok_china', 1, 35, 1538721270),
+(96, 'images', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'remote', 1, 35, 1538721270);
 
 -- --------------------------------------------------------
 
@@ -285,7 +291,8 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (31, 'Đã Xinh Lại Còn Duyên Nữa', '<p>Đ&atilde; Xinh Lại C&ograve;n Duy&ecirc;n Nữa</p>', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dtej6b/', 'https://1drv.ms/u/s!AvOWg2YnpZYMhaVye_viwz3hno5Hmw', 1, 1, 0, 'da-xinh-lai-con-duyen-nua', 1538582626),
 (32, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGTskq/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVzrapiTylIK9yV0Q', 1, 1, 0, 'dOz7y2rcAeJpXCj', 1538644481),
 (33, 'Có giỏi thì bước qua đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGwRsD/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV0unnXlgzYTcF36Q', 1, 1, 0, 'co-gioi-thi-buoc-qua-day', 1538647729),
-(34, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dteVTm/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV1Cbh4y4ZiN3Co4A', 1, 1, 0, 'GVqj2zTQgNaolwh', 1538647851);
+(34, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dteVTm/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV1Cbh4y4ZiN3Co4A', 1, 1, 0, 'GVqj2zTQgNaolwh', 1538647851),
+(35, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dnSNN9/', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 1, 1, 0, '3QFzevpE8TVIawN', 1538721268);
 
 -- --------------------------------------------------------
 
@@ -360,19 +367,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
