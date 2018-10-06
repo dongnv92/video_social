@@ -35,6 +35,11 @@
 <script src="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/renderers/facebook.min.js"></script>
 <script >
     $('video').mediaelementplayer();
+    $(document).ready(function() {
+        $(document).on('scroll', function() {
+            $('video').mediaelementplayer();
+        }).trigger('scroll');
+    });
 </script>
 
 </body>

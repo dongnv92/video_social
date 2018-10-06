@@ -430,8 +430,9 @@ class myFunction
                 </div>
             </article>
         </div>
-        <script >$("video").mediaelementplayer();</script>';
+        ';
         return $text;
+        //<script >$("video").mediaelementplayer();</script>
     }
 
     function getBlockSideBarVideo($option = ''){
