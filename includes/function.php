@@ -5,9 +5,17 @@
  * Date: 19/09/2018
  * Time: 20:48
  */
-
 class myFunction
 {
+    function getGoogleDrive($url){
+        if(!filter_var($url, FILTER_VALIDATE_URL)){
+            return 'cccc';
+        }
+        require_once 'class.curl_gd.php';
+        $id = get_drive_id($url);
+        return GoogleDrive($id);
+    }
+
     function getUrlPost($id){
         global $db;
         $post = $db->select('post_url')->from(_TABLE_POST)->where('post_id', $id)->fetch_first();
@@ -108,6 +116,9 @@ class myFunction
                         if($item_data['media_store'] == 'tiktok_china'){
                             $url    = $this->tiktok_get_redirect_final_target('https://api.amemv.com/aweme/v1/play/?video_id='. $item_data['media_source'] .'&line=1&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0');
                             $return = _URL_HOME.'/includes/ajax.php?act=downloadmp4&url='.$url;
+                        }else if($item_data['media_store'] == 'google_drive'){
+                            $url    =  $this->getGoogleDrive($item_data['media_source']);
+                            $return = $url['file'];
                         }else{
                             $return = $item_data['media_source'];
                         }

@@ -33,12 +33,16 @@ switch ($act){
                 parse_str($url['query'], $query);
                 $array['images'] = 'https://img.youtube.com/vi/'. $query['v'] .'/0.jpg';
                 break;
+            case 'drive.google.com':
+                $drive = $funcion->getGoogleDrive($url);
+                $array['images'] = $drive['images'];
+                break;
             default:
                 echo json_encode(array('error' => 'Empty URL'));
                 break;
         }
-        $post_title    = (isset($_REQUEST['post_title'])  && !empty($_REQUEST['post_title']))    ? $_REQUEST['post_title']      : false;
-        $array['urlSlug'] = $funcion->makeSlug($post_title);
+        $post_title         = (isset($_REQUEST['post_title'])  && !empty($_REQUEST['post_title']))    ? $_REQUEST['post_title']      : false;
+        $array['urlSlug']   = $funcion->makeSlug($post_title);
         echo json_encode($array);
         break;
     case 'category':

@@ -558,6 +558,10 @@ switch ($act){
                             $media_video        = $post_store;
                             $media_video_type   = 'youtube';
                             break;
+                        case 'drive.google.com':
+                            $media_video        = $post_store;
+                            $media_video_type   = 'google_drive';
+                            break;
                     }
 
                     if(!$error) {
@@ -786,7 +790,7 @@ switch ($act){
                                         <input type="file" id="post_images_upload" class="round" name="post_images_upload">
                                     </fieldset>
                                     <div class="form-group text-center">
-                                        <img id="images_preview" src="" height="200px" style="display: none;" />
+                                        <img id="images_preview" src="" height="200px" width="100%" style="display: none;" />
                                     </div>
                                 </div>
                             </div>

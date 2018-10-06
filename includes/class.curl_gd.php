@@ -11,8 +11,7 @@ function GoogleDrive($gid){
 	$title          = gdTitle($gid);
 	$img            = gdImg($gdurl);
 	$streaming_vid  = Drive($gid);
-    $output = ['id' => $gid, 'title' => $title, 'image' => $img, 'label' => 'HD', 'file' => $streaming_vid, 'type' => 'video/mp4', 'embed_id' => $iframeid];
-	$output         = json_encode($output, JSON_PRETTY_PRINT);
+    $output         = array('id' => $gid, 'title' => $title, 'images' => $img, 'label' => 'HD', 'file' => $streaming_vid, 'type' => 'video/mp4', 'embed_id' => $iframeid);
 	return $output;
 }
 
@@ -80,7 +79,7 @@ function getlink($id){
 		if ($get != ""){
 
 		} else {
-			$html = str_get_html($page);
+			$html = str_get_html_gd($page);
 			$link = urldecode(trim($html->find('a[id=uc-download-link]',0)->href));
 			$tmp = explode("confirm=",$link);
 			$tmp2 = explode("&",$tmp[1]);
@@ -109,7 +108,7 @@ function gdTitle($gid) {
 }
 
 function gdImg($url) {
-	$html = new simple_html_dom();
+	$html = new simple_html_dom_gd();
 	$html->load_file($url);
 	return $html->find('meta[property=og:image]',0)->attr['content'];
 }
@@ -209,22 +208,22 @@ function locheader($page){
 	return $location;
 }
 
-function file_get_html() {
-    $dom = new simple_html_dom;
+/*function file_get_html() {
+    $dom = new simple_html_dom_gd;
     $args = func_get_args();
     $dom->load(call_user_func_array('file_get_contents', $args), true);
     return $dom;
-}
+}*/
 
 // get html dom form string
-function str_get_html($str, $lowercase=true) {
-    $dom = new simple_html_dom;
+function str_get_html_gd($str, $lowercase=true) {
+    $dom = new simple_html_dom_gd;
     $dom->load($str, $lowercase);
     return $dom;
 }
 
 // dump html dom tree
-function dump_html_tree($node, $show_attr=true, $deep=0) {
+function dump_html_tree_dg($node, $show_attr=true, $deep=0) {
     $lead = str_repeat('    ', $deep);
     echo $lead.$node->tag;
     if ($show_attr && count($node->attr)>0) {
@@ -236,12 +235,12 @@ function dump_html_tree($node, $show_attr=true, $deep=0) {
     echo "\n";
 
     foreach($node->nodes as $c)
-        dump_html_tree($c, $show_attr, $deep+1);
+        dump_html_tree_dg($c, $show_attr, $deep+1);
 }
 
 // simple html dom node
 // -----------------------------------------------------------------------------
-class simple_html_dom_node {
+class simple_html_dom_gd_node_gd {
     public $nodetype = HDOM_TYPE_TEXT;
     public $tag = 'text';
     public $attr = array();
@@ -274,7 +273,7 @@ class simple_html_dom_node {
 
     // dump node's tree
     function dump($show_attr=true) {
-        dump_html_tree($this, $show_attr);
+        dump_html_tree_dg($this, $show_attr);
     }
 
     // returns the parent of node
@@ -639,7 +638,7 @@ class simple_html_dom_node {
 
 // simple html dom parser
 // -----------------------------------------------------------------------------
-class simple_html_dom {
+class simple_html_dom_gd {
     public $root = null;
     public $nodes = array();
     public $callback = null;
@@ -760,7 +759,7 @@ class simple_html_dom {
         $this->noise = array();
         $this->nodes = array();
         $this->lowercase = $lowercase;
-        $this->root = new simple_html_dom_node($this);
+        $this->root = new simple_html_dom_gd_node_gd($this);
         $this->root->tag = 'root';
         $this->root->_[HDOM_INFO_BEGIN] = -1;
         $this->root->nodetype = HDOM_TYPE_ROOT;
@@ -776,7 +775,7 @@ class simple_html_dom {
             return $this->read_tag();
 
         // text
-        $node = new simple_html_dom_node($this);
+        $node = new simple_html_dom_gd_node_gd($this);
         ++$this->cursor;
         $node->_[HDOM_INFO_TEXT] = $s;
         $this->link_nodes($node, false);
@@ -848,7 +847,7 @@ class simple_html_dom {
             return true;
         }
 
-        $node = new simple_html_dom_node($this);
+        $node = new simple_html_dom_gd_node_gd($this);
         $node->_[HDOM_INFO_BEGIN] = $this->cursor;
         ++$this->cursor;
         $tag = $this->copy_until($this->token_slash);
@@ -1012,7 +1011,7 @@ class simple_html_dom {
 
     // as a text node
     protected function as_text_node($tag) {
-        $node = new simple_html_dom_node($this);
+        $node = new simple_html_dom_gd_node_gd($this);
         ++$this->cursor;
         $node->_[HDOM_INFO_TEXT] = '</' . $tag . '>';
         $this->link_nodes($node, false);

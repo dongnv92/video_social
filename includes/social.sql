@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 05, 2018 lúc 12:29 PM
+-- Thời gian đã tạo: Th10 06, 2018 lúc 07:05 PM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -120,7 +120,8 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (54, 'post', 34, 2, 1, 1538647851),
 (55, 'post', 34, 4, 1, 1538647851),
 (56, 'post', 35, 3, 1, 1538721268),
-(57, 'post', 35, 4, 1, 1538721268);
+(57, 'post', 35, 4, 1, 1538721268),
+(58, 'post', 36, 6, 1, 1538845011);
 
 -- --------------------------------------------------------
 
@@ -231,7 +232,11 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (93, 'images', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'remote', 1, 35, 1538721268),
 (94, 'video', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 'youtube', 1, 35, 1538721268),
 (95, 'video', 'v0200fc50000bedno4sqs4sseaaslu2g', 'v0200fc50000bedno4sqs4sseaaslu2g', 'tiktok_china', 1, 35, 1538721270),
-(96, 'images', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'remote', 1, 35, 1538721270);
+(96, 'images', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'https://p9.pstatp.com/large/bd5800036ad20f153118.jpg', 'remote', 1, 35, 1538721270),
+(97, 'images', '5NRH0k6wAvJ4.jpg', 'media/images/post/5NRH0k6wAvJ4.jpg', 'local', 1, 36, 1538845011),
+(98, 'video', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 'google_drive', 1, 36, 1538845011),
+(99, 'video', 'v0200fc10000berldvna1haiafon9ng0', 'v0200fc10000berldvna1haiafon9ng0', 'tiktok_china', 1, 36, 1538845013),
+(100, 'images', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'remote', 1, 36, 1538845013);
 
 -- --------------------------------------------------------
 
@@ -292,7 +297,8 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (32, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGTskq/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaVzrapiTylIK9yV0Q', 1, 1, 0, 'dOz7y2rcAeJpXCj', 1538644481),
 (33, 'Có giỏi thì bước qua đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGwRsD/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV0unnXlgzYTcF36Q', 1, 1, 0, 'co-gioi-thi-buoc-qua-day', 1538647729),
 (34, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dteVTm/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV1Cbh4y4ZiN3Co4A', 1, 1, 0, 'GVqj2zTQgNaolwh', 1538647851),
-(35, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dnSNN9/', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 1, 1, 0, '3QFzevpE8TVIawN', 1538721268);
+(35, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dnSNN9/', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 1, 1, 0, '3QFzevpE8TVIawN', 1538721268),
+(36, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d72K9w/', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 1, 1, 0, 'rOc4zDyM3sGbvlV', 1538845011);
 
 -- --------------------------------------------------------
 
@@ -367,19 +373,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`

@@ -32,9 +32,7 @@
 <script defer src="<?php echo _URL_STYLE;?>/fonts/fontawesome-all.js"></script>
 <script src="<?php echo _URL_STYLE;?>/Bootstrap/dist/js/bootstrap.bundle.js"></script>
 <script src="<?php echo _URL_STYLE;?>/player/build/mediaelement-and-player.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/renderers/facebook.min.js"></script>
 <script >
-    $('video').mediaelementplayer();
     $(document).ready(function() {
         $(document).on('scroll', function() {
             $('video').mediaelementplayer();

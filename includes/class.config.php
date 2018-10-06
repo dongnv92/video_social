@@ -11,6 +11,7 @@ class config
     function softStore($type = 'video'){
         if($type == 'video'){
             $array = array();
+            $array[] = 'google_drive';
             $array[] = 'googledrive';
             $array[] = 'onedrive';
             $array[] = 'tiktok_china';
@@ -24,7 +25,7 @@ class config
     }
 
     function store_suport(){
-        return array('1drv.ms', 'youtube.com', 'facebook.com');
+        return array('1drv.ms', 'youtube.com', 'facebook.com','drive.google.com');
     }
 
     function getTimeView($time){
