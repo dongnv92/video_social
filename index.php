@@ -71,6 +71,7 @@ $total_count = $db->affected_rows;
                     setTimeout(function() {
                         $('#load-more-button').hide();
                         $("#newsfeed-items-grid").append(data);
+
                         windowOnScroll();
                     }, 1000);
                 }

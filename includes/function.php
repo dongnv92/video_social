@@ -429,7 +429,8 @@ class myFunction
                     <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
                 </div>
             </article>
-        </div>';
+        </div>
+        <script >$("video").mediaelementplayer();</script>';
         return $text;
     }
 
@@ -554,9 +555,7 @@ class myFunction
                 $video = '
                 <div id="mejs_04257596522599383-iframe-overlay" class="mejs__iframe-overlay"></div>
                 <iframe id="mejs_04257596522599383_youtube_iframe" frameborder="0" allowfullscreen="1" allow="autoplay; encrypted-media" title="YouTube video player" width="'. $width .'" height="'. $height .'" src="'. $src .'?controls=0&amp;rel=0&amp;disablekb=1&amp;showinfo=0&amp;modestbranding=0&amp;html5=1&amp;iv_load_policy=3&amp;autoplay=0&amp;end=0&amp;loop=1&amp;playsinline=1&amp;start=0&amp;nocookie=false&amp;playlist=8zMHE80ql-M&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost&amp;widgetid=1"></iframe>
-                <video width="618px" height="360px" poster="'. $poster .'" preload="none" loop="" playsinline="" id="mejs_04257596522599383_from_mejs" src="'. $src .'" style="display: none;">
-                    <source src="'. $src .'" '. $type .'>
-                </video>';
+                ';
                 break;
             default:
                 $video = '

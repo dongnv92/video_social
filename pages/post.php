@@ -33,15 +33,11 @@ switch ($post['post_type']){
                                     <img src="<?php echo $funcion->getDetailUser($post['post_users'], 'users_avatar');?>" alt="author">
                                     <div class="author-date">
                                         <a class="h6 post__author-name fn" href="javascript;:"><?php echo $funcion->getDetailUser($post['post_users'], 'users_name');?></a>
-                                        <div class="post__date">
-                                            <time class="published"><?php echo $config->getTimeView($post['post_time']);?></time>
-                                        </div>
+                                        <div class="post__date"><time class="published"><?php echo $config->getTimeView($post['post_time']);?></time></div>
                                     </div>
                                     <?php if($user){?>
                                         <div class="more">
-                                            <svg class="olymp-three-dots-icon">
-                                                <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-                                            </svg>
+                                            <svg class="olymp-three-dots-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
                                             <ul class="more-dropdown">
                                                 <li><a href="<?php echo _URL_ADMIN.'/post.php?act=update&type=video&id='.$post['post_id']?>">Sửa bài viết</a></li>
                                                 <li><a href="#">Xóa bài viết</a></li>
@@ -56,10 +52,9 @@ switch ($post['post_type']){
                                     <a href="#" class="btn btn-control"><svg class="olymp-like-post-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use></svg></a>
                                 </div>
                             </article>
-                            <!-- Comment Form  -->
                             <div class="fb-comments" width="100%" data-href="<?php echo $funcion->getCurrentDomain();?>" data-numposts="15"></div>
-                            <!-- ... end Comment Form  -->
                         </div>
+
                     </div>
                 </main>
                 <!-- ... end Main Content -->
