@@ -18,13 +18,13 @@ $total_count = $db->affected_rows;
         <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
             <div id="newsfeed-items-grid">
                 <input type="hidden" name="total_count" id="total_count" value="<?php echo $total_count; ?>" />
-                <?php echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));?>
+                <?php /*echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));*/?>
             </div>
-            <div id="load-more-button" class="btn btn-control btn-more" data-container="newsfeed-items-grid" style="display: none">
-                <svg class="olymp-three-dots-icon">
-                    <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-                </svg>
+            <div class="text-center" id="load-more-button">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>
+                <div>Đang tải dữ liệu. Vui lòng đợi ...</div>
             </div>
+            <br />
         </main>
         <!-- ... end Main Content -->
         <!-- Left Sidebar -->
@@ -45,6 +45,7 @@ $total_count = $db->affected_rows;
 </div>
     <script type="text/javascript">
         $(document).ready(function(){
+            getMoreData(37);
             windowOnScroll();
         });
         function windowOnScroll() {

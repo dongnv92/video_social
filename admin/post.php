@@ -13,6 +13,221 @@ if(!$user){ $funcion->redirectUrl(_URL_LOGIN);exit();}
 $admin_module   = 'post';
 
 switch ($act){
+    case 'attack':
+        $post = $db->from(_TABLE_POST)->where('post_id' , $id)->fetch_first();
+        if(!$post){
+            $admin_title = 'Chuyên Mục';
+            require_once 'header.php';
+            echo $config->getPanelError(array('title' => 'Trang Không Tồn Tại', 'content' => 'Bài viết không tồn tại'));
+            require_once 'footer.php';
+            break;
+        }
+        require_once '../includes/class.uploader.php';
+        $uploader       = new Uploader();
+        $media_id       = (isset($_GET['media_id'])  && !empty($_GET['media_id']))    ? trim($_GET['media_id']): false;
+
+        if($submit && !$media_id){
+            $media_type         = (isset($_POST['media_type'])          && !empty($_POST['media_type']))        ? trim($_POST['media_type'])        : '';
+            $media_url          = (isset($_POST['media_url'])           && !empty($_POST['media_url']))         ? trim($_POST['media_url'])         : '';
+            $media_name         = (isset($_POST['media_name'])          && !empty($_POST['media_name']))        ? trim($_POST['media_name'])        : '';
+            $error              = array();
+            if(!in_array($media_type, array('images', 'video'))){
+                $error['media_type'] = 'Không đúng định dạng được lưu';
+            }
+            if(!$media_url && !$funcion->checkUpload('media_upload')){
+                $error['media_url'] = 'Bạn chưa chọn tập tin đính kèm';
+            }
+            if($media_url && !filter_var($media_url, FILTER_VALIDATE_URL)){
+                $error['media_url'] = 'Không đúng định dạng URL';
+            }
+            if($media_url){
+                if($media_type == 'images'){
+                    $data = $uploader->upload($media_url, array(
+                        'uploadDir' => '../'._PATH_IMAGES_POST.'/',
+                        'title' => array('auto', 12),
+                    ));
+                    if($data['isComplete']){
+                        $media['media_name']    = $data['data']['metas'][0]['name'];
+                        $media['media_type']    = $media_type;
+                        $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                        $media['media_store']   = 'local';
+                        $data_add = array(
+                            'media_type'    =>  $media_type,
+                            'media_name'    =>  $media['media_name'],
+                            'media_source'  =>  $media['media_source'],
+                            'media_store'   =>  $media['media_store'],
+                            'media_users'   =>  $user['users_id'],
+                            'media_parent'  =>  $id,
+                            'media_time'    =>  $config->getTimeNow()
+                        );
+                        if(!$db->insert(_TABLE_MEDIA, $data_add)){
+                            $error['media_insert'] = 'Lỗi sql';
+                        }
+                    }
+                    if($data['hasErrors']){
+                        $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                    }
+                }else if($media_type == 'video'){
+                    switch ($funcion->urlToDomain($media_url)){
+                        case '1drv.ms':
+                            $media_video        = $funcion->getDirectOndrive($post_store);
+                            $media_video_type   = 'onedrive';
+                            if(!$media_video){
+                                $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
+                            }
+                            break;
+                        case 'youtube.com':
+                            $media_video_type   = 'youtube';
+                            break;
+                        case 'drive.google.com':
+                            $media_video_type   = 'google_drive';
+                            break;
+                        case 'facebook.com':
+                            $media_video_type   = 'facebook';
+                            break;
+                    }
+                    $data_add = array(
+                        'media_type'    =>  $media_type,
+                        'media_name'    =>  $media_url,
+                        'media_source'  =>  $media_url,
+                        'media_store'   =>  $media_video_type,
+                        'media_users'   =>  $user['users_id'],
+                        'media_parent'  =>  $id,
+                        'media_time'    =>  $config->getTimeNow()
+                    );
+                    if(!$db->insert(_TABLE_MEDIA, $data_add)){
+                        $error['media_insert'] = 'Lỗi sql';
+                    }
+                }
+            }
+
+            if($funcion->checkUpload('media_upload')){
+                if($media_type == 'images'){
+                    $data = $uploader->upload($_FILES['media_upload'], array(
+                        'limit' => 1, //Maximum Limit of files. {null, Number}
+                        'maxSize' => 10, //Maximum Size of files {null, Number(in MB's)}
+                        'extensions' => array('jpg', 'png','gif', 'jpeg'), //Whitelist for file extension. {null, Array(ex: array('jpg', 'png'))}
+                        'required' => false, //Minimum one file is required for upload {Boolean}
+                        'uploadDir' => '../'._PATH_IMAGES_POST.'/', //Upload directory {String}
+                        'title' => array('auto', 12), //New file name {null, String, Array} *please read documentation in README.md
+                        'removeFiles' => true, //Enable file exclusion {Boolean(extra for jQuery.filer), String($_POST field name containing json data with file names)}
+                        'replace' => false, //Replace the file if it already exists {Boolean}
+                        'perms' => null, //Uploaded file permisions {null, Number}
+                        'onCheck' => null, //A callback function name to be called by checking a file for errors (must return an array) | ($file) | Callback
+                        'onError' => null, //A callback function name to be called if an error occured (must return an array) | ($errors, $file) | Callback
+                        'onSuccess' => null, //A callback function name to be called if all files were successfully uploaded | ($files, $metas) | Callback
+                        'onUpload' => null, //A callback function name to be called if all files were successfully uploaded (must return an array) | ($file) | Callback
+                        'onComplete' => null, //A callback function name to be called when upload is complete | ($file) | Callback
+                        'onRemove' => 'onFilesRemoveCallback' //A callback function name to be called by removing files (must return an array) | ($removed_files) | Callback
+                    ));
+
+                    if($data['isComplete']){
+                        $media['media_name']    = $data['data']['metas'][0]['name'];
+                        $media['media_type']    = 'images';
+                        $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
+                        $media['media_store']   = 'local';
+                        $data_add = array(
+                            'media_type'        =>  $media_type,
+                            'media_name'        =>  $media['media_name'],
+                            'media_source'      =>  $media['media_source'],
+                            'media_store'       =>  'local',
+                            'media_users'       =>  $user['users_id'],
+                            'media_parent'      =>  $id,
+                            'media_time'        =>  $config->getTimeNow()
+                        );
+                        if(!$db->insert(_TABLE_MEDIA, $data_add)){
+                            $error['media_insert'] = 'Lỗi sql';
+                        }
+                    }
+                    if($data['hasErrors']){
+                        $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                    }
+                }
+            }
+        }
+        $admin_title = 'Tập tin bài viết '.$post['post_name'];
+        require_once 'header.php';
+        ?>
+        <div class="row">
+            <div class="col-md-3">
+            <?php if($media_id){?>
+                <div class="card">
+                    <div class="card-header"><h4 class="card-title">Update File</h4> </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            <?php }else{?>
+                <div class="card">
+                    <div class="card-header"><h4 class="card-title">Thêm File Mới</h4> </div>
+                    <div class="card-body">
+                        <?php if($submit && !$error){ echo $config->getAlert('success', 'Thêm file đính kèm thành công'); }?>
+                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            <fieldset class="form-group">
+                                <p>Loại Tập Tin</p>
+                                <select name="media_type" class="<?php echo $config->form_style('text_input')?>">
+                                    <option value="images">Ảnh</option>
+                                    <option value="video">Video</option>
+                                </select>
+                                <?php echo $error['category_parent'] ? $config->getAlert('help_error', $error['category_parent']) : '';?>
+                            </fieldset>
+                            <div class="form-group">
+                                <label class="label-control">Tên File</label>
+                                <input type="text" value="<?php echo $media_name;?>" placeholder="Tên File" name="media_name" class="<?php echo $config->form_style('text_input')?>" />
+                                <?php echo $error['media_name'] ? $config->getAlert('help_error', $error['media_name']) : '';?>
+                            </div>
+                            <div class="form-group">
+                                <label class="label-control">Đường Dẫn File</label>
+                                <input type="text" value="<?php echo $media_url;?>" placeholder="Tên File" name="media_url" class="<?php echo $config->form_style('text_input')?>" />
+                                <?php echo $error['media_url'] ? $config->getAlert('help_error', $error['media_url']) : '';?>
+                            </div>
+                            <div class="form-group">
+                                <label class="label-control">Hoặc Tải File</label>
+                                <input type="file" name="media_upload">
+                            </div>
+                            <hr />
+                            <div class="form-group text-center"><?php echo $config->form_input('submit', array('value' => 'Thêm File Mới', 'name' => 'submit'));?></div>
+                            <?php echo $error['media_name'] ? $config->getAlert('help_error', $error['media_name']) : '';?>
+                        </form>
+                    </div>
+                </div>
+            <?php }?>
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header"><h4 class="card-title">Danh sách ảnh và video bài viết <a target="_blank" href="<?php echo $funcion->getUrlPost($id);?>"><?php echo $post['post_name']?></a></h4> </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="60%">Đường Dẫn</th>
+                                    <th width="10%">Kiểu File</th>
+                                    <th width="10%">Nơi Lưu Trữ</th>
+                                    <th width="20%">Thời Gian Upload</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    foreach ($db->from(_TABLE_MEDIA)->where('media_parent', $id)->fetch() AS $media){
+                                        echo '<tr>';
+                                            echo '<td><a href="'. _URL_ADMIN .'/post.php?act='. $act .'&type='. $type .'&media_id='. $media['media_id'] .'&id='. $id .'">'. $media['media_name'] .'</a></td>';
+                                            echo '<td>'. ($media['media_type'] == 'images' ? 'Ảnh' : 'Video') .'</td>';
+                                            echo '<td>'. $media['media_store'] .'</td>';
+                                            echo '<td>'. $config->getTimeView($media['media_time']) .'</td>';
+                                        echo '<tr>';
+                                    }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        require_once 'footer.php';
+        break;
     case 'update':
         switch ($type){
             case 'video':
@@ -562,6 +777,10 @@ switch ($act){
                             $media_video        = $post_store;
                             $media_video_type   = 'google_drive';
                             break;
+                        case 'facebook.com':
+                            $media_video        = $post_store;
+                            $media_video_type   = 'facebook';
+                            break;
                     }
 
                     if(!$error) {
@@ -958,7 +1177,7 @@ switch ($act){
                             </div>
                             <div class="profile-card-with-cover-content text-center">
                                 <div class="card-body">
-                                    <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>"><?php echo $datas['post_name'] ? $datas['post_name'] : 'Không Có Tiêu Đề';?></a></h4>
+                                    <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>" target="_blank"><?php echo $datas['post_name'] ? $funcion->getTruncate($datas['post_name'], 6,'words') : 'Không Có Tiêu Đề';?></a></h4>
                                     <ul class="list-inline list-inline-pipe">
                                         <li><?php echo $funcion->getDetailUser($datas['post_users'], 'users_name');?></li>
                                         <li><?php echo $config->getTimeView($datas['post_time']);?></li>
@@ -976,7 +1195,12 @@ switch ($act){
                                 </div>
                                 <div class="text-center">
                                     <button type="button" title="delete" data-num="<?php echo $datas['post_id'];?>" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-x"></i></button>
-                                    <a href="<?php echo  _URL_ADMIN.'/post.php?act=update&type=video&id='.$datas['post_id'];?>"><button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-edit"></i></button></a>
+                                    <a href="<?php echo  _URL_ADMIN.'/post.php?act=update&type=video&id='.$datas['post_id'];?>">
+                                        <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-edit"></i></button>
+                                    </a>
+                                    <a href="<?php echo  _URL_ADMIN.'/post.php?act=attack&type=video&id='.$datas['post_id'];?>">
+                                        <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-download"></i></button>
+                                    </a>
                                 </div>
                             </div>
                         </div>

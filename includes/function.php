@@ -5,8 +5,54 @@
  * Date: 19/09/2018
  * Time: 20:48
  */
-class myFunction
-{
+class myFunction{
+
+    function getTruncate($text, $limit, $type = 'words', $ellipsis = ' ...') {
+        switch ($type){
+            case 'words':
+                $words = preg_split("/[\n\r\t ]+/", $text, $limit + 1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);
+                if (count($words) > $limit) {
+                    end($words); //ignore last element since it contains the rest of the string
+                    $last_word = prev($words);
+
+                    $text =  substr($text, 0, $last_word[1] + strlen($last_word[0])) . $ellipsis;
+                }
+                return $text;
+                break;
+            case 'text':
+                if( strlen($text) > $limit ) {
+                    $endpos = strpos(str_replace(array("\r\n", "\r", "\n", "\t"), ' ', $text), ' ', $limit);
+                    if($endpos !== FALSE)
+                        $text = trim(substr($text, 0, $endpos)) . $ellipsis;
+                }
+                return $text;
+                break;
+        }
+
+    }
+
+    function getFacebookVideo($url){
+        $context = [
+            'http' => [
+                'method' => 'GET',
+                'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.47 Safari/537.36",
+            ],
+        ];
+        $context    = stream_context_create($context);
+        $data       = file_get_contents($url, false, $context);
+        preg_match('/hd_src_no_ratelimit:"([^"]+)"/', $data, $video_hd);
+        preg_match('/sd_src_no_ratelimit:"([^"]+)"/', $data, $video_sd);
+        $images     = explode('/', $url);
+
+        if($video_hd[1]){
+            return array('video' => $video_hd[1], 'images' => $images[5]);
+        }else if($video_sd[1]){
+            return array('video' => $video_sd[1], 'images' => $images[5]);
+        }else{
+            return false;
+        }
+    }
+
     function getGoogleDrive($url){
         if(!filter_var($url, FILTER_VALIDATE_URL)){
             return 'cccc';
@@ -119,6 +165,9 @@ class myFunction
                         }else if($item_data['media_store'] == 'google_drive'){
                             $url    =  $this->getGoogleDrive($item_data['media_source']);
                             $return = $url['file'];
+                        }else if($item_data['media_store'] == 'facebook'){
+                            $url    =  $this->getFacebookVideo($item_data['media_source']);
+                            $return = $url['video'];
                         }else{
                             $return = $item_data['media_source'];
                         }

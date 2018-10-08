@@ -12,11 +12,11 @@ class config
         if($type == 'video'){
             $array = array();
             $array[] = 'google_drive';
-            $array[] = 'googledrive';
             $array[] = 'onedrive';
             $array[] = 'tiktok_china';
             $array[] = 'tiktok_vietnam';
             $array[] = 'youtube';
+            $array[] = 'facebook';
             $array[] = 'local';
             return $array;
         }else{

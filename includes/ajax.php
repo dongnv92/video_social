@@ -37,6 +37,10 @@ switch ($act){
                 $drive = $funcion->getGoogleDrive($url);
                 $array['images'] = $drive['images'];
                 break;
+            case 'facebook.com':
+                $images         = explode('/', $url);
+                $array['images']= $images[5];
+                break;
             default:
                 echo json_encode(array('error' => 'Empty URL'));
                 break;
