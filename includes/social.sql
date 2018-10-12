@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 06, 2018 lúc 07:05 PM
+-- Thời gian đã tạo: Th10 12, 2018 lúc 03:41 AM
 -- Phiên bản máy phục vụ: 10.1.35-MariaDB
 -- Phiên bản PHP: 7.2.9
 
@@ -121,7 +121,10 @@ INSERT INTO `social_group` (`group_id`, `group_type`, `group_index`, `group_valu
 (55, 'post', 34, 4, 1, 1538647851),
 (56, 'post', 35, 3, 1, 1538721268),
 (57, 'post', 35, 4, 1, 1538721268),
-(58, 'post', 36, 6, 1, 1538845011);
+(58, 'post', 36, 6, 1, 1538845011),
+(59, 'post', 37, 3, 1, 1538966340),
+(60, 'post', 37, 4, 1, 1538966340),
+(61, 'post', 37, 5, 1, 1538966340);
 
 -- --------------------------------------------------------
 
@@ -236,7 +239,12 @@ INSERT INTO `social_media` (`media_id`, `media_type`, `media_name`, `media_sourc
 (97, 'images', '5NRH0k6wAvJ4.jpg', 'media/images/post/5NRH0k6wAvJ4.jpg', 'local', 1, 36, 1538845011),
 (98, 'video', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 'google_drive', 1, 36, 1538845011),
 (99, 'video', 'v0200fc10000berldvna1haiafon9ng0', 'v0200fc10000berldvna1haiafon9ng0', 'tiktok_china', 1, 36, 1538845013),
-(100, 'images', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'remote', 1, 36, 1538845013);
+(100, 'images', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'https://p98.pstatp.com/large/d030000b33bf853afa8d.jpg', 'remote', 1, 36, 1538845013),
+(101, 'images', '_o1wzRuIhLcs.jpg', 'media/images/post/_o1wzRuIhLcs.jpg', 'local', 1, 37, 1538966340),
+(102, 'video', 'https://www.facebook.com/melinhconfessions/videos/346559012411861/', 'https://www.facebook.com/melinhconfessions/videos/346559012411861/', 'facebook', 1, 37, 1538966340),
+(103, 'video', 'v0300ff20000bet9vdtm7i9ia4k2h2l0', 'v0300ff20000bet9vdtm7i9ia4k2h2l0', 'tiktok_china', 1, 37, 1538966342),
+(104, 'images', 'https://p98.pstatp.com/large/de1f00099899c49b05b2.jpg', 'https://p98.pstatp.com/large/de1f00099899c49b05b2.jpg', 'remote', 1, 37, 1538966342),
+(106, 'video', 'https://drive.google.com/file/d/1pyPuPeBbDL0XTpC014J0q-akg1gcJJCm/view?usp=sharing', 'https://drive.google.com/file/d/1pyPuPeBbDL0XTpC014J0q-akg1gcJJCm/view?usp=sharing', 'google_drive', 1, 37, 1538987804);
 
 -- --------------------------------------------------------
 
@@ -298,7 +306,8 @@ INSERT INTO `social_post` (`post_id`, `post_name`, `post_content`, `post_type`, 
 (33, 'Có giỏi thì bước qua đây', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dGwRsD/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV0unnXlgzYTcF36Q', 1, 1, 0, 'co-gioi-thi-buoc-qua-day', 1538647729),
 (34, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dteVTm/', 'https://1drv.ms/v/s!AvOWg2YnpZYMhaV1Cbh4y4ZiN3Co4A', 1, 1, 0, 'GVqj2zTQgNaolwh', 1538647851),
 (35, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/dnSNN9/', 'https://www.youtube.com/watch?v=8zMHE80ql-M', 1, 1, 0, '3QFzevpE8TVIawN', 1538721268),
-(36, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d72K9w/', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 1, 1, 0, 'rOc4zDyM3sGbvlV', 1538845011);
+(36, '', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d72K9w/', 'https://drive.google.com/file/d/1CTRN2Mzh22BGQLwPofXBrmyF1lOx12tl/view?usp=sharing', 1, 1, 0, 'rOc4zDyM3sGbvlV', 1538845011),
+(37, 'Hôm nay a mệt dã dời, muốn ôm em ngủ kệ đời được không', '', 'video', 1, 'video hay, video giai tri, video giải trí, video gai xinh, hot girl', 'Tổng hợp các Video hay, hot nhất hiện nay', 'http://v.douyin.com/d7tfL2/', 'https://www.facebook.com/melinhconfessions/videos/346559012411861/', 1, 1, 0, 'hom-nay-a-met-da-doi-muon-om-em-ngu-ke-doi-duoc-khong', 1538966340);
 
 -- --------------------------------------------------------
 
@@ -373,19 +382,19 @@ ALTER TABLE `social_category`
 -- AUTO_INCREMENT cho bảng `social_group`
 --
 ALTER TABLE `social_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT cho bảng `social_media`
 --
 ALTER TABLE `social_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT cho bảng `social_post`
 --
 ALTER TABLE `social_post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT cho bảng `social_users`
