@@ -7,18 +7,18 @@
  */
 require_once 'includes/core.php';
 require_once 'pages/header.php';
-//$db->select('post_id')->from(_TABLE_POST);
-//$db->where(array('post_type' => 'video', 'post_show' => 1, 'post_status' => 1));
-//$db->execute();
-//$total_count = $db->affected_rows;
+$db->select('post_id')->from(_TABLE_POST);
+$db->where(array('post_type' => 'video', 'post_show' => 1, 'post_status' => 1));
+$db->execute();
+$total_count = $db->affected_rows;
 ?>
 <div class="container">
     <div class="row">
         <!-- Main Content -->
         <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
             <div id="newsfeed-items-grid">
-                <input type="hidden" name="total_count" id="total_count" value="<?php /*echo $total_count; */?>" />
-                <?php /*echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));*/?>
+                <input type="hidden" name="total_count" id="total_count" value="<?php echo $total_count; ?>" />
+                <?php echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));?>
             </div>
             <div class="text-center" id="load-more-button">
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>
@@ -45,7 +45,6 @@ require_once 'pages/header.php';
 </div>
     <script type="text/javascript">
         $(document).ready(function(){
-            getMoreData(37);
             windowOnScroll();
         });
         function windowOnScroll() {
@@ -72,7 +71,6 @@ require_once 'pages/header.php';
                     setTimeout(function() {
                         $('#load-more-button').hide();
                         $("#newsfeed-items-grid").append(data);
-
                         windowOnScroll();
                     }, 1000);
                 }

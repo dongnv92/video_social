@@ -95,7 +95,7 @@ switch ($act){
                         'media_parent'  =>  $id,
                         'media_time'    =>  $config->getTimeNow()
                     );
-                    if(!$db->insert(_TABLE_MEDIA, $data_add)){
+                        if(!$db->insert(_TABLE_MEDIA, $data_add)){
                         $error['media_insert'] = 'Lỗi sql';
                     }
                 }
