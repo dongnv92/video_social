@@ -25,6 +25,7 @@ define('_TABLE_POST','social_post');
 define('_TABLE_MEDIA','social_media');
 define('_TABLE_GROUP','social_group');
 define('_PATH_IMAGES_POST','media/images/post');
+define('_PATH_VIDEO_POST','media/video/post');
 define('_CONFIG_PLAYER_STORE','tiktok');
 
 define('_DB_HOST','localhost');
@@ -34,6 +35,12 @@ define('_DB_DATABASE','social');
 $db     = new Database(_DB_HOST, _DB_USERNAME,_DB_PASSWORD,_DB_DATABASE);
 $config = new config();
 $funcion= new myFunction();
+
+/** Manager Session, Cookie User */
+if ($_COOKIE['user'] && $_COOKIE['pass']) {
+    $_SESSION['user'] = $_COOKIE['user'];
+    $_SESSION['pass'] = $_COOKIE['pass'];
+}
 
 /** Kiểm tra tồn tại của tên đăng nhập và mật khẩu  */
 if ($_SESSION['user'] && $_SESSION['pass']) {

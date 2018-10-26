@@ -1,33 +1,9 @@
 <?php
-// Just start this server and connect to it. Everything you send to it will be
-// sent back to you.
-//
-// $ php examples/01-echo-server.php 8000
-// $ telnet localhost 8000
-//
-// You can also run a secure TLS echo server like this:
-//
-// $ php examples/01-echo-server.php tls://127.0.0.1:8000 examples/localhost.pem
-// $ openssl s_client -connect localhost:8000
-//
-// You can also run a Unix domain socket (UDS) server like this:
-//
-// $ php examples/01-echo-server.php unix:///tmp/server.sock
-// $ nc -U /tmp/server.sock
-use React\EventLoop\Factory;
-use React\Socket\Server;
-use React\Socket\ConnectionInterface;
-require __DIR__ . '/../vendor/autoload.php';
-$loop = Factory::create();
-$server = new Server(isset($argv[1]) ? $argv[1] : 0, $loop, array(
-    'tls' => array(
-        'local_cert' => isset($argv[2]) ? $argv[2] : (__DIR__ . '/localhost.pem')
-    )
-));
-$server->on('connection', function (ConnectionInterface $conn) {
-    echo '[' . $conn->getRemoteAddress() . ' connected]' . PHP_EOL;
-    $conn->pipe($conn);
-});
-$server->on('error', 'printf');
-echo 'Listening on ' . $server->getAddress() . PHP_EOL;
-$loop->run();
+require_once 'includes/core.php';
+
+$text = '#在抖音，记录美好生活#板罾 http://v.douyin.com/RjBB4j/ 复制此链接，打开【抖音短视频】，直接观看视频！';
+$re = '/http:\/\/v.douyin.com\/(.*)\//m';
+$match = [];
+preg_match($re, $text, $match);
+$text   = $match[0];
+echo $text;

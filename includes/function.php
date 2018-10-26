@@ -99,7 +99,7 @@ class myFunction{
                         $return = 'type="video/youtube"';
                         $break = true;
                     }else{
-                        $return = 'type="video/mp4"';
+                        $return = '';
                         $break = true;
                     }
                 }
@@ -168,6 +168,8 @@ class myFunction{
                         }else if($item_data['media_store'] == 'facebook'){
                             $url    =  $this->getFacebookVideo($item_data['media_source']);
                             $return = $url['video'];
+                        }else if($item_data['media_store'] == 'local'){
+                            $return = _URL_HOME.'/'.$item_data['media_source'];
                         }else{
                             $return = $item_data['media_source'];
                         }
@@ -512,7 +514,7 @@ class myFunction{
         }
         $text .= '<div class="ui-block"><div class="ui-block-title"><h6 class="title">Video Ngẫu Nhiên</h6></div><div class="ui-block-content"><ul class="widget w-last-video">';
         foreach ($db->fetch() AS $row){
-            $text .= '<li><a href="'. _URL_HOME .'/test.php">'; // '. $this->getUrlPost($row['post_id']) .'
+            $text .= '<li><a href="'. $this->getUrlPost($row['post_id']) .'">'; // '. $this->getUrlPost($row['post_id']) .'
                 $text .= '<div class="play-video play-video--small">';
                     $text .= '<svg class="olymp-play-icon">';
                         $text .= '<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-play-icon"></use>';

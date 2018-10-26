@@ -7,11 +7,8 @@ if (!file_exists('cache')) {
 
 function GoogleDrive($gid){
 	$gdurl          = 'https://drive.google.com/file/d/'.$gid.'/preview';
-	$iframeid       = my_simple_crypt($gid);
-	$title          = gdTitle($gid);
-	$img            = gdImg($gdurl);
 	$streaming_vid  = Drive($gid);
-    $output         = array('id' => $gid, 'title' => $title, 'images' => $img, 'label' => 'HD', 'file' => $streaming_vid, 'type' => 'video/mp4', 'embed_id' => $iframeid);
+    $output         = array('file' => $streaming_vid);
 	return $output;
 }
 

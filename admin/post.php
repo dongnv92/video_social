@@ -668,6 +668,8 @@ switch ($act){
                     $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? trim($_POST['post_url'])          : $funcion->makeSlug($post_title);
                     $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? trim($_POST['post_status'])       : 0;
                     $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? trim($_POST['post_show'])         : 0;
+                    $post_save_video    = (isset($_POST['post_save_video'])     && !empty($_POST['post_save_video']))   ? 1                                 : 0;
+                    $post_url_video     = (isset($_POST['post_url_video'])      && !empty($_POST['post_url_video']))    ? trim($_POST['post_url_video'])    : '';
                     $error              = array();
 
                     if($post_source && !filter_var($post_source, FILTER_VALIDATE_URL)){
@@ -838,6 +840,23 @@ switch ($act){
                             );
                             $db->insert(_TABLE_MEDIA, $data);
 
+                            // Save Video To Host
+                            if($post_save_video == 1){
+                                $file_name_video = $funcion->randomString(16).'.mp4';
+                                if(copy($post_url_video, '../'._PATH_VIDEO_POST.'/'.$file_name_video)){
+                                    $data = array(
+                                        'media_type'    =>  'video',
+                                        'media_name'    =>  $file_name_video,
+                                        'media_source'  =>  _PATH_VIDEO_POST.'/'.$file_name_video,
+                                        'media_store'   =>  'local',
+                                        'media_users'   =>  $user['users_id'],
+                                        'media_parent'  =>  $id,
+                                        'media_time'    =>  $config->getTimeNow()
+                                    );
+                                    $db->insert(_TABLE_MEDIA, $data);
+                                }
+                            }
+
                             // Insert Store
                             switch ($funcion->urlToDomain($post_source)){
                                 case 'v.douyin.com':
@@ -893,7 +912,11 @@ switch ($act){
                                     $db->insert(_TABLE_MEDIA, $data);
                                     break;
                             }
-                            $funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
+                            if(!$error){
+                                $funcion->redirectUrl(_URL_ADMIN.'/post.php?type='.$type);
+                            }else{
+                                print_r($error);
+                            }
                         }
                     }
                 }
@@ -1000,6 +1023,13 @@ switch ($act){
                                         <?php echo $error['post_store'] ? $config->getAlert('help_error', $error['post_store']) : '';?>
                                     </div>
                                     <div class="form-group">
+                                        <label class="label-control">URL VIDEO LẤY ĐƯỢC</label>
+                                        <input type="text" value="<?php echo $post_url_video;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL CỦA VIDEO" name="post_url_video" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label-control"><input type="checkbox" name="post_save_video" value="1" class="switchery" data-color="primary" <?php echo ($post_save_video == 1 ? ' checked ' : '');?>/> Lưu Trữ Video Trên Server</label>
+                                    </div>
+                                    <div class="form-group">
                                         <label><strong class="text-danger">(*)</strong> URL Ảnh Video</label>
                                         <input type="text" value="<?php echo $post_images;?>" class="<?php echo $config->form_style('text_input');?>" placeholder="URL Lưu Trữ Gốc" name="post_images" />
                                         <?php echo $error['post_images'] ? $config->getAlert('help_error', $error['post_images']) : '';?>
@@ -1095,6 +1125,7 @@ switch ($act){
                                 },
                                 success     : function (data) {
                                     $('input[name=post_images]').val(data.images);
+                                    $('input[name=post_url_video]').val(data.download);
                                     $('#images_preview').attr('src', data.images);
                                     $('#images_preview').show();
                                     $('input[name=post_url]').val(data.urlSlug);
