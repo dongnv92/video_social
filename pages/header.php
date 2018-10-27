@@ -627,114 +627,45 @@ $header['title'] = $header['title'] ? $header['title'] : 'Trang Chủ';
                     <span class="icon-status online"></span>
                     <div class="more-dropdown more-with-triangle">
                         <div class="mCustomScrollbar" data-mcs-theme="dark">
-                            <div class="ui-block-title ui-block-title-small">
-                                <h6 class="title">Your Account</h6>
-                            </div>
-
+                            <div class="ui-block-title ui-block-title-small"><h6 class="title">Thông Tin Tài Khoản</h6></div>
                             <ul class="account-settings">
+                                <?php if($user){?>
+                                    <li>
+                                        <a href="<?php echo _URL_ADMIN;?>">
+                                            <svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right" data-original-title="FAV PAGE">
+                                                <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-star-icon"></use>
+                                            </svg>
+                                            <span>Trang Quản Trị</span>
+                                        </a>
+                                    </li>
+                                <?php }?>
                                 <li>
-                                    <a href="29-YourAccount-AccountSettings.html">
-
-                                        <svg class="olymp-menu-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-menu-icon"></use></svg>
-
-                                        <span>Profile Settings</span>
+                                    <a href="#">
+                                        <svg class="olymp-menu-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-menu-icon"></use></svg><span>Cài Đặt</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="36-FavPage-SettingsAndCreatePopup.html">
-                                        <svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right"   data-original-title="FAV PAGE"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
-
-                                        <span>Create Fav Page</span>
+                                    <a href="#">
+                                        <svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right" data-original-title="FAV PAGE">
+                                            <use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-star-icon"></use>
+                                        </svg>
+                                        <span>Đăng Video</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
                                         <svg class="olymp-logout-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-logout-icon"></use></svg>
-
-                                        <span>Log Out</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <div class="ui-block-title ui-block-title-small">
-                                <h6 class="title">Chat Settings</h6>
-                            </div>
-
-                            <ul class="chat-settings">
-                                <li>
-                                    <a href="#">
-                                        <span class="icon-status online"></span>
-                                        <span>Online</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="icon-status away"></span>
-                                        <span>Away</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="icon-status disconected"></span>
-                                        <span>Disconnected</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <span class="icon-status status-invisible"></span>
-                                        <span>Invisible</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <div class="ui-block-title ui-block-title-small">
-                                <h6 class="title">Custom Status</h6>
-                            </div>
-
-                            <form class="form-group with-button custom-status">
-                                <input class="form-control" placeholder="" type="text" value="Space Cowboy">
-
-                                <button class="bg-purple">
-                                    <svg class="olymp-check-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-check-icon"></use></svg>
-                                </button>
-                            </form>
-
-                            <div class="ui-block-title ui-block-title-small">
-                                <h6 class="title">About Olympus</h6>
-                            </div>
-
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <span>Terms and Conditions</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span>FAQs</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span>Careers</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span>Contact</span>
+                                        <span>Thoát</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
                 <a href="02-ProfilePage.html" class="author-name fn">
-                    <div class="author-title">
-                        James Spiegel <svg class="olymp-dropdown-arrow-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
+                    <div class="author-title"> <?php echo $user['users_name'];?> <svg class="olymp-dropdown-arrow-icon"><use xlink:href="<?php echo _URL_STYLE;?>/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
                     </div>
-                    <span class="author-subtitle">SPACE COWBOY</span>
+                    <span class="author-subtitle">ADMIN</span>
                 </a>
             </div>
 

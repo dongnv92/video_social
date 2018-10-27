@@ -706,30 +706,6 @@ switch ($act){
                         $error['post_store'] = 'URL lưu trữ đã tồn tại';
                     }
 
-                    if($post_images){
-                        if($funcion->urlToDomain($post_store) == 'youtube.com'){
-                            $media['media_name']    = $post_images;
-                            $media['media_source']  = $post_images;
-                            $media['media_type']    = 'images';
-                            $media['media_store']   = 'remote';
-                        }else{
-                            $data = $uploader->upload($post_images, array(
-                                'uploadDir' => '../'._PATH_IMAGES_POST.'/',
-                                'title' => array('auto', 12),
-                            ));
-
-                            if($data['isComplete']){
-                                $media['media_name']    = $data['data']['metas'][0]['name'];
-                                $media['media_type']    = 'images';
-                                $media['media_source']  = _PATH_IMAGES_POST.'/'.$media['media_name'];
-                                $media['media_store']   = 'local';
-                            }
-
-                            if($data['hasErrors']){
-                                $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
-                            }
-                        }
-                    }
 
                     if($funcion->checkUpload('post_images_upload')){
                         $data = $uploader->upload($_FILES['post_images_upload'], array(
@@ -759,7 +735,26 @@ switch ($act){
                         }
 
                         if($data['hasErrors']){
-                            $error['post_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
+                            $error['post_images'] = 'Có lỗi trong quá trình Upload ảnh';
+                        }
+                    }
+
+                    if($post_images){
+                        if($funcion->urlToDomain($post_store) == 'youtube.com'){
+                            $media['media_name']    = $post_images;
+                            $media['media_source']  = $post_images;
+                            $media['media_type']    = 'images';
+                            $media['media_store']   = 'remote';
+                        }else{
+                            $file_name_images = _CONFIG_TIME.'_'. $user['users_id'].'_'. $funcion->randomString(10).'.jpg';
+                            if(copy($post_images, '../'._PATH_IMAGES_POST.'/'.$file_name_images)){
+                                $media['media_name']    = $file_name_images;
+                                $media['media_type']    = 'images';
+                                $media['media_source']  = _PATH_IMAGES_POST.'/'.$file_name_images;
+                                $media['media_store']   = 'local';
+                            }else{
+                                $error['post_images'] = 'Lỗi Upload Ảnh';
+                            }
                         }
                     }
 
@@ -842,7 +837,7 @@ switch ($act){
 
                             // Save Video To Host
                             if($post_save_video == 1){
-                                $file_name_video = $funcion->randomString(16).'.mp4';
+                                $file_name_video = _CONFIG_TIME.'_'. $user['users_id'].'_'. $funcion->randomString(16).'.mp4';
                                 if(copy($post_url_video, '../'._PATH_VIDEO_POST.'/'.$file_name_video)){
                                     $data = array(
                                         'media_type'    =>  'video',
@@ -854,6 +849,8 @@ switch ($act){
                                         'media_time'    =>  $config->getTimeNow()
                                     );
                                     $db->insert(_TABLE_MEDIA, $data);
+                                }else{
+                                    $error['post_url_video'] = 'Lỗi Upload video';
                                 }
                             }
 

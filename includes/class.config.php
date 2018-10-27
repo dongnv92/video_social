@@ -20,7 +20,7 @@ class config
             $array[] = 'facebook';
             return $array;
         }else{
-            return array('remote', 'local');
+            return array('local', 'remote');
         }
     }
 

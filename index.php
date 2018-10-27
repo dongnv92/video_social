@@ -20,7 +20,7 @@ $total_count = $db->affected_rows;
                 <input type="hidden" name="total_count" id="total_count" value="<?php echo $total_count; ?>" />
                 <?php echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));?>
             </div>
-            <div class="text-center" id="load-more-button">
+            <div class="text-center" id="load-more-button" style="display: none">
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>
                 <div>Đang tải dữ liệu. Vui lòng đợi ...</div>
             </div>
@@ -63,8 +63,7 @@ $total_count = $db->affected_rows;
             $.ajax({
                 url: '<?php echo _URL_HOME;?>/includes/ajax.php?act=video_load&limit=4&last_id=' + lastId,
                 type: "get",
-                beforeSend: function ()
-                {
+                beforeSend: function (){
                     $('#load-more-button').show();
                 },
                 success: function (data) {

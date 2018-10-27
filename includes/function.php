@@ -162,6 +162,8 @@ class myFunction{
                         if($item_data['media_store'] == 'tiktok_china'){
                             $url    = $this->tiktok_get_redirect_final_target('https://api.amemv.com/aweme/v1/play/?video_id='. $item_data['media_source'] .'&line=1&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0');
                             $return = _URL_HOME.'/includes/ajax.php?act=downloadmp4&url='.$url;
+                        }else if($item_data['media_store'] == 'onedrive'){
+                            $return = _URL_HOME.'/includes/ajax.php?act=downloadmp4&url='.$item_data['media_source'];
                         }else if($item_data['media_store'] == 'google_drive'){
                             $url    =  $this->getGoogleDrive($item_data['media_source']);
                             $return = $url['file'];

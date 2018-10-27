@@ -1,7 +1,7 @@
 RewriteEngine on
+php_value allow_url_fopen On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteRule ^login$ login.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^(.*).html$ pages/post.php?url=$1 [L]
