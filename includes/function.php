@@ -427,6 +427,7 @@ class myFunction{
         $db->delete()->from(_TABLE_GROUP)->where('group_index', $id)->execute();
         $db->delete()->from(_TABLE_MEDIA)->where('media_parent', $id)->execute();
         $db->delete()->from(_TABLE_POST)->where('post_id', $id)->execute();
+        return 200;
     }
 
     function getDirectOndrive($url){

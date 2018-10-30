@@ -251,57 +251,47 @@ switch ($act){
                 $post_category      = (isset($_POST['post_category'])       && !empty($_POST['post_category']))     ? $_POST['post_category']       : '';
                 $post_description   = (isset($_POST['post_description'])    && !empty($_POST['post_description']))  ? $_POST['post_description']    : $post['post_description'];
                 $post_url           = (isset($_POST['post_url'])            && !empty($_POST['post_url']))          ? $_POST['post_url']            : $post['post_url'];
-                $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? $_POST['post_status']         : $post['post_status'];
-                $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? $_POST['post_show']           : $post['post_show'];
+                $post_status        = (isset($_POST['post_status'])         && !empty($_POST['post_status']))       ? $_POST['post_status']         : 0;
+                $post_show          = (isset($_POST['post_show'])           && !empty($_POST['post_show']))         ? $_POST['post_show']           : 0;
                 $media_images       = (isset($_POST['media_images'])        && !empty($_POST['media_images']))      ? $_POST['media_images']        : '';
                 $media_video        = (isset($_POST['media_video'])         && !empty($_POST['media_video']))       ? $_POST['media_video']         : '';
 
                 $error              = array();
 
                 if($submit){
-                    if(!$post_title){
-                        $error['post_title'] = 'Bạn chưa nhập tiêu đề';
-                    }
+
                     if($post_source && !filter_var($post_source, FILTER_VALIDATE_URL)){
                         $error['post_source'] = 'Không đúng định dạng URL';
                     }
                     if(($post['post_source'] != $post_source) && $db->select('post_source')->from(_TABLE_POST)->where('post_source' , $post_source)->fetch()){
                         $error['post_source'] = 'Video Đã Tồn Tại';
                     }
-                    if(!$post_store){
+                    /*if(!$post_store){
                         $error['post_store'] = 'Bạn chưa nhập nguồn lưu trữ Video gốc';
-                    }
+                    }*/
                     if($post_store && !filter_var($post_source, FILTER_VALIDATE_URL)){
                         $error['post_store'] = 'Không đúng định dạng URL';
                     }
                     if(($post['post_store'] != $post_store) && $db->select('post_store')->from(_TABLE_POST)->where('post_store' , $post_store)->fetch()){
                         $error['post_store'] = 'URL lưu trữ đã tồn tại';
                     }
-                    if(!in_array($funcion->urlToDomain($post_store) , $config->store_suport())){
+                    if(($post['post_store'] != $post_store) && !in_array($funcion->urlToDomain($post_store) , $config->store_suport())){
                         $error['post_store'] = 'Trang lưu trữ không được hỗ trợ';
                     }
                     if(!$post_category){
                         $error['post_category'] = 'Bạn chưa chọn chuyên mục';
                     }
-                    if(!$media_images && !$funcion->checkUpload('media_images_upload')){
-                        $error['media_images'] = 'Bạn chưa chọn ảnh';
-                    }
 
                     if(($post['post_url'] != $post_url) && $db->select('post_url')->from(_TABLE_POST)->where('post_url' , $post_url)->fetch()){
                         $error['post_url'] = 'URL đã tồn tại';
                     }
-                    if(!$media_video){
-                        $error['media_video'] = 'Video không được để trống';
-                    }
-                    if($media_video && !filter_var($media_video, FILTER_VALIDATE_URL)){
-                        $error['media_video'] = 'URL Video Không Đúng Định Dạng';
-                    }
-                    $media_video = $funcion->getDirectOndrive($post_store);
+
+                    /*$media_video = $funcion->getDirectOndrive($post_store);
                     if(!$media_video){
                         $error['post_store'] = 'Trang lưu trữ không được hỗ trợ hoặc có lỗi';
-                    }
+                    }*/
 
-                    if(!$error && $media_images && ($media_images != $post_images['media_source'])) {
+                    /*if(!$error && $media_images && ($media_images != $post_images['media_source'])) {
                             $data = $uploader->upload($media_images, array(
                                 'uploadDir' => '../'._PATH_IMAGES_POST.'/',
                                 'title' => array('auto', 12),
@@ -336,9 +326,9 @@ switch ($act){
                             if($data['hasErrors']){
                                 $error['media_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
                             }
-                        }
+                        }*/
 
-                        if(!$error && $funcion->checkUpload('media_images_upload')){
+                        /*if(!$error && $funcion->checkUpload('media_images_upload')){
                                 $data = $uploader->upload($_FILES['media_images_upload'], array(
                                     'limit'         => 1, //Maximum Limit of files. {null, Number}
                                     'maxSize'       => 10, //Maximum Size of files {null, Number(in MB's)}
@@ -385,9 +375,9 @@ switch ($act){
                                 if($data['hasErrors']){
                                     $error['media_images'] = 'Có lỗi trong quá trình tải ảnh từ Server về';
                                 }
-                            }
+                            }*/
 
-                        if($media_video && !$error && ($media_video != $post_video['media_source'])){
+                        /*if($media_video && !$error && ($media_video != $post_video['media_source'])){
                             if($post_video){
                                 $data_video = array('media_source' => $media_video);
                                 if(!$db->where(array('media_id' => $post_video['media_id']))->update(_TABLE_MEDIA , $data_video)->execute()){
@@ -409,7 +399,7 @@ switch ($act){
                                     $error['media_video'] = 'Có lỗi trong quá trình update ảnh';
                                 }
                             }
-                        }
+                        }*/
 
                         if(!$error){
                             $data = array(
@@ -441,7 +431,6 @@ switch ($act){
                                 $post               = $db->from(_TABLE_POST)->where('post_id' , $id)->fetch_first();
                                 $post_images        = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'images', 'media_parent' => $id))->fetch_first();
                                 $post_video         = $db->select('media_source, media_id')->from(_TABLE_MEDIA)->where(array('media_type' => 'video', 'media_parent' => $id))->fetch_first();
-
                             }
                         }
                     }
@@ -478,7 +467,7 @@ switch ($act){
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <input required type="text" value="<?php echo $post_title;?>" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
+                                        <input type="text" value="<?php echo $post_title;?>" autofocus class="<?php echo $config->form_style('text_input');?>" placeholder="Tiêu Đề Video" name="post_title">
                                         <?php echo $error['post_title'] ? $config->getAlert('help_error', $error['post_title']) : '';?>
                                     </div>
                                     <div class="form-group">
@@ -486,14 +475,14 @@ switch ($act){
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <!--<div class="card">
                                 <div class="card-header"><h4 class="card-title">Tập Tin Bài Viết</h4> </div>
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <div class="col-md-1 text-right">Ảnh</div>
                                         <div class="col-md-7">
-                                            <input type="text" class="<?php echo $config->form_style('text_input');?>" value="<?php echo $post_images['media_source'];?>" name="media_images">
-                                            <?php echo $error['media_images'] ? $config->getAlert('help_error', $error['media_images']) : '';?>
+                                            <input type="text" class="<?php /*echo $config->form_style('text_input');*/?>" value="<?php /*echo $post_images['media_source'];*/?>" name="media_images">
+                                            <?php /*echo $error['media_images'] ? $config->getAlert('help_error', $error['media_images']) : '';*/?>
                                         </div>
                                         <div class="col-md-4">
                                             <input type="file" id="post_images_upload" class="round" name="media_images_upload">
@@ -502,12 +491,12 @@ switch ($act){
                                     <div class="form-group row">
                                         <div class="col-md-1 text-right">Video</div>
                                         <div class="col-md-11">
-                                            <input type="text" class="<?php echo $config->form_style('text_input');?>" value="<?php echo $post_video['media_source'];?>" name="media_video">
-                                            <?php echo $error['media_video'] ? $config->getAlert('help_error', $error['media_video']) : '';?>
+                                            <input type="text" class="<?php /*echo $config->form_style('text_input');*/?>" value="<?php /*echo $post_video['media_source'];*/?>" name="media_video">
+                                            <?php /*echo $error['media_video'] ? $config->getAlert('help_error', $error['media_video']) : '';*/?>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="col-4">
                             <div class="card">
@@ -521,15 +510,15 @@ switch ($act){
                                                 <label class="card-title ml-1">Đánh Dấu Video HOT</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_status" value="1" <?php echo $post_status ? 'checked' : '';?> class="switchery" data-color="primary"/>
+                                                <input type="checkbox" name="post_status" value="1" <?php echo $post['post_status'] == 1 ? 'checked' : '';?> class="switchery" data-color="primary"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col text-left">
-                                                <label class="card-title ml-1">Đăng Luôn</label>
+                                                <label class="card-title ml-1">Ẩn/Hiện</label>
                                             </div>
                                             <div class="col text-right">
-                                                <input type="checkbox" name="post_show" value="1" <?php echo $post_show ? 'checked' : '';?> class="switchery" data-color="primary" checked/>
+                                                <input type="checkbox" name="post_show" value="1" <?php echo $post['post_show'] == 1 ? 'checked' : '';?> class="switchery" data-color="primary"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -607,7 +596,6 @@ switch ($act){
 
                     $(document).ready(function(){
                         $('input[name=submit]').click(function () {
-                            var post_store          = $('input[name=post_store]').val();
                             var media_images        = $('input[name=media_images]').val();
                             var media_video         = $('input[name=media_video]').val();
                             var count_cate_selected = $("#category_select :selected").length;
@@ -618,14 +606,6 @@ switch ($act){
                             }
                             if(media_video == ''){
                                 swal("Warning!", "Video lưu trữ không được để trống", "warning");
-                                return false;
-                            }
-                            if(post_store == ''){
-                                swal("Warning!", "Bạn chưa nhập URL file lưu trữ", "warning");
-                                return false;
-                            }
-                            if(ValidURL(post_store) == false){
-                                swal("Warning!", "URL File lưu trữ không đúng định dạng","warning");
                                 return false;
                             }
                             if(count_cate_selected == 0){
@@ -746,7 +726,7 @@ switch ($act){
                             $media['media_type']    = 'images';
                             $media['media_store']   = 'remote';
                         }else{
-                            $file_name_images = _CONFIG_TIME.'_'. $user['users_id'].'_'. $funcion->randomString(10).'.jpg';
+                            $file_name_images = $config->getTimeNow().'_'. $user['users_id'].'_'. $funcion->randomString(10).'.jpg';
                             if(copy($post_images, '../'._PATH_IMAGES_POST.'/'.$file_name_images)){
                                 $media['media_name']    = $file_name_images;
                                 $media['media_type']    = 'images';
@@ -837,7 +817,7 @@ switch ($act){
 
                             // Save Video To Host
                             if($post_save_video == 1){
-                                $file_name_video = _CONFIG_TIME.'_'. $user['users_id'].'_'. $funcion->randomString(16).'.mp4';
+                                $file_name_video = $config->getTimeNow().'_'. $user['users_id'].'_'. $funcion->randomString(16).'.mp4';
                                 if(copy($post_url_video, '../'._PATH_VIDEO_POST.'/'.$file_name_video)){
                                     $data = array(
                                         'media_type'    =>  'video',
@@ -1152,10 +1132,23 @@ switch ($act){
             case 'video':
                 $admin_title = 'Danh sách Video';
                 $css_plus       = array(
-                    'app-assets/vendors/css/extensions/sweetalert.css',
-                    'app-assets/css/pages/users.min.css'
+                    'app-assets/vendors/css/editors/tinymce/tinymce.min.css',
+                    'app-assets/vendors/css/forms/selects/select2.min.css',
+                    'app-assets/vendors/css/forms/toggle/bootstrap-switch.min.css',
+                    'app-assets/vendors/css/forms/toggle/switchery.min.css',
+                    'app-assets/css/plugins/forms/switch.min.css',
+                    'app-assets/css/core/colors/palette-switch.min.css',
+                    'app-assets/vendors/css/extensions/sweetalert.css'
                 );
                 $js_plus        = array(
+                    'app-assets/vendors/js/editors/tinymce/tinymce.js',
+                    'app-assets/js/scripts/editors/editor-tinymce.min.js',
+                    'app-assets/vendors/js/forms/select/select2.full.min.js',
+                    'app-assets/js/scripts/forms/select/form-select2.min.js',
+                    'app-assets/vendors/js/forms/toggle/bootstrap-switch.min.js',
+                    'app-assets/vendors/js/forms/toggle/bootstrap-checkbox.min.js',
+                    'app-assets/vendors/js/forms/toggle/switchery.min.js',
+                    'app-assets/js/scripts/forms/switch.min.js',
                     'app-assets/vendors/js/extensions/sweetalert.min.js',
                     'app-assets/js/scripts/extensions/sweet-alerts.min.js'
                 );
@@ -1196,13 +1189,17 @@ switch ($act){
                 $data = $db->fetch();
                 echo '<div id="user-profile-cards-with-cover-image" class="row mt-2">';
                 foreach ($data AS $datas){
+                    $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_parent' => $datas['post_id'], 'media_type' => 'images'))->execute();
+                    $post_images = $db->affected_rows;
+                    $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_parent' => $datas['post_id'], 'media_type' => 'video'))->execute();
+                    $post_video  = $db->affected_rows;
                     ?>
                     <div class="col-xl-3 col-md-6 col-12" data-for="<?php echo $datas['post_id'];?>">
                         <div class="card profile-card-with-cover">
-                            <div class="card-img-top img-fluid bg-cover height-200" style="background: url('<?php echo $funcion->getMediaPost($datas['post_id'], 'images')?>');"></div>
-                            <div class="card-profile-image">
-                                <img src="<?php echo $funcion->getDetailUser($datas['post_users'], 'users_avatar');?>" class="rounded-circle img-border box-shadow-1">
-                            </div>
+                            <div id="post_images_cover_<?php echo $datas['post_id'];?>" class="card-img-top img-fluid bg-cover height-200" style="background: url('<?php echo $funcion->getMediaPost($datas['post_id'], 'images')?>');"></div>
+                            <!--<div class="card-profile-image">
+                                <img src="<?php /*echo $funcion->getDetailUser($datas['post_users'], 'users_avatar');*/?>" class="rounded-circle img-border box-shadow-1">
+                            </div>-->
                             <div class="profile-card-with-cover-content text-center">
                                 <div class="card-body">
                                     <h4 class="card-title"><a href="<?php echo $funcion->getUrlPost($datas['post_id']);?>" target="_blank"><?php echo $datas['post_name'] ? $funcion->getTruncate($datas['post_name'], 6,'words') : 'Không Có Tiêu Đề';?></a></h4>
@@ -1229,6 +1226,11 @@ switch ($act){
                                     <a href="<?php echo  _URL_ADMIN.'/post.php?act=attack&type=video&id='.$datas['post_id'];?>">
                                         <button type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-download"></i></button>
                                     </a>
+                                    <input data-content="<?php echo $datas['post_id'];?>" type="checkbox" name="post_show" value="1" <?php echo $datas['post_show'] == 1 ? 'checked' : '';?> class="switchery" data-size="xs" data-color="primary"/>
+                                    <?php if($post_images == 0 || $post_video == 0){?>
+                                    <button id="update_media" data-content="<?php echo $datas['post_id'];?>" type="button" class="btn btn-icon btn-pure secondary mr-1"><i class="ft-download-cloud" style="color: red"></i></button>
+                                    <i id="update_media_loading_<?php echo $datas['post_id'];?>" class="la la-refresh spinner" style="color: #0A72E8; display: none"></i>
+                                    <?php }?>
                                 </div>
                             </div>
                         </div>
@@ -1281,7 +1283,65 @@ switch ($act){
                                 }
                             });
                         });
-                    })
+
+                        // Update Trạng Thái Ẩn Hiện Của Bài Viết
+                        $('input[name=post_show]').change(function() {
+                            var post_id = $(this).attr('data-content');
+                            if(this.checked) {
+                                $.ajax({
+                                    url     : '<?php echo _URL_HOME;?>/includes/ajax.php',
+                                    method  : 'POST',
+                                    dataType: 'json',
+                                    data    : {'act' : 'post', 'type' : 'update_show', 'id' : post_id, 'post_show' : 1},
+                                    success : function (data) {
+                                        if(data.resposive == 200){
+                                            swal("Update!", "Update Bài Viết Thành Công.", "success");
+                                        }else{
+                                            swal("Error!", "Có lỗi khi thực hiện sửa bài viết. Vui lòng thử lại!", "error");
+                                        }
+                                    }
+                                });
+                            }else{
+                                $.ajax({
+                                    url     : '<?php echo _URL_HOME;?>/includes/ajax.php',
+                                    method  : 'POST',
+                                    dataType: 'json',
+                                    data    : {'act' : 'post', 'type' : 'update_show', 'id' : post_id, 'post_show' : 0},
+                                    success : function (data) {
+                                        if(data.resposive == 200){
+                                            swal("Update!", "Update Bài Viết Thành Công.", "success");
+                                        }else{
+                                            swal("Error!", "Có lỗi khi thực hiện sửa bài viết. Vui lòng thử lại!", "error");
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                        //Update Media
+                        $('#update_media').click(function () {
+                            var post_id = $(this).attr('data-content');
+                            $.ajax({
+                                url         : '<?php echo _URL_HOME;?>/includes/ajax.php',
+                                method      : 'POST',
+                                dataType    : 'json',
+                                data        : {'act' : 'post', 'type' : 'update_media', 'id' : post_id},
+                                beforeSend  : function(){
+                                    $('#update_media_loading_'+post_id).show();
+                                },
+                                success     : function (data) {
+                                    if(data.resposive == 200){
+                                        swal("Update!", data.message , "success");
+                                    }else{
+                                        swal("Có lỗi!", data.message , "error");
+                                    }
+                                    $('#update_media_loading_'+post_id).hide();
+                                    $('button[data-content='+post_id+']').hide();
+                                    $('#post_images_cover_'+post_id).attr('style', "background: url('"+ data.images +"')")
+                                }
+                            });
+                        });
+                    });
                 </script>
                 <?php
                 require_once 'footer.php';

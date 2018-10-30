@@ -64,13 +64,98 @@ switch ($act){
         }
         break;
     case 'post':
-        switch ($type){
+        switch ($type) {
             case 'delete':
                 $array = array();
                 $array['resposive'] = $funcion->deletePost($id);
                 echo json_encode($array);
                 break;
-        }
+            case 'update_show':
+                $post_show = $_REQUEST['post_show'];
+                if ($db->where(array('post_id' => $id))->update(_TABLE_POST, array('post_show' => $post_show))->execute()) {
+                    $array['resposive'] = 200;
+                } else {
+                    $array['resposive'] = 400;
+                }
+                echo json_encode($array);
+                break;
+            case 'update_media':
+                // kiểm tra xe bài viết có tồn tại không
+                $post       = $db->from(_TABLE_POST)->where('post_id' , $id)->fetch_first();
+                if(!$post){
+                    $array['resposive'] = 404;
+                    $array['message'] = 'bài Viết Không Tồn Tại';
+                    echo json_encode($array);
+                    break;
+                }
+                // kiểm tra xem bài viết đã có video chưa
+                $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_parent' => $id, 'media_type' => 'images'))->execute();
+                $post_images    = $db->affected_rows;
+                $db->select('media_id')->from(_TABLE_MEDIA)->where(array('media_parent' => $id, 'media_type' => 'video'))->execute();
+                $post_video     = $db->affected_rows;
+                $get_video      = $funcion->tiktok_getUrlVideoChina_v2($post['post_source']);
+
+                if($post_images == 0){
+                    // Save Images To Host
+                    $file_name_images = $config->getTimeNow().'_'. $user['users_id'] .'_'. $funcion->randomString(10).'.jpg';
+                    if(copy($get_video['images'], '../'._PATH_IMAGES_POST.'/'.$file_name_images)){
+                        $data_images = array(
+                            'media_type'    =>  'images',
+                            'media_name'    =>  $file_name_images,
+                            'media_source'  =>  _PATH_IMAGES_POST.'/'.$file_name_images,
+                            'media_store'   =>  'local',
+                            'media_users'   =>  1,
+                            'media_parent'  =>  $id,
+                            'media_time'    =>  $config->getTimeNow()
+                        );
+                        if(!$db->insert(_TABLE_MEDIA, $data_images)){
+                            $array['resposive'] = 400;
+                            echo json_encode($array);
+                            break;
+                        }
+                    }else{
+                        $array['resposive'] = 401;
+                        echo json_encode($array);
+                        break;
+                    }
+                }
+
+                if($post_video == 0){
+                    // Save Video To Host
+                    $file_name_video = $config->getTimeNow().'_1_'. $funcion->randomString(16).'.mp4';
+                    if(copy($get_video['download'], '../'._PATH_VIDEO_POST.'/'.$file_name_video)){
+                        $data_video = array(
+                            'media_type'    =>  'video',
+                            'media_name'    =>  $file_name_video,
+                            'media_source'  =>  _PATH_VIDEO_POST.'/'.$file_name_video,
+                            'media_store'   =>  'local',
+                            'media_users'   =>  1,
+                            'media_parent'  =>  $id,
+                            'media_time'    =>  $config->getTimeNow()
+                        );
+                        if(!$db->insert(_TABLE_MEDIA, $data_video)){
+                            $array['resposive'] = 400;
+                            $array['message']   = 'Error Database';
+                            echo json_encode($array);
+                            break;
+                        }
+                    }else{
+                        $array['resposive'] = 401;
+                        $array['message']   = 'Error Copy';
+                        echo json_encode($array);
+                        break;
+                    }
+                }
+                $array['resposive'] = 200;
+                $array['message']   = 'Thêm Media Thành Công';
+                $array['images']    = _URL_HOME.'/'._PATH_IMAGES_POST.'/'.$file_name_images;
+
+                echo json_encode($array);
+                break;
+            default:
+                echo json_encode(array('response' => 'default page'));
+                break;
+        } // End Switch Type
         break;
     case 'download':
         $url = $_GET['url'];

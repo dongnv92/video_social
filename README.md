@@ -1,2 +1,2 @@
 # video_social
-Video Social
+Là trang web chia sẻ Video dành cho giới trẻ.
