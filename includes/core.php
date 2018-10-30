@@ -27,6 +27,7 @@ define('_TABLE_GROUP','social_group');
 define('_PATH_IMAGES_POST','media/images/post');
 define('_PATH_VIDEO_POST','media/video/post');
 define('_CONFIG_PLAYER_STORE','tiktok');
+define('_TOKEN_FB','EAACW5Fg5N2IBANo7bhXLce6bRDZApldxZCxxJF3UyzuCPNnk98ZCZARJfwzOEaBbwJFo89njaJXUoT5qHVHKdAJzjXhxZCwLsCZAgcc4OLU67LpgAup8C7fZCGfJpEZCYwZAFQIHeFeTmEB7EIVLvZBQxrp8IoiqFjMRDJa1K5jQHN4NTdoJ29XJKI');
 
 define('_DB_HOST','localhost');
 define('_DB_USERNAME','root');
