@@ -1101,7 +1101,10 @@ switch ($act){
                                     $('#loading_wait').show();
                                 },
                                 success     : function (data) {
+                                    $('input[name=post_store]').val(data.post_store);
                                     $('input[name=post_images]').val(data.images);
+                                    $('input[name=post_title]').val(data.title);
+                                    $('input[name=post_content]').val(data.content);
                                     $('input[name=post_url_video]').val(data.download);
                                     $('#images_preview').attr('src', data.images);
                                     $('#images_preview').show();

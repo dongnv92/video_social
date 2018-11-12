@@ -28,14 +28,12 @@ define('_PATH_IMAGES_POST','media/images/post');
 define('_PATH_VIDEO_POST','media/video/post');
 define('_CONFIG_PLAYER_STORE','tiktok');
 define('_TOKEN_FB','EAACW5Fg5N2IBANo7bhXLce6bRDZApldxZCxxJF3UyzuCPNnk98ZCZARJfwzOEaBbwJFo89njaJXUoT5qHVHKdAJzjXhxZCwLsCZAgcc4OLU67LpgAup8C7fZCGfJpEZCYwZAFQIHeFeTmEB7EIVLvZBQxrp8IoiqFjMRDJa1K5jQHN4NTdoJ29XJKI');
-<<<<<<< HEAD
-=======
 
->>>>>>> 8601354bf270d08db3ea3ff6674cb1e82201f4fa
 define('_DB_HOST','localhost');
 define('_DB_USERNAME','root');
 define('_DB_PASSWORD','');
 define('_DB_DATABASE','social');
+
 $db     = new Database(_DB_HOST, _DB_USERNAME,_DB_PASSWORD,_DB_DATABASE);
 $config = new config();
 $funcion= new myFunction();

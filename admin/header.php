@@ -114,6 +114,7 @@ $admin_title = isset($admin_title) && !empty($admin_title) ? $admin_title : 'VID
                     <li <?php echo ($admin_module == 'post' && $act == 'add' && $type == 'video') ? 'class="active"' : '';?>><a class="menu-item" href="<?php echo _URL_ADMIN;?>/post.php?act=add&type=video">Thêm Video</a></li>
                 </ul>
             </li>
+            <li class=" nav-item <?php echo $admin_module == 'dl' ? 'active' : '';?>"><a href="<?php echo _URL_ADMIN;?>/dl.php"><i class="ft-download"></i><span class="menu-title">Tải Video</span></a></li>
             <li class=" navigation-header"><span data-i18n="nav.category.layouts">Điều hướng</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Layouts"></i></li>
             <li class=" nav-item"><a href="<?php echo _URL_HOME;?>" target="_blank"><i class="la la-home"></i><span class="menu-title">Trang Chủ</span></a></li>
             <li class=" nav-item"><a href="<?php echo _URL_LOGOUT;?>"><i class="la la-long-arrow-left"></i><span class="menu-title">Đăng xuất</span></a></li>

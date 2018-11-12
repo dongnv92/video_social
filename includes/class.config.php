@@ -11,13 +11,13 @@ class config
     function softStore($type = 'video'){
         if($type == 'video'){
             $array = array();
+            $array[] = 'facebook';
             $array[] = 'local';
             $array[] = 'google_drive';
             $array[] = 'onedrive';
             $array[] = 'tiktok_china';
             $array[] = 'tiktok_vietnam';
             $array[] = 'youtube';
-            $array[] = 'facebook';
             return $array;
         }else{
             return array('local', 'remote');

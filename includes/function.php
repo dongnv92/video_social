@@ -32,7 +32,7 @@ class myFunction{
     }
 
     function getFacebookVideo($url){
-        $context = [
+        /*$context = [
             'http' => [
                 'method' => 'GET',
                 'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.47 Safari/537.36",
@@ -50,7 +50,12 @@ class myFunction{
             return array('video' => $video_sd[1], 'images' => $images[5]);
         }else{
             return false;
-        }
+        }*/
+        $url    = explode('/', $url);
+        $url    = $url[5];
+        $graph  = file_get_contents("https://graph.facebook.com/v3.2/".$url."/?fields=source,picture,title&access_token="._TOKEN_FB); //lay thong tin graph
+        $graph  = json_decode($graph, true); // decode json
+        return array('video' => $graph['source'], 'images' => $graph['picture'], 'title' => $graph['title'], 'description' => $graph['description']);
     }
 
     function getGoogleDrive($url){

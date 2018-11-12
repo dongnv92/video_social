@@ -38,8 +38,12 @@ switch ($act){
                 $array['images'] = $drive['images'];
                 break;
             case 'facebook.com':
-                $images         = explode('/', $url);
-                $array['images']= $images[5];
+                $facebook = $funcion->getFacebookVideo($url);
+                $array['images']        = $facebook['images'];
+                $array['download']      = $facebook['video'];
+                $array['title']         = $facebook['title'];
+                $array['content']       = $facebook['description'];
+                $array['post_store']    = $url;
                 break;
             default:
                 echo json_encode(array('error' => 'Empty URL'));
