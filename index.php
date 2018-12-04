@@ -20,9 +20,8 @@ $total_count = $db->affected_rows;
                 <input type="hidden" name="total_count" id="total_count" value="<?php echo $total_count; ?>" />
                 <?php echo $funcion->getViewVideoList('video', array('limit' => 4, 'offset' => 0));?>
             </div>
-            <div class="text-center" id="load-more-button" style="display: none">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>
-                <div>Đang tải dữ liệu. Vui lòng đợi ...</div>
+            <div class="text-center" id="load-more-button">
+                <div><a href="#" onclick="windowOnScroll()" class="btn btn-primary btn-sm full-width" data-toggle="modal" data-target="#edit-my-poll-popup">Xem thêm<div class="ripple-container"></div></a></div>
             </div>
             <br />
         </main>
@@ -57,7 +56,6 @@ $total_count = $db->affected_rows;
                 }
             });
         }
-
         function getMoreData(lastId) {
             $(window).off("scroll");
             $.ajax({
