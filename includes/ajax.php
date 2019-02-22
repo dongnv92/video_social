@@ -169,8 +169,18 @@ switch ($act){
         echo readfile($url);
         break;
     case 'video_load':
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+        // Where
+        $where = array();
+        $where['post_type']     = 'video';
+        $where['post_show']     = 1;
+        if(!$sort){
+        $where['post_status']   = 1;
+        }
+        // Where
+
         $db->select('post_id')->from(_TABLE_POST);
-        $db->where(array('post_type' => 'video', 'post_show' => 1, 'post_status' => 1));
+        $db->where($where);
         $db->where('post_id <', $_GET['last_id']);
         $db->limit($_GET['limit']);
         $db->order_by('post_id', 'DESC');
@@ -183,5 +193,8 @@ switch ($act){
         header("Content-Transfer-Encoding: Binary");
         header('Content-disposition: attachment; filename="'. time() .'.MP4"');
         readfile($url);
+        break;
+    case 'send_email':
+        echo file_get_contents('http://112.78.11.14/send_email/ajax.php?act=get_list_email&email_top=2&type=rand');
         break;
 }

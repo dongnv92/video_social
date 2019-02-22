@@ -520,23 +520,33 @@ class myFunction{
         }else{
             $db->order_by('post_id', 'DESC');
         }
-        $text .= '<div class="ui-block"><div class="ui-block-title"><h6 class="title">Video Ngẫu Nhiên</h6></div><div class="ui-block-content"><ul class="widget w-last-video">';
+        $text .= '<div class="ui-block">
+					<div class="ui-block-title">
+						<h6 class="title">Featured Posts</h6>
+					</div>
+				</div>';
         foreach ($db->fetch() AS $row){
-            $text .= '<li><a href="'. $this->getUrlPost($row['post_id']) .'">'; // '. $this->getUrlPost($row['post_id']) .'
-                $text .= '<div class="play-video play-video--small">';
-                    $text .= '<svg class="olymp-play-icon">';
-                        $text .= '<use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons.svg#olymp-play-icon"></use>';
-                    $text .= '</svg>';
-                $text .= '</div>';
-                $text .= '<img src="'. $this->getMediaPost($row['post_id'], 'images') .'" alt="'. $row['post_name'] .'">';
-                $text .= '<div class="video-content">';
-                    $text .= '<div class="title">'. $row['post_name'] .'</div>';
-                    $text .= '<time class="published">'. $config->getTimeView($row['post_time']) .'</time>';
-                $text .= '</div>';
-                $text .= '<div class="overlay"></div>';
-            $text .= '</a></li>';
+            $text .= '
+            <div class="ui-block">
+			    <!-- Post -->
+			    <article class="hentry blog-post blog-post-v3 featured-post-item">
+				    <div class="post-thumb">
+					    <img style="max-height: 200px" src="'. $this->getMediaPost($row['post_id'], 'images') .'" alt="'. $row['post_name'] .'">
+						<a href="#" class="post-category bg-purple">TEST</a>
+					</div>
+					<div class="post-content">
+					    <div class="author-date">
+					        by <a class="h6 post__author-name fn" href="#">xxx</a>
+					        <div class="post__date">
+					            <time class="published">'. $config->getTimeView($row['post_time']) .'</time>
+						    </div>
+					    </div>
+					    <a href="'. $this->getUrlPost($row['post_id']) .'" class="h4 post-title">'. $row['post_name'] .'</a>
+					</div>
+				</article>	
+				<!-- ... end Post -->
+			</div>';
         }
-        $text .= '</ul></div></div>';
         return $text;
     }
 
@@ -551,11 +561,11 @@ class myFunction{
 					<ul class="widget w-featured-topics">
 						<li>
 							<i class="icon fa fa-star" aria-hidden="true"></i>
-							<div class="content"><a href="#" class="h6 title">Tin Mới Nhất</a></div>
+							<div class="content"><a href="'. _URL_HOME .'/?sort=new" class="h6 title">Tin Mới Nhất</a></div>
 						</li>
 						<li>
 							<i class="icon fa fa-star" aria-hidden="true"></i>
-							<div class="content"><a href="#" class="h6 title">Tin Hot</a></div>
+							<div class="content"><a href="'. _URL_HOME .'" class="h6 title">Tin Hot</a></div>
 						</li>
 					</ul>
 					<!-- ... end Widget Featured Topics -->
@@ -572,21 +582,15 @@ class myFunction{
             $db->select('group_id')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_value' => $cate['category_id']))->execute();
             $num_post = $db->affected_rows;
             $cate_text .= '
-            <li data-popup-target=".playlist-popup">
-			    <div class="playlist-thumb">
-				    <img src="'. _URL_HOME .'/media/images/system/video.png" alt="thumb-composition">
-					<a href="#"><svg class="olymp-music-play-icon-big"><use xlink:href="'. _URL_STYLE .'/svg-icons/sprites/icons-music.svg#olymp-music-play-icon-big"></use></svg></a>
-				</div>
-				<div class="composition"><a href="#" class="composition-name">'. $cate['category_name'] .'</a></div>
-				<div class="composition-time"><time class="published">'. $num_post .'</time></div>
-			</li>';
+                <div class="ui-block-title">
+					<a href="#" class="h6 title">'. $cate['category_name'] .'</a>
+					<a href="#" class="items-round-little bg-primary">'. $num_post .'</a>
+				</div>';
         }
         $text = '
         <div class="ui-block">
 		    <div class="ui-block-title"><h6 class="title">Xu Hướng Video</h6></div>
-			<!-- W-Playlist -->
-			<ol class="widget w-playlist">'. $cate_text .'</ol>
-			<!-- .. end W-Playlist -->
+			'. $cate_text .'
 		</div>';
         return $text;
     }
