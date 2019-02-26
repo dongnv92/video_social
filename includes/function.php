@@ -508,7 +508,7 @@ class myFunction{
     function getBlockSideBarVideo($option = ''){
         global $db, $config;
         $text = '';
-        $db->select('post_id, post_name, post_time')->from(_TABLE_POST);
+        $db->select('post_id, post_name, post_time, post_users')->from(_TABLE_POST);
         $db->where(array('post_type' => 'video', 'post_show' => 1));
         if($option['limit'] && !$option['offset']){
             $db->limit($option['limit']);
@@ -522,10 +522,11 @@ class myFunction{
         }
         $text .= '<div class="ui-block">
 					<div class="ui-block-title">
-						<h6 class="title">Featured Posts</h6>
+						<h6 class="title">NGẪU NHIÊN</h6>
 					</div>
 				</div>';
         foreach ($db->fetch() AS $row){
+            $user_post = $db->select('users_name')->from(_TABLE_USERS)->where('users_id', $row['post_users'])->fetch_first();
             $text .= '
             <div class="ui-block">
 			    <!-- Post -->
@@ -536,7 +537,7 @@ class myFunction{
 					</div>
 					<div class="post-content">
 					    <div class="author-date">
-					        by <a class="h6 post__author-name fn" href="#">xxx</a>
+					        by <a class="h6 post__author-name fn" href="#">'. $user_post['users_name'] .'</a>
 					        <div class="post__date">
 					            <time class="published">'. $config->getTimeView($row['post_time']) .'</time>
 						    </div>
@@ -577,19 +578,19 @@ class myFunction{
     function getBlockSideBarCategory(){
         global $db;
         $cate_text = '';
-        $cates = $db->select('category_id, category_name')->from(_TABLE_CATEGORY)->where('category_type', 'video')->fetch();
+        $cates = $db->select('category_id, category_name, category_url')->from(_TABLE_CATEGORY)->where('category_type', 'video')->fetch();
         foreach ($cates AS $cate){
             $db->select('group_id')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_value' => $cate['category_id']))->execute();
             $num_post = $db->affected_rows;
             $cate_text .= '
                 <div class="ui-block-title">
-					<a href="#" class="h6 title">'. $cate['category_name'] .'</a>
-					<a href="#" class="items-round-little bg-primary">'. $num_post .'</a>
+					<a href="'. _URL_HOME .'/category/'. $cate['category_url'] .'.html" class="h6 title">'. $cate['category_name'] .'</a>
+					<a href="'. _URL_HOME .'/category/'. $cate['category_url'] .'.html" class="items-round-little bg-primary">'. $num_post .'</a>
 				</div>';
         }
         $text = '
         <div class="ui-block">
-		    <div class="ui-block-title"><h6 class="title">Xu Hướng Video</h6></div>
+		    <div class="ui-block-title"><h6 class="title">CHUYÊN MỤC</h6></div>
 			'. $cate_text .'
 		</div>';
         return $text;

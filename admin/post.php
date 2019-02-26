@@ -415,6 +415,7 @@ switch ($act){
                             );
                             if($db->where(array('post_id' => $id))->update(_TABLE_POST, $data)->execute()){
                                 // Add Category
+                                $db->delete(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_index' => $id))->execute();
                                 foreach ($post_category AS $category){
                                     if(!$db->select('group_id')->from(_TABLE_GROUP)->where(array('group_type' => 'post', 'group_index' => $id, 'group_value' => $category))->fetch()){
                                         $data = array(
